@@ -96,11 +96,11 @@ const studentHome = () => {
                   <input
                     className="bg-gray-100 outline-none"
                     type="text"
-                    placeholder="Search by course name"
+                    placeholder="Search by Chapter Name"
                   />
                 </div>
                 <div className="flex py-3 px-4 rounded-lg text-gray-500 font-semibold cursor-pointer">
-                  <span className="whitespace-nowrap">Select Class</span>
+                  <span className="whitespace-nowrap">Select Subject</span>
 
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
