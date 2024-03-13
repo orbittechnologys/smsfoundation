@@ -1,8 +1,15 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import flask from "../../assets/chemistry.png";
 import { GrDocumentPdf } from "react-icons/gr";
+import axios from "axios";
+import { BASE_URL } from "../../constants";
+import useAuth from "../../Hooks/useAuth";
 
 const studentHome = () => {
+  const [subjects, setSubjects] = useState([]);
+  const [studentData, setStudentData] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState("NO");
+  const [chapter, setChapters] = useState([]);
   const CardData = [
     {
       category: "SCIENCE",
@@ -54,6 +61,64 @@ const studentHome = () => {
     },
   ];
 
+  const { auth } = useAuth();
+  console.log(auth);
+
+  const fetchStudent = async (user_id) => {
+    console.log(user_id);
+    try {
+      const res = await axios.get(
+        `${BASE_URL}student/getStudentByUserId/${user_id}`
+      );
+      setStudentData(res.data);
+      console.log(res.data);
+      fetchSubject(
+        res.data.studentDoc.standard,
+        res.data.studentDoc.syllabus,
+        res.data.studentDoc.medium
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (auth) {
+      fetchStudent(auth);
+    }
+  }, [auth]);
+
+  const fetchSubject = async (standard, syllabus, medium) => {
+    const reqbody = {
+      standard,
+      syllabus,
+      medium,
+    };
+    console.log(reqbody);
+
+    try {
+      const res = await axios.post(`${BASE_URL}/subject/getSubjects`, reqbody);
+      console.log(res.data);
+      setSubjects(res.data.subjects);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSearch = async () => {
+    if (selectedSubject != "NO") {
+      try {
+        const res = await axios.get(
+          `${BASE_URL}chapter/getChapterBySubject/${selectedSubject}`
+        );
+        console.log(res.data);
+        setChapters(res.data.chapters);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <>
       <div className="relative h-screen">
@@ -100,7 +165,22 @@ const studentHome = () => {
                   />
                 </div>
                 <div className="flex py-3 px-4 rounded-lg text-gray-500 font-semibold cursor-pointer">
-                  <span className="whitespace-nowrap">Select Subject</span>
+                  <select
+                    className="whitespace-nowrap"
+                    onChange={(e) => {
+                      setSelectedSubject(e.target.value);
+                      console.log(e.target.value);
+                    }}
+                  >
+                    <option value="NO">Select Subject</option>
+                    {subjects?.map((subject, index) => {
+                      return (
+                        <option key={index} value={subject?._id}>
+                          {subject?.name}
+                        </option>
+                      );
+                    })}
+                  </select>
 
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -118,30 +198,33 @@ const studentHome = () => {
                   </svg>
                 </div>
                 <div className="bg-gray-800 py-3 px-5 text-white font-semibold rounded-full hover:shadow-lg transition duration-3000 cursor-pointer">
-                  <span>Search</span>
+                  <button onClick={() => handleSearch()}>Search</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <section className="bg-gray-200 py-8 px-5 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <section className=" py-8 px-5 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div className="mt-20 w-full col-span-3 text-center">
-            <p>06 Materials Found</p>
+            <p>{chapter?.length} Materials Found</p>
           </div>
-          {CardData.map((card, index) => (
-            <div key={index} className="grid ">
+          {chapter.map((card, index) => (
+            <div
+              key={index}
+              className="grid border border-gray-300 rounded-lg shadow-2xl "
+            >
               <div className="grid place-items-center bg-white p-4 rounded-xl text-center">
                 <div className="flex justify-start items-start w-full">
                   <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
-                    {card.category}
+                    {card.subject.name}
                   </span>
                 </div>
                 <img src={flask} alt="flask" className="h-10" />
-                <p className="font-semibold">{card.title}</p>
-                <p className="text-gray-600">{card.description}</p>
+                <p className="font-semibold">{card.name}</p>
+                <p className="text-gray-600">{card.desc}</p>
                 <a
-                  href={card.pdfUrl}
+                  href={card.chapterUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex justify-center items-center mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center"

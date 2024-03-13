@@ -1,13 +1,60 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
+import { BASE_URL } from "../../constants";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const AddInstructor = () => {
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [school, setSchool] = useState("");
+  const [medium, setMedium] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log(name, lastName, email, password, school, medium);
+    const reqbody = {
+      firstName: name,
+      lastName: lastName,
+      email: email,
+      password: password,
+      school: school,
+      medium: medium,
+    };
+
+    console.log(reqbody);
+
+    try {
+      const res = await axios.post(
+        `${BASE_URL}instructor/addInstructor`,
+        reqbody
+      );
+      console.log(res.data);
+      alert("instructor added sucessfully");
+    } catch (error) {
+      console.log(error);
+      alert("instructor could not be added");
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMedium = (e) => {
+    setMedium(e.target.value);
+  };
+
   return (
     <>
       <div className="my-5">
         <p className="font-semibold text-2xl">Add Instructor</p>
       </div>
 
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <div className="grid gap-5">
           <div>
             <label
@@ -22,6 +69,7 @@ const AddInstructor = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="John"
               required
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div>
@@ -37,11 +85,12 @@ const AddInstructor = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="John"
               required
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-6">
             <label
-              for="password"
+              htmlFor="password"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Password
@@ -52,6 +101,7 @@ const AddInstructor = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="•••••••••"
               required
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
         </div>
@@ -63,16 +113,14 @@ const AddInstructor = () => {
             >
               School
             </label>
-            <select
+            <input
+              type="text"
               id="school"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option selected>Choose a medium</option>
-              <option value="EN">English</option>
-              <option value="KA">Kannada</option>
-              <option value="ML">Malyalam</option>
-              <option value="TL">Telgu</option>
-            </select>
+              placeholder="school"
+              required
+              onChange={(e) => setSchool(e.target.value)}
+            />
           </div>
           <div>
             <label
@@ -84,6 +132,8 @@ const AddInstructor = () => {
             <select
               id="medium"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              value={medium}
+              onChange={handleMedium}
             >
               <option selected>Choose a medium</option>
               <option value="EN">English</option>
@@ -95,7 +145,7 @@ const AddInstructor = () => {
         </div>
         <div className="flex justify-start items-center">
           <button
-            type="button"
+            type="submit"
             className="mt-5 text-orange-500  hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2 "
           >
             Add
