@@ -5,7 +5,7 @@ const Login = () => {
   return (
     <>
       <div className="relative h-screen">
-        <section className=" py-8 h-2/4 bg-[#140342] flex justify-start items-center ">
+        <section className=" py-8 h-2/4 bg-[#140342] flex justify-start lg:items-start sm:items-center ">
           <div className="flex justify-center items-center w-full">
             <div>
               <img src={sfLogo} alt="logo" />
@@ -28,8 +28,8 @@ const Login = () => {
 
         {/* Card */}
 
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2/5 mx-auto p-6 bg-white rounded-2xl shadow-md  border-2 border-orange-500">
-          <h1 className="text-xl font-bold leading-tight text-center tracking-tight text-gray-900 md:text-2xl dark:text-white">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-2/5 mx-auto p-6 bg-white rounded-2xl shadow-md  border-2 border-orange-500">
+          <h1 className="text-xl font-bold leading-tight text-center tracking-tight text-gray-900 md:text-2xl">
             Login
           </h1>
           <form className="space-y-4 md:space-y-6 mt-5" action="#">
@@ -69,7 +69,7 @@ const Login = () => {
             <div className="grid place-items-center">
               <button
                 type="submit"
-                className="w-4/12  bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center border-2 border-orange-500 "
+                className=" lg:w-4/12 sm:w-1/3  bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center border-2 border-orange-500 "
               >
                 Login
               </button>
