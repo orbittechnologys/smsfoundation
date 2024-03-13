@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import sfLogo from "../assets/sflogo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Outlet } from "react-router";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { BsCloudUpload } from "react-icons/bs";
@@ -10,6 +10,7 @@ import { BsGraphUpArrow } from "react-icons/bs";
 import { IoExitOutline } from "react-icons/io5";
 
 const Sidebar = () => {
+  const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const closeDropdown = () => {
@@ -18,6 +19,10 @@ const Sidebar = () => {
 
   const openDropdown = () => {
     setIsDropdownOpen(true);
+  };
+
+  const isActive = (path) => {
+    return location.pathname === path;
   };
   return (
     <>
@@ -63,21 +68,38 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/inst/addStudent"
-                className="flex items-center p-2 rounded-lg  hover:bg-gray-100  group"
+                className={`flex items-center p-2 rounded-lg group ${
+                  isActive("/inst/addStudent") ? "bg-gray-100" : ""
+                }`}
               >
-                <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                <span className="ms-3 text-white hover:text-orange-500">
+                <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
+                <span
+                  className={`${
+                    isActive("/inst/addStudent") ? "text-black" : "text-white"
+                  } ms-3 hover:text-orange-500`}
+                >
                   Add Student
                 </span>
               </Link>
             </li>
+
             <li>
               <Link
                 to="/inst/UpdateContent"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={`flex items-center p-2 rounded-lg group ${
+                  isActive("/inst/UpdateContent")
+                    ? "bg-gray-100 text-black"
+                    : ""
+                }`}
               >
-                <BsCloudUpload className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                <span className="flex-1 ms-3 whitespace-nowrap text-white hover:text-orange-500">
+                <BsCloudUpload className="w-5 h-5 text-gray-500 transition duration-75" />
+                <span
+                  className={`${
+                    isActive("/inst/UpdateContent")
+                      ? "text-black"
+                      : "text-white"
+                  } ms-3 hover:text-orange-500`}
+                >
                   Upload Content
                 </span>
               </Link>
@@ -85,7 +107,11 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/inst/UpdateContent"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className={`flex items-center p-2 rounded-lg group ${
+                  isActive("/inst/UpdateContent")
+                    ? "bg-gray-100 text-black"
+                    : ""
+                }`}
               >
                 <TfiReload className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
                 <span className="flex-1 ms-3 whitespace-nowrap text-white hover:text-orange-500">
@@ -96,9 +122,23 @@ const Sidebar = () => {
 
             <li onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
               <div className="relative">
-                <div className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group cursor-pointer">
-                  <BsGraphUpArrow className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                  <span className="flex-1 ms-3 whitespace-nowrap text-white hover:text-orange-500">
+                <div
+                  className={`flex items-center p-2 rounded-lg group cursor-pointer ${
+                    isActive("/inst/LearningReport") ||
+                    isActive("/inst/TestReport")
+                      ? "bg-gray-100"
+                      : ""
+                  }`}
+                >
+                  <BsGraphUpArrow className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`flex-1 ms-3 whitespace-nowrap ${
+                      isActive("/inst/LearningReport") ||
+                      isActive("/inst/TestReport")
+                        ? "text-black"
+                        : "text-white"
+                    } hover:text-orange-500`}
+                  >
                     Student Progress
                   </span>
                 </div>
@@ -112,7 +152,11 @@ const Sidebar = () => {
                       <li>
                         <Link
                           to="/inst/LearningReport"
-                          className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                          className={`block px-4 py-2 text-gray-800 hover:bg-gray-200 ${
+                            isActive("/inst/LearningReport")
+                              ? "bg-gray-200"
+                              : ""
+                          }`}
                         >
                           Learning Report
                         </Link>
@@ -120,7 +164,9 @@ const Sidebar = () => {
                       <li>
                         <Link
                           to="/inst/TestReport"
-                          className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                          className={`block px-4 py-2 text-gray-800 hover:bg-gray-200 ${
+                            isActive("/inst/TestReport") ? "bg-gray-200" : ""
+                          }`}
                         >
                           Test Report
                         </Link>
