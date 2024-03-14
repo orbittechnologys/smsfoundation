@@ -27,8 +27,9 @@ const App = () => {
   console.log(auth);
 
   useEffect(() => {
-    const storedData = sessionStorage.getItem("auth");
+    const storedData = sessionStorage.getItem("user_id");
     console.log(storedData);
+    setRole(sessionStorage.getItem("role"));
     if (storedData) {
       setAuth(storedData);
     } else {
@@ -42,6 +43,7 @@ const App = () => {
         <Route path="/" element={<Login />} />
 
         <Route path="/studentHome" element={<StudentHome />} />
+
         <Route path="/mycourse" element={<MyCourse />} />
         <Route path="/mcq" element={<Mcq />} />
         <Route path="/inst/*" element={<Sidebar />}>
@@ -52,6 +54,7 @@ const App = () => {
         </Route>
         <Route path="/admin/*" element={<Sidebar />}>
           <Route path="LearningReportad" element={<LearningReportad />} />
+
           <Route path="TestReportad" element={<TestReportad />} />
           <Route path="UpdateContentad" element={<UpdateContentad />} />
           <Route path="AddInstructor" element={<AddInstructor />} />

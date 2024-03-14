@@ -143,7 +143,7 @@ const studentHome = () => {
           <div className="flex justify-center items-center px-10">
             <div className="space-y-10">
               <div className="flex items-center p-3 space-x-6 bg-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-500">
-                <div className="flex bg-gray-100 p-4 w-72 space-x-4 rounded-lg">
+                <div className="flex justify-center items-center bg-gray-100 p-4 w-72 space-x-4 rounded-full">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 opacity-30"
@@ -159,44 +159,28 @@ const studentHome = () => {
                     />
                   </svg>
                   <input
-                    className="bg-gray-100 outline-none"
+                    className="bg-gray-100 outline-none border-none"
                     type="text"
                     placeholder="Search by Chapter Name"
                   />
                 </div>
-                <div className="flex py-3 px-4 rounded-lg text-gray-500 font-semibold cursor-pointer">
+                <div className="flex items-center py-3 px-4 rounded-lg bg-gray-100 text-gray-700 font-semibold cursor-pointer">
                   <select
-                    className="whitespace-nowrap"
+                    className="whitespace-nowrap border-none bg-gray-100 text-center "
                     onChange={(e) => {
                       setSelectedSubject(e.target.value);
                       console.log(e.target.value);
                     }}
                   >
                     <option value="NO">Select Subject</option>
-                    {subjects?.map((subject, index) => {
-                      return (
-                        <option key={index} value={subject?._id}>
-                          {subject?.name}
-                        </option>
-                      );
-                    })}
+                    {subjects?.map((subject, index) => (
+                      <option key={index} value={subject?._id}>
+                        {subject?.name}
+                      </option>
+                    ))}
                   </select>
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
                 </div>
+
                 <div className="bg-gray-800 py-3 px-5 text-white font-semibold rounded-full hover:shadow-lg transition duration-3000 cursor-pointer">
                   <button onClick={() => handleSearch()}>Search</button>
                 </div>
