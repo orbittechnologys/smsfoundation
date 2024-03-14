@@ -19,6 +19,7 @@ import TestReportad from "./pages/Admin/TestReportad";
 import UpdateContentad from "./pages/Admin/UpdateContentad";
 import AddInstructor from "./pages/Admin/AddInstructor";
 import useAuth from "./authService";
+import PDFViewer from "./pages/Student/PDFViewer";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -40,7 +41,6 @@ const App = () => {
     <div>
       <Routes>
         <Route path="/" element={<Login />} />
-
         <Route path="/studentHome" element={<StudentHome />} />
         <Route path="/mycourse" element={<MyCourse />} />
         <Route path="/mcq" element={<Mcq />} />
@@ -56,6 +56,7 @@ const App = () => {
           <Route path="UpdateContentad" element={<UpdateContentad />} />
           <Route path="AddInstructor" element={<AddInstructor />} />
         </Route>
+        <Route path="/pdf" element={<PDFViewer />} /> 
       </Routes>
     </div>
   );
