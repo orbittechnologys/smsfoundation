@@ -13,15 +13,9 @@ const Login = () => {
   const [role, setRole] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(email, password);
-
+  const callLoginApi = async (reqbody) =>{
     try {
-      const res = await axios.post(`${BASE_URL}user/login`, {
-        email,
-        password,
-      });
+      const res = await axios.post(`${BASE_URL}user/login`, reqbody);
       console.log(res.data);
       setAuth(res.data._id);
       setRole(res.data.role);
@@ -39,6 +33,13 @@ const Login = () => {
       alert("Invalid Credentials");
     }
   };
+  
+  const handleSubmit =  (e) => {
+    e.preventDefault();
+    console.log(email, password);
+    callLoginApi({email, password})
+  }
+   
 
   const [showPassword, setShowPassword] = useState(false);
 

@@ -34,7 +34,7 @@ const App = () => {
     } else {
       navigate("/");
     }
-  }, [auth]);
+  }, []);
 
   return (
     <div>
