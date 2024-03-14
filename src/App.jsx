@@ -28,10 +28,11 @@ const App = () => {
   console.log(auth);
 
   useEffect(() => {
-    const storedData = sessionStorage.getItem("auth");
+    const storedData = sessionStorage.getItem("user_id");
     console.log(storedData);
     if (storedData) {
       setAuth(storedData);
+      setRole(sessionStorage.getItem("role"))
     } else {
       navigate("/");
     }
@@ -56,7 +57,7 @@ const App = () => {
           <Route path="UpdateContentad" element={<UpdateContentad />} />
           <Route path="AddInstructor" element={<AddInstructor />} />
         </Route>
-        <Route path="/pdf" element={<PDFViewer />} /> 
+        <Route path="/pdf/:chapterId" element={<PDFViewer />} /> 
       </Routes>
     </div>
   );

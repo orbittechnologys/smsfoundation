@@ -4,6 +4,7 @@ import { GrDocumentPdf } from "react-icons/gr";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
 import useAuth from "../../Hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const studentHome = () => {
   const [subjects, setSubjects] = useState([]);
@@ -62,6 +63,7 @@ const studentHome = () => {
   ];
 
   const { auth } = useAuth();
+  const navigate = useNavigate();
   console.log(auth);
 
   const fetchStudent = async (user_id) => {
@@ -223,15 +225,15 @@ const studentHome = () => {
                 <img src={flask} alt="flask" className="h-10" />
                 <p className="font-semibold">{card.name}</p>
                 <p className="text-gray-600">{card.desc}</p>
-                <a
-                  href={card.chapterUrl}
+                <button
+                  onClick={()=> navigate(`/pdf/${card?._id}`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex justify-center items-center mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center"
                 >
                   <GrDocumentPdf className="mr-2" />
                   View
-                </a>
+                </button>
               </div>
             </div>
           ))}
