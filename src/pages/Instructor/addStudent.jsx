@@ -64,6 +64,7 @@ const addStudent = () => {
 
       <div>
         <form className="1" onSubmit={handleSubmit}>
+        <div className="grid grid-cols-2 gap-4">
         <div>
             <label
               htmlFor="email"
@@ -128,7 +129,8 @@ const addStudent = () => {
               onChange={(e)=> setRollNo(e.target.value)}
             />
           </div>
-
+        </div>
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label
               htmlFor="password"
@@ -212,7 +214,7 @@ const addStudent = () => {
               <option value="TL">Telgu</option>
             </select>
           </div>
-
+          </div>
           <div>
             <button
               type="submit"
