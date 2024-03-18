@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useAuth from "../../Hooks/useAuth";
 
 // Import Worker
 import { Worker } from "@react-pdf-viewer/core";
@@ -27,6 +28,10 @@ const PDFViewer = () => {
   const { chapterId } = useParams();
 
   const [chapter, setChapter] = useState(null);
+  const [timer, setTimer] = useState(0);
+
+  const { auth } = useAuth();
+  console.log(auth);
 
   const fetchPdf = async (chapterUrl) => {
     try {
@@ -38,6 +43,8 @@ const PDFViewer = () => {
       console.log(error);
     }
   };
+
+  console.log(chapterId);
 
   const fetchChapter = async (chapterId) => {
     try {
@@ -74,6 +81,35 @@ const PDFViewer = () => {
     }
   };
 
+  useEffect(() => {
+    if (pdfFile) {
+      const intervalId = setInterval(() => {
+        setTimer((prevTimer) => prevTimer + 1);
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, []);
+
+  const updateChapterTime = async (totalTime) => {
+    const studentId = sessionStorage.getItem("user_id");
+    const reqbody = {
+      chapterId: chapterId,
+      studentId: studentId,
+      time: totalTime,
+    };
+    console.log(reqbody);
+    try {
+      const response = await axios.post(
+        "http://52.172.149.201:4000/api/chapterTime/update",
+        reqbody
+      );
+      console.log(response.data);
+      console.log("Chapter time updated:", response.data);
+    } catch (error) {
+      console.error("Error updating chapter time:", error);
+    }
+  };
+
   return (
     <div className="container">
       {/* Upload PDF */}
@@ -96,15 +132,16 @@ const PDFViewer = () => {
 
       {/* View PDF */}
       <h5>View PDF</h5>
-      <div className="viewer"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "800px",
-        overflowY: "auto",
-        marginBottom: "10px",
-      }}
+      <div
+        className="viewer"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "800px",
+          overflowY: "auto",
+          marginBottom: "10px",
+        }}
       >
         {/* render this if we have a pdf file */}
         {pdfFile && (
@@ -118,7 +155,10 @@ const PDFViewer = () => {
 
         {/* render this if we have pdfFile state null   */}
         {!pdfFile && <>No file is selected yet</>}
+        {pdfFile && <div>Timer: {timer} seconds</div>}
       </div>
+
+      {chapter && <p>Total Hours: {chapter.totalHours}</p>}
     </div>
   );
 };
