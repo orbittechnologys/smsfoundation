@@ -5,8 +5,8 @@ function convertSeconds(seconds) {
     var minutes = Math.floor((seconds % 3600) / 60);
     var remainingSeconds = seconds % 60;
     var str = remainingSeconds + " seconds";
-    str = hours>0 ? hours + " hours : " + str : str;
     str = minutes> 0 ? minutes + " mins : " +str : str;
+    str = hours>0 ? hours + " hours : " + str : str;
     return str;
 }
 

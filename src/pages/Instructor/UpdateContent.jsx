@@ -1,19 +1,106 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSquarePlus } from "react-icons/fa6";
 import { FaFilePdf } from "react-icons/fa";
+import axios from "axios";
+import { BASE_URL } from "../../constants";
+import uploadToAzureStorage from "../../Hooks/uploadToAzureStorage";
 
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
 
-  const handleFileChange = (event) => {
+  const [standard,setStandard] = useState(null);
+  const [medium,setMedium] = useState(null);
+  const [syllabus,setSyllabus] = useState(null);
+  const [subjects,setSubjects] = useState(null);
+
+  const [selectedSubject,setSelectedSubject] = useState(null);
+
+  const [uploadedFileUrl,setUploadedFileUrl] = useState(null);
+
+  const [chapters,setChapters] = useState(null);
+
+  const [chapterName,setChapterName] = useState(null);
+  const [chapterDesc,setChapterDesc] = useState(null);
+
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file && file.type === "application/pdf") {
       setFileName(file.name);
+      const blobName = file?.name;
+      const url = await uploadToAzureStorage(file,blobName);
+      console.log(url);
+      setUploadedFileUrl(url);
     } else {
       // Handle invalid file type
       alert("Please upload a PDF file.");
     }
   };
+
+  const fetchSubjectsApiCall =async (reqBody)=> {
+    try {
+      const res =await axios.post(`${BASE_URL}subject/getSubjects`,reqBody);
+      console.log(res.data);
+      setSubjects(res.data.subjects);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const getSubjects = () => {
+    
+    console.log(syllabus,medium,standard);
+    fetchSubjectsApiCall({
+      syllabus,
+      medium,
+      standard
+    })
+
+  }
+
+  useEffect(()=> {
+    if(standard && medium && syllabus){
+      getSubjects();
+    }
+  },[standard,medium,syllabus])
+
+  const fetchChapters = async(subjectId) => {
+    try {
+      const res = await axios.get(`${BASE_URL}chapter/getChapterBySubject/${subjectId}`);
+      console.log(res.data);
+      setChapters(res.data.chapters);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=> {
+    if(selectedSubject){
+      fetchChapters(selectedSubject);
+    }
+  },[selectedSubject])
+  
+  
+  const handleUpload = async ()=> {
+    try {
+      if(chapterName && chapterDesc && uploadedFileUrl && selectedSubject){
+        const reqBody = {
+          "chapterUrl": uploadedFileUrl,
+          "subjectId": selectedSubject,
+          "name": chapterName,
+          "desc":chapterDesc
+      }
+      console.log(reqBody);
+      const res = await axios.post(`${BASE_URL}chapter/addChapter`,reqBody);
+      console.log(res.data);
+      alert('Chapter Added successfully');
+      fetchChapters(selectedSubject);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('Something went wrong')
+    }
+  }
+
 
   return (
     <>
@@ -27,7 +114,10 @@ const UpdateContent = () => {
               Standard
             </label>
             <input
-              type="text"
+              type="number"
+              onChange={(e)=> setStandard(e.target.value)}
+              min={1}
+              max={12}
               id="standard"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder=""
@@ -44,109 +134,159 @@ const UpdateContent = () => {
             <select
               id="medium"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
+              onChange={(e)=> setMedium(e.target.value)}
+           >
               <option selected>Choose a medium</option>
-              <option value="EN">English</option>
-              <option value="KA">Kannada</option>
-              <option value="ML">Malyalam</option>
-              <option value="TL">Telgu</option>
+              <option value="ENGLISH">English</option>
+              <option value="KANNADA">Kannada</option>
+              <option value="MALYALAM">Malyalam</option>
+              <option value="TELUGU">Telugu</option>
             </select>
           </div>
         </div>
         <div className="border shadow-md p-5 rounded-xl grid gap-5">
           <div>
-            <label
-              htmlFor="subject"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
-            >
-              Subject
-            </label>
-            <input
-              type="text"
-              id="subject"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder=""
-              required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="syllabus"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
-            >
-              Syllabus
-            </label>
-            <select
-              id="syllabus"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option selected>Choose a Syllabus</option>
-              <option value="NC">NCERT</option>
-              <option value="KD">KUD</option>
-              <option value="CB">CBSE</option>
-              <option value="AS">IAS</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div className="mt-5 grid grid-cols-2 gap-5 shadow-lg p-5 border rounded-xl">
-          <div>
-            <label
-              htmlFor="desc"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
-            >
-              Description
-            </label>
-            <input
-              type="text"
-              id="desc"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Study material for class 9th"
-              required
-            />
-          </div>
-          <div className="flex justify-center items-center">
-            <div>
               <label
-                htmlFor="cont"
+                htmlFor="syllabus"
                 className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
               >
-                Upload Content
+                Syllabus
+              </label>
+              <select
+                id="syllabus"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={(e)=> {setSyllabus(e.target.value);}}
+             >
+                <option selected>Choose a Syllabus</option>
+                <option value="NCERT">NCERT</option>
+                <option value="CBSE">CBSE</option>
+                <option value="ICSE">ICSE</option>
+              </select>
+            </div>
+            {subjects && (
+              <div>
+              <label
+                htmlFor="syllabus"
+                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              >
+                Subjects
+              </label>
+              <select
+                id="syllabus"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={(e)=> {setSelectedSubject(e.target.value)}}
+             >
+                <option selected>Choose a Subject</option>
+                {subjects?.map((subject,index)=> {
+                  return(
+                    <option value={subject?._id}>{subject?.name}</option>
+                  )
+                })}
+              </select>
+            </div>
+            )}
+            
+          
+        </div>
+      </div>
+
+      {Array.isArray(chapters) ? (
+              <div>
+              <h1>Chapters found : {chapters?.length}</h1>
+
+              {chapters?.map((chapter,index)=> {
+                return(
+                  <div className="my-4">
+                    <h1>{chapter?.name}</h1>
+                    <h1>{chapter?.desc}</h1>
+                    <a href={chapter?.chapterUrl} target="_blank">View Pdf</a>
+                  </div>
+                )
+              })}
+              
+            </div>
+      ):``
+      }
+
+      {selectedSubject && (
+        <div>
+        <h1>Add a new Chapter</h1>
+          <div className="mt-5 grid grid-cols-3 gap-5 shadow-lg p-5 border rounded-xl">
+             <div>
+              <label
+                htmlFor="desc"
+                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              >
+                Chapter Name
               </label>
               <input
-                type="file"
-                id="cont"
-                accept="application/pdf"
-                onChange={handleFileChange}
+                type="text"
+                id="desc"
+                onChange={(e)=> setChapterName(e.target.value)}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Upload Content"
+                placeholder="Enter Chapter name"
                 required
               />
             </div>
+            <div>
+              <label
+                htmlFor="desc"
+                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              >
+                Chapter Description
+              </label>
+              <input
+                type="text"
+                id="desc"
+                onChange={(e)=> setChapterDesc(e.target.value)}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Enter Description"
+                required
+              />
+            </div>
+            <div className="flex justify-center items-center">
+              <div>
+                <label
+                  htmlFor="cont"
+                  className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                >
+                  Upload Content
+                </label>
+                <input
+                  type="file"
+                  id="cont"
+                  accept="application/pdf"
+                  onChange={handleFileChange}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Upload Content"
+                  required
+                />
+              </div>
+              <button
+                onClick={() => document.getElementById("cont").click()}
+                className="mt-5 ml-5"
+              >
+                <FaSquarePlus className="text-xl" />
+              </button>
+            </div>
+            {fileName && (
+              <div className="grid mt-2">
+                <FaFilePdf className="text-red-500 text-2xl mr-2" />
+                <span>{fileName}</span>
+              </div>
+            )}
+          </div>
+          <div className="flex justify-end items-center">
             <button
-              onClick={() => document.getElementById("cont").click()}
-              className="mt-5 ml-5"
-            >
-              <FaSquarePlus className="text-xl" />
+              type="button"
+              className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+              onClick={()=> handleUpload()}
+           >
+              Upload
             </button>
           </div>
-          {fileName && (
-            <div className="grid mt-2">
-              <FaFilePdf className="text-red-500 text-2xl mr-2" />
-              <span>{fileName}</span>
-            </div>
-          )}
         </div>
-        <div className="flex justify-end items-center">
-          <button
-            type="button"
-            className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-          >
-            Upload
-          </button>
-        </div>
-      </div>
+      )}      
     </>
   );
 };

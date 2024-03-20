@@ -44,7 +44,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/studentHome" element={<StudentHome />} />
-        <Route path="/AddTest" element={<AddTest />} />
+        
 
         <Route path="/mycourse" element={<MyCourse />} />
         <Route path="/mcq" element={<Mcq />} />
@@ -59,6 +59,7 @@ const App = () => {
           <Route path="TestReportad" element={<TestReportad />} />
           <Route path="UpdateContentad" element={<UpdateContentad />} />
           <Route path="AddInstructor" element={<AddInstructor />} />
+          <Route path="AddTest" element={<AddTest />} />
         </Route>
         <Route path="/pdf/:chapterId" element={<PDFViewer />} />
       </Routes>

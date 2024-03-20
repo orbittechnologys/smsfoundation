@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Table.css";
+import axios from "axios";
+import { BASE_URL, convertSeconds } from "../../constants";
 
 const LearningReport = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,6 +28,22 @@ const LearningReport = () => {
     },
   ];
 
+  const [learningReport,setLearningReport] = useState([]);
+  
+  const fetchLearningReport = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}subjectTime/getLearningReport`);
+      console.log(res.data);
+      setLearningReport(res.data.subjectReport);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=> {
+    fetchLearningReport();
+  },[])
+
   const handleSearch = (e) => {
     const searchTerm = e.target.value.toLowerCase();
     setSearchTerm(searchTerm);
@@ -50,7 +68,7 @@ const LearningReport = () => {
           <p className="text-lg font-semibold">Learning Report</p>
         </div>
         <div>
-          <form className="max-w-md mx-auto">
+          {/* <form className="max-w-md mx-auto">
             <label
               htmlFor="default-search"
               className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -91,7 +109,7 @@ const LearningReport = () => {
                 Search
               </button>
             </div>
-          </form>
+          </form> */}
         </div>
       </div>
       <div className="table-container">
@@ -104,27 +122,19 @@ const LearningReport = () => {
               <th>Medium</th>
               <th>Subject</th>
               <th>Time Spent</th>
-              <th>Time Taken</th>
+              
             </tr>
           </thead>
           <tbody>
-            {dataToRender.map((rowData, index) => (
+            {learningReport?.map((rowData, index) => (
               <tr key={index}>
-                <td>{rowData.name}</td>
-                <td>{rowData.rollNo}</td>
-                <td>{rowData.standard}</td>
-                <td>{rowData.medium}</td>
-                <td>{rowData.subject}</td>
-                <td>{rowData.timeSpent}</td>
-                <td>
-                  <span
-                    className={`rounded-2xl px-5 py-1 ${
-                      rowData.timeTaken ? "bg-green-300" : "bg-red-300"
-                    }`}
-                  >
-                    {rowData.timeTaken ? "Yes" : "No"}
-                  </span>
-                </td>
+                <td>{rowData?.student?.firstName} {rowData?.student?.lastName}</td>
+                <td>{rowData?.student?.rollNo}</td>
+                <td>{rowData?.student?.standard}</td>
+                <td>{rowData?.student?.medium}</td>
+                <td>{rowData?.subject?.name}</td>
+                <td>{convertSeconds(rowData?.time)}</td>
+              
               </tr>
             ))}
           </tbody>

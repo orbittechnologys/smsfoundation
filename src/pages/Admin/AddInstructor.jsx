@@ -154,10 +154,10 @@ const AddInstructor = () => {
               onChange={handleMedium}
             >
               <option selected>Choose a medium</option>
-              <option value="EN">English</option>
-              <option value="KA">Kannada</option>
-              <option value="ML">Malyalam</option>
-              <option value="TL">Telgu</option>
+              <option value="ENGLISH">English</option>
+              <option value="KANNADA">Kannada</option>
+              <option value="MALYALAM">Malyalam</option>
+              <option value="TELUGU">Telugu</option>
             </select>
           </div>
         </div>

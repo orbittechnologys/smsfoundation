@@ -104,6 +104,24 @@ const Sidebar = () => {
 
             <li>
               <Link
+                to="/admin/AddTest"
+                className={`flex items-center p-2 rounded-lg group ${
+                  isActive("/admin/AddTest") ? "bg-gray-100" : ""
+                }`}
+              >
+                <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
+                <span
+                  className={`${
+                    isActive("/admin/AddTest") ? "text-black" : "text-white"
+                  } ms-3 hover:text-orange-500`}
+                >
+                  Add Test
+                </span>
+              </Link>
+            </li>
+
+            <li>
+              <Link
                 to="/inst/UpdateContent"
                 className={`flex items-center p-2 rounded-lg group ${
                   isActive("/inst/UpdateContent")
