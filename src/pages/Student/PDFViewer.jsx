@@ -23,7 +23,6 @@ const PDFViewer = () => {
 
   const navigate = useNavigate();
 
-
   const fetchPdf = async (chapterUrl) => {
     try {
       const res = await axios.get(chapterUrl, { responseType: "blob" });
@@ -45,23 +44,25 @@ const PDFViewer = () => {
     }
   };
 
-  const [student,setStudent] = useState(null);
+  const [student, setStudent] = useState(null);
 
-  const fetchStudent = async()=> {
-    const userId = sessionStorage.getItem('user_id');
+  const fetchStudent = async () => {
+    const userId = sessionStorage.getItem("user_id");
     console.log(userId);
     try {
-      const res = await axios.get(`${BASE_URL}student/getStudentByUserId/${userId}`)
+      const res = await axios.get(
+        `${BASE_URL}student/getStudentByUserId/${userId}`
+      );
       console.log(res.data);
       setStudent(res.data.studentDoc);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     if (chapterId) fetchChapter(chapterId);
-    fetchStudent()
+    fetchStudent();
     startAndStop();
   }, []);
 
@@ -174,44 +175,53 @@ const PDFViewer = () => {
   };
 
   const chapterTimeUpdateApi = async (reqBody) => {
-    console.log('i am here')
+    console.log("i am here");
     try {
-      const res = await axios.post(`${BASE_URL}chapterTime/update`,reqBody);
+      const res = await axios.post(`${BASE_URL}chapterTime/update`, reqBody);
       console.log(res.data);
-      navigate('/mycourse')
+      navigate("/mycourse");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const sendChapterUpdate = () => {
     startAndStop();
-      const reqBody = {
-        "chapterId": chapterId,
-        "studentId": student?._id,
-        "time": seconds
-    }
+    const reqBody = {
+      chapterId: chapterId,
+      studentId: student?._id,
+      time: seconds,
+    };
     console.log(reqBody);
     chapterTimeUpdateApi(reqBody);
-  }
+  };
 
   return (
-    <div className="container">
-      <div className="stopwatch-container">
-      <p className="stopwatch-time">
-        {hours}:{minutes.toString().padStart(2, "0")}:
-        {seconds.toString().padStart(2, "0")}
-      </p>
-      <div className="stopwatch-buttons">
-        <button className="stopwatch-button" onClick={startAndStop}>
-          {isRunning ? "Stop" : "Start"}
-        </button>
-        <button className="stopwatch-button" onClick={sendChapterUpdate}>
-          Submit Time
-        </button>
+    <>
+      <div className="stopwatch-container flex justify-between items-center px-10 bg-[#140342] text-white py-5">
+        <div>
+          <p className="stopwatch-time">
+            {hours}:{minutes.toString().padStart(2, "0")}:
+            {seconds.toString().padStart(2, "0")}
+          </p>
+        </div>
+        <div className="stopwatch-buttons flex justify-between w-56 whitespace-nowrap">
+          <button
+            className="stopwatch-button bg-green-800 px-5 py-2 rounded-full hover:bg-green-600"
+            onClick={startAndStop}
+          >
+            {isRunning ? "Stop" : "Start"}
+          </button>
+          <button
+            className="stopwatch-button bg-orange-500 px-5 py-2 rounded-full hover:bg-orange-300"
+            onClick={sendChapterUpdate}
+          >
+            Submit Time
+          </button>
+        </div>
       </div>
-    </div>
-      {/* <form>
+      <div className="w-[100%] ">
+        {/* <form>
         <br></br>
         <input
           type="file"
@@ -221,29 +231,30 @@ const PDFViewer = () => {
         {pdfError && <span className="text-danger">{pdfError}</span>}
       </form> */}
 
-      <h5>View PDF</h5>
-      <div
-        className="viewer"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "800px",
-          overflowY: "auto",
-          marginBottom: "10px",
-        }}
-      >
-        {pdfFile && (
-          <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-            <Viewer
-              fileUrl={pdfFile}
-              plugins={[defaultLayoutPluginInstance]}
-            ></Viewer>
-          </Worker>
-        )}
-        {!pdfFile && <>No file is selected yet</>}
+        <div
+          className="viewer"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "800px",
+            width: "100%",
+            overflowY: "auto",
+            marginBottom: "10px",
+          }}
+        >
+          {pdfFile && (
+            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+              <Viewer
+                fileUrl={pdfFile}
+                plugins={[defaultLayoutPluginInstance]}
+              ></Viewer>
+            </Worker>
+          )}
+          {!pdfFile && <>No file is selected yet</>}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
