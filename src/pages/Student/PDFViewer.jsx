@@ -20,6 +20,11 @@ const PDFViewer = () => {
   const [startTime, setStartTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    setUserId(sessionStorage.getItem("user_id"));
+  });
 
   const fetchPdf = async (chapterUrl) => {
     try {
@@ -98,7 +103,7 @@ const PDFViewer = () => {
   const sendTotalTime = async (time) => {
     const reqbody = {
       chapterId: chapterId,
-      studentId: "65f031d3da8fe73e5bceeaca",
+      studentId: userId,
       time: time,
     };
     console.log(reqbody);
