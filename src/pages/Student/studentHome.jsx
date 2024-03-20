@@ -63,8 +63,8 @@ const studentHome = () => {
   ];
 
   const { auth } = useAuth();
-  const navigate = useNavigate();
   console.log(auth);
+  const navigate = useNavigate();
 
   const fetchStudent = async (user_id) => {
     console.log(user_id);
@@ -226,7 +226,7 @@ const studentHome = () => {
                 <p className="font-semibold">{card.name}</p>
                 <p className="text-gray-600">{card.desc}</p>
                 <button
-                  onClick={()=> navigate(`/pdf/${card?._id}`)}
+                  onClick={() => navigate(`/pdf/${card?._id}`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex justify-center items-center mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center"
