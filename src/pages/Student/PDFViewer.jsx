@@ -5,7 +5,7 @@ import { Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
 
@@ -20,11 +20,9 @@ const PDFViewer = () => {
   const [startTime, setStartTime] = useState(null);
   const [elapsedTime, setElapsedTime] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
-  const [userId, setUserId] = useState("");
 
-  useEffect(() => {
-    setUserId(sessionStorage.getItem("user_id"));
-  });
+  const navigate = useNavigate();
+
 
   const fetchPdf = async (chapterUrl) => {
     try {
@@ -47,8 +45,24 @@ const PDFViewer = () => {
     }
   };
 
+  const [student,setStudent] = useState(null);
+
+  const fetchStudent = async()=> {
+    const userId = sessionStorage.getItem('user_id');
+    console.log(userId);
+    try {
+      const res = await axios.get(`${BASE_URL}student/getStudentByUserId/${userId}`)
+      console.log(res.data);
+      setStudent(res.data.studentDoc);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     if (chapterId) fetchChapter(chapterId);
+    fetchStudent()
+    startAndStop();
   }, []);
 
   const allowedFiles = ["application/pdf"];
@@ -123,27 +137,81 @@ const PDFViewer = () => {
     }
   };
 
+  const [time, setTime] = useState(0);
+
+  // state to check stopwatch running or not
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    let intervalId;
+    if (isRunning) {
+      // setting time from 0 to 1 every 10 milisecond using javascript setInterval method
+      intervalId = setInterval(() => setTime(time + 1), 10);
+    }
+    return () => clearInterval(intervalId);
+  }, [isRunning, time]);
+
+  // Hours calculation
+  const hours = Math.floor(time / 360000);
+
+  // Minutes calculation
+  const minutes = Math.floor((time % 360000) / 6000);
+
+  // Seconds calculation
+  const seconds = Math.floor((time % 6000) / 100);
+
+  // Milliseconds calculation
+  const milliseconds = time % 100;
+
+  // Method to start and stop timer
+  const startAndStop = () => {
+    setIsRunning(!isRunning);
+  };
+
+  // Method to reset timer back to 0
+  const reset = () => {
+    setTime(0);
+  };
+
+  const chapterTimeUpdateApi = async (reqBody) => {
+    console.log('i am here')
+    try {
+      const res = await axios.post(`${BASE_URL}chapterTime/update`,reqBody);
+      console.log(res.data);
+      navigate('/mycourse')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const sendChapterUpdate = () => {
+    startAndStop();
+      const reqBody = {
+        "chapterId": chapterId,
+        "studentId": student?._id,
+        "time": seconds
+    }
+    console.log(reqBody);
+    chapterTimeUpdateApi(reqBody);
+  }
+
   return (
     <div className="container">
-      <div>
-        <div className="grid grid-cols-3">
-          <button onClick={startTimer}>Start Timer</button>
-          <button onClick={stopTimer}>Stop Timer</button>
-          <button onClick={sendTotalTime}>send time</button>
-        </div>
-        {chapter && <p>Total Hours: {chapter.totalHours}</p>}
-        {timerRunning && (
-          <p>
-            Elapsed Time:
-            {String(Math.floor(elapsedTime / 1000) % 60).padStart(2, "0")}{" "}
-            seconds
-          </p>
-        )}
+      <div className="stopwatch-container">
+      <p className="stopwatch-time">
+        {hours}:{minutes.toString().padStart(2, "0")}:
+        {seconds.toString().padStart(2, "0")}
+      </p>
+      <div className="stopwatch-buttons">
+        <button className="stopwatch-button" onClick={startAndStop}>
+          {isRunning ? "Stop" : "Start"}
+        </button>
+        <button className="stopwatch-button" onClick={sendChapterUpdate}>
+          Submit Time
+        </button>
       </div>
-      <form>
-        <label>
-          <h5>Upload PDF</h5>
-        </label>
+    </div>
+      {/* <form>
         <br></br>
         <input
           type="file"
@@ -151,7 +219,7 @@ const PDFViewer = () => {
           onChange={handleFile}
         ></input>
         {pdfError && <span className="text-danger">{pdfError}</span>}
-      </form>
+      </form> */}
 
       <h5>View PDF</h5>
       <div
