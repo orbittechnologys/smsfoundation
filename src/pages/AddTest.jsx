@@ -8,6 +8,7 @@ import axios from "axios";
 import parse from "html-react-parser";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../constants";
+import { useNavigate } from "react-router";
 //test comment
 //test
 const AddQuestions = () => {
@@ -170,6 +171,8 @@ const AddQuestions = () => {
   const [optionC,setOptionC] = useState(null);
   const [optionD,setOptionD] = useState(null);
   const [hint,setHint] = useState(null);
+  
+  const navigate = useNavigate();
 
   const fetchSubjectsApiCall = async (reqBody) => {
     try {
@@ -374,6 +377,7 @@ const AddQuestions = () => {
               <h1>{test?.desc}</h1>
               <h1>No of Questions :  {test?.noOfQuestions}</h1>
               <h1>Total Marks: {test?.totalMarks}</h1>
+              <h1 onClick={()=> navigate('/admin/preview/'+test?._id)}>Preview</h1>
             </div>
           ):(
             <div>

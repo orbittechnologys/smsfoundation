@@ -21,6 +21,7 @@ import AddInstructor from "./pages/Admin/AddInstructor";
 import useAuth from "./authService";
 import PDFViewer from "./pages/Student/PDFViewer";
 import AddTest from "./pages/AddTest";
+import PreviewTest from "./pages/Admin/PreviewTest";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -60,8 +61,10 @@ const App = () => {
           <Route path="UpdateContentad" element={<UpdateContentad />} />
           <Route path="AddInstructor" element={<AddInstructor />} />
           <Route path="AddTest" element={<AddTest />} />
+          <Route path="preview/:testId" element={<PreviewTest/>}/>
         </Route>
         <Route path="/pdf/:chapterId" element={<PDFViewer />} />
+        
       </Routes>
     </div>
   );
