@@ -13,7 +13,10 @@ const Results = () => {
   const fetchResult = async (reqBody) => {
     console.log(reqBody);
     try {
-      const res = await axios.post(`${BASE_URL}studentTest/getResults`, reqBody);
+      const res = await axios.post(
+        `${BASE_URL}studentTest/getResults`,
+        reqBody
+      );
       console.log(res.data);
       setResult(res.data.testResults);
     } catch (error) {
@@ -59,17 +62,21 @@ const Results = () => {
 
   const navigate = useNavigate();
 
-  return (<div>
-    <h1>Results</h1>
-    <p>Test Name : {result?.test?.name}</p>
-    <p>Test Description : {result?.test?.desc}</p>
-    <p>Marks scored : {result?.marks}</p>
-    <p>Total Marks: {result?.test?.totalMarks}</p>
-    <p>Student Name : {result?.student?.firstName} {result?.student?.lastName}</p>
-    <p>Roll No : {result?.student?.rollNo}</p>
-    <p>Standard : {result?.student?.standard}</p>
-    <button onClick={()=> navigate('/mycourse')}>Go to my courses</button>
-  </div>);
+  return (
+    <div>
+      <h1>Results</h1>
+      <p>Test Name : {result?.test?.name}</p>
+      <p>Test Description : {result?.test?.desc}</p>
+      <p>Marks scored : {result?.marks}</p>
+      <p>Total Marks: {result?.test?.totalMarks}</p>
+      <p>
+        Student Name : {result?.student?.firstName} {result?.student?.lastName}
+      </p>
+      <p>Roll No : {result?.student?.rollNo}</p>
+      <p>Standard : {result?.student?.standard}</p>
+      <button onClick={() => navigate("/mycourse")}>Go to my courses</button>
+    </div>
+  );
 };
 
 export default Results;

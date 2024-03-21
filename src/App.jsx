@@ -46,27 +46,27 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/studentHome" element={<StudentHome />} />
-        
-
+        <Route path="/pdf/:chapterId" element={<PDFViewer />} />
         <Route path="/mycourse" element={<MyCourse />} />
         <Route path="/mcq/:testId" element={<Mcq />} />
-        <Route path="/results/:testId" element={<Results/>}/>
+        <Route path="/results/:testId" element={<Results />} />
+
         <Route path="/inst/*" element={<Sidebar />}>
           <Route path="addStudent" element={<AddStudent />} />
           <Route path="LearningReport" element={<LearningReport />} />
           <Route path="TestReport" element={<TestReport />} />
-          <Route path="UpdateContent" element={<UpdateContent />} />
+          {/* <Route path="UpdateContent" element={<UpdateContent />} /> */}
         </Route>
+
         <Route path="/admin/*" element={<Sidebar />}>
-          <Route path="LearningReportad" element={<LearningReportad />} />
-          <Route path="TestReportad" element={<TestReportad />} />
-          <Route path="UpdateContentad" element={<UpdateContentad />} />
+          <Route path="LearningReport" element={<LearningReport />} />
+          <Route path="addStudent" element={<AddStudent />} />
+          <Route path="TestReport" element={<TestReport />} />
+          <Route path="UpdateContent" element={<UpdateContent />} />
           <Route path="AddInstructor" element={<AddInstructor />} />
           <Route path="AddTest" element={<AddTest />} />
-          <Route path="preview/:testId" element={<PreviewTest/>}/>
+          <Route path="preview/:testId" element={<PreviewTest />} />
         </Route>
-        <Route path="/pdf/:chapterId" element={<PDFViewer />} />
-        
       </Routes>
     </div>
   );

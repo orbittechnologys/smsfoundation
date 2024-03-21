@@ -5,6 +5,7 @@ import axios from "axios";
 import { BASE_URL } from "../../constants";
 import useAuth from "../../Hooks/useAuth";
 import { useNavigate } from "react-router";
+import Slogan from "../../assets/slogan.png";
 
 const studentHome = () => {
   const [subjects, setSubjects] = useState([]);
@@ -133,7 +134,7 @@ const studentHome = () => {
               </h1>
               <button
                 type="button"
-                onClick={()=> navigate('/mycourse')}
+                onClick={() => navigate("/mycourse")}
                 className="mt-5 text-white hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
               >
                 My Courses
@@ -220,19 +221,29 @@ const studentHome = () => {
                   <GrDocumentPdf className="mr-2" />
                   View
                 </button>
-                {
-                  card?.test ? (
-                    <button onClick={()=> navigate('/mcq/'+card?.test)}>
-                  Take Test
-                </button>
-                  ):``
-                }
-                
+                {card?.test ? (
+                  <button
+                    className="my-2 text-gray-500"
+                    onClick={() => navigate("/mcq/" + card?.test)}
+                  >
+                    Take Test
+                  </button>
+                ) : (
+                  ``
+                )}
               </div>
             </div>
           ))}
         </section>
       </div>
+      <div className="grid place-items-center my-5">
+        <img src={Slogan} alt="" />
+      </div>
+      <footer className="bg-[#140342]">
+        <div className="grid place-items-center py-5">
+          <p className="text-white">Copyright © 2024 | All Rights Reserved</p>
+        </div>
+      </footer>
     </>
   );
 };

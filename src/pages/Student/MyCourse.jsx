@@ -68,17 +68,19 @@ const MyCourse = () => {
     }
   };
 
-  const [studentTest,setStudentTest] = useState([]);
+  const [studentTest, setStudentTest] = useState([]);
 
   const fetchStudentTests = async (studentId) => {
     try {
-      const res = await axios.get(`${BASE_URL}studentTest/getByStudent/${studentId}`);
+      const res = await axios.get(
+        `${BASE_URL}studentTest/getByStudent/${studentId}`
+      );
       console.log(res.data);
       setStudentTest(res.data.studentTests);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const fetchStudent = async () => {
     const userId = sessionStorage.getItem("user_id");
@@ -95,8 +97,6 @@ const MyCourse = () => {
       console.log(error);
     }
   };
-
-  
 
   useEffect(() => {
     fetchStudent();
@@ -172,10 +172,10 @@ const MyCourse = () => {
             );
           })}
 
-          {filter == "completed" && 
-            studentTest?.map((st,index)=> {
-              return(
-                <div key={index} className="grid ">
+        {filter == "completed" &&
+          studentTest?.map((st, index) => {
+            return (
+              <div key={index} className="grid ">
                 <div
                   style={{ backgroundImage: `url(${Hexbg})` }}
                   className=" grid border border-gray-200 shadow-lg place-items-center bg-white p-4 rounded-xl text-center w-fit"
@@ -186,7 +186,9 @@ const MyCourse = () => {
                     </span>
                   </div> */}
                   <img src={flask} alt="flask" className="h-10" />
-                  <p className="font-semibold mt-5">{st?.test?.chapter?.name}</p>
+                  <p className="font-semibold mt-5">
+                    {st?.test?.chapter?.name}
+                  </p>
                   <p className="text-gray-600">{st?.test?.chapter?.desc}</p>
                   <div className="ongoing mt-10">
                     <span className="p-3 rounded-full bg-gray-300 text-orange-500">
@@ -195,21 +197,18 @@ const MyCourse = () => {
                     <div className="grid place-items-center ">
                       <button
                         type="button"
-                        onClick={() =>
-                          navigate(`/mcq/${st?.test?._id}`)
-                        }
+                        onClick={() => navigate(`/mcq/${st?.test?._id}`)}
                         className="mt-5 flex justify-center items-center text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
                       >
-                        <PiPlayPauseLight className="mr-2 text-xl" /> Retake Test
+                        <PiPlayPauseLight className="mr-2 text-xl" /> Retake
+                        Test
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-              )
-            })
-          }
-
+            );
+          })}
       </section>
     </div>
   );

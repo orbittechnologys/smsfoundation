@@ -1,15 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import sfLogo from "../assets/sflogo.png";
+import sfLogo from "../assets/fulllogo.png";
 import { Link, useLocation } from "react-router-dom";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { BsCloudUpload } from "react-icons/bs";
 import { TfiReload } from "react-icons/tfi";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { IoExitOutline } from "react-icons/io5";
+import useAuth from "../authService";
 
 const Sidebar = () => {
+  const { auth, setAuth } = useAuth();
+  const [role, setRole] = useState("");
+  const navigate = useNavigate();
+  console.log(auth);
+
+  useEffect(() => {
+    const storedData = sessionStorage.getItem("user_id");
+    console.log(storedData);
+    if (storedData) {
+      setAuth(storedData);
+      setRole(sessionStorage.getItem("role"));
+    } else {
+      navigate("/");
+    }
+  }, []);
+
   const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -31,7 +48,7 @@ const Sidebar = () => {
         data-drawer-toggle="logo-sidebar"
         aria-controls="logo-sidebar"
         type="button"
-        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
       >
         <span className="sr-only">Open sidebar</span>
         <svg
@@ -55,172 +72,267 @@ const Sidebar = () => {
         aria-label="Sidebar"
       >
         <div
-          className="h-full py-10 px-3  overflow-y-auto bg-[#140342]"
+          className="h-full py-10 px-3  overflow-y-auto bg-[#F1EDDF]"
           style={{ borderRadius: "0 50px 50px 0" }}
         >
           <Link
             to="/"
             className="flex items-center ps-2.5 mb-10 justify-center"
           >
-            <img src={sfLogo} className="lg:h-14 me-3 sm:h-7" alt="Logo" />
+            <img src={sfLogo} className="" alt="Logo" />
+            <div></div>
           </Link>
           <ul className="space-y-2 font-medium">
-            <li>
-              <Link
-                to="/admin/AddInstructor"
-                className={`flex items-center p-2 rounded-lg group ${
-                  isActive("/admin/AddInstructor") ? "bg-gray-100" : ""
-                }`}
-              >
-                <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
-                <span
-                  className={`${
-                    isActive("/admin/AddInstructor")
-                      ? "text-black"
-                      : "text-white"
-                  } ms-3 hover:text-orange-500`}
+            {role == "ADMIN" ? (
+              <li>
+                <Link
+                  to="/admin/AddInstructor"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/admin/AddInstructor") ? "bg-orange-200" : ""
+                  }`}
                 >
-                  Add Instructor
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/inst/addStudent"
-                className={`flex items-center p-2 rounded-lg group ${
-                  isActive("/inst/addStudent") ? "bg-gray-100" : ""
-                }`}
-              >
-                <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
-                <span
-                  className={`${
-                    isActive("/inst/addStudent") ? "text-black" : "text-white"
-                  } ms-3 hover:text-orange-500`}
+                  <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/admin/AddInstructor")
+                        ? "text-black"
+                        : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    Add Instructor
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              ``
+            )}
+            {role == "ADMIN" ? (
+              <li>
+                <Link
+                  to="/admin/addStudent"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/admin/addStudent") ? "bg-orange-200" : ""
+                  }`}
                 >
-                  Add Student
-                </span>
-              </Link>
-            </li>
+                  <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/admin/addStudent")
+                        ? "text-black"
+                        : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    Add Student
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link
+                  to="/inst/addStudent"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/inst/addStudent") ? "bg-orange-200" : ""
+                  }`}
+                >
+                  <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/inst/addStudent") ? "text-black" : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    Add Student
+                  </span>
+                </Link>
+              </li>
+            )}
 
-            <li>
-              <Link
-                to="/admin/AddTest"
-                className={`flex items-center p-2 rounded-lg group ${
-                  isActive("/admin/AddTest") ? "bg-gray-100" : ""
-                }`}
-              >
-                <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
-                <span
-                  className={`${
-                    isActive("/admin/AddTest") ? "text-black" : "text-white"
-                  } ms-3 hover:text-orange-500`}
+            {role == "ADMIN" ? (
+              <li>
+                <Link
+                  to="/admin/AddTest"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/admin/AddTest") ? "bg-orange-200" : ""
+                  }`}
                 >
-                  Add Test
-                </span>
-              </Link>
-            </li>
+                  <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/admin/AddTest") ? "text-black" : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    Add Test
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              ``
+            )}
 
-            <li>
-              <Link
-                to="/inst/UpdateContent"
-                className={`flex items-center p-2 rounded-lg group ${
-                  isActive("/inst/UpdateContent")
-                    ? "bg-gray-100 text-black"
-                    : ""
-                }`}
-              >
-                <BsCloudUpload className="w-5 h-5 text-gray-500 transition duration-75" />
-                <span
-                  className={`${
-                    isActive("/inst/UpdateContent")
-                      ? "text-black"
-                      : "text-white"
-                  } ms-3 hover:text-orange-500`}
-                >
-                  Upload Content
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/inst/UpdateContent"
-                className={`flex items-center p-2 rounded-lg group ${
-                  isActive("/inst/UpdateContent")
-                    ? "bg-gray-100 text-black"
-                    : ""
-                }`}
-              >
-                <TfiReload className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                <span className="flex-1 ms-3 whitespace-nowrap text-white hover:text-orange-500">
-                  Update Content
-                </span>
-              </Link>
-            </li>
-
-            <li onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
-              <div className="relative">
-                <div
-                  className={`flex items-center p-2 rounded-lg group cursor-pointer ${
-                    isActive("/inst/LearningReport") ||
-                    isActive("/inst/TestReport")
-                      ? "bg-gray-100"
+            {role == "ADMIN" ? (
+              <li>
+                <Link
+                  to="/admin/UpdateContent"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/admin/UpdateContent")
+                      ? "bg-orange-200 text-black"
                       : ""
                   }`}
                 >
-                  <BsGraphUpArrow className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" />
+                  <BsCloudUpload className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
-                    className={`flex-1 ms-3 whitespace-nowrap ${
+                    className={`${
+                      isActive("/admin/UpdateContent")
+                        ? "text-black"
+                        : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    Upload Content
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              ``
+            )}
+
+            {/* <li>
+              <Link
+                to="/inst/UpdateContent"
+                className={`flex items-center p-2 rounded-lg group ${
+                  isActive("/inst/UpdateContent")
+                    ? "bg-orange-200 text-black"
+                    : ""
+                }`}
+              >
+                <TfiReload className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-black" />
+                <span className="flex-1 ms-3 whitespace-nowrap text-black hover:text-orange-500">
+                  Update Content
+                </span>
+              </Link>
+            </li> */}
+
+            {role == "ADMIN" ? (
+              <li onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
+                <div className="relative">
+                  <div
+                    className={`flex items-center p-2 rounded-lg group cursor-pointer ${
+                      isActive("/admin/LearningReport") ||
+                      isActive("/admin/TestReport")
+                        ? "bg-orange-200"
+                        : ""
+                    }`}
+                  >
+                    <BsGraphUpArrow className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" />
+                    <span
+                      className={`flex-1 ms-3 whitespace-nowrap ${
+                        isActive("/admin/LearningReport") ||
+                        isActive("/admin/TestReport")
+                          ? "text-black"
+                          : "text-black"
+                      } hover:text-orange-500`}
+                    >
+                      Student Progress
+                    </span>
+                  </div>
+                  {isDropdownOpen && (
+                    <div
+                      className="absolute left-0 w-48 bg-white rounded-lg shadow-lg z-10"
+                      onMouseEnter={openDropdown}
+                      onMouseLeave={closeDropdown}
+                    >
+                      <ul className="py-1">
+                        <li>
+                          <Link
+                            to="/admin/LearningReport"
+                            className={`block px-4 py-2 text-gray-800 hover:bg-gray-200 ${
+                              isActive("/admin/LearningReport")
+                                ? "bg-gray-200"
+                                : ""
+                            }`}
+                          >
+                            Learning Report
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/admin/TestReport"
+                            className={`block px-4 py-2 text-gray-800 hover:bg-gray-200 ${
+                              isActive("/admin/TestReport") ? "bg-gray-200" : ""
+                            }`}
+                          >
+                            Test Report
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </li>
+            ) : (
+              <li onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
+                <div className="relative">
+                  <div
+                    className={`flex items-center p-2 rounded-lg group cursor-pointer ${
                       isActive("/inst/LearningReport") ||
                       isActive("/inst/TestReport")
-                        ? "text-black"
-                        : "text-white"
-                    } hover:text-orange-500`}
+                        ? "bg-orange-200"
+                        : ""
+                    }`}
                   >
-                    Student Progress
-                  </span>
-                </div>
-                {isDropdownOpen && (
-                  <div
-                    className="absolute left-0 w-48 bg-white rounded-lg shadow-lg z-10"
-                    onMouseEnter={openDropdown}
-                    onMouseLeave={closeDropdown}
-                  >
-                    <ul className="py-1">
-                      <li>
-                        <Link
-                          to="/inst/LearningReport"
-                          className={`block px-4 py-2 text-gray-800 hover:bg-gray-200 ${
-                            isActive("/inst/LearningReport")
-                              ? "bg-gray-200"
-                              : ""
-                          }`}
-                        >
-                          Learning Report
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          to="/inst/TestReport"
-                          className={`block px-4 py-2 text-gray-800 hover:bg-gray-200 ${
-                            isActive("/inst/TestReport") ? "bg-gray-200" : ""
-                          }`}
-                        >
-                          Test Report
-                        </Link>
-                      </li>
-                    </ul>
+                    <BsGraphUpArrow className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" />
+                    <span
+                      className={`flex-1 ms-3 whitespace-nowrap ${
+                        isActive("/inst/LearningReport") ||
+                        isActive("/inst/TestReport")
+                          ? "text-black"
+                          : "text-black"
+                      } hover:text-orange-500`}
+                    >
+                      Student Progress
+                    </span>
                   </div>
-                )}
-              </div>
-            </li>
+                  {isDropdownOpen && (
+                    <div
+                      className="absolute left-0 w-48 bg-white rounded-lg shadow-lg z-10"
+                      onMouseEnter={openDropdown}
+                      onMouseLeave={closeDropdown}
+                    >
+                      <ul className="py-1">
+                        <li>
+                          <Link
+                            to="/inst/LearningReport"
+                            className={`block px-4 py-2 text-gray-800 hover:bg-gray-200 ${
+                              isActive("/inst/LearningReport")
+                                ? "bg-gray-200"
+                                : ""
+                            }`}
+                          >
+                            Learning Report
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/inst/TestReport"
+                            className={`block px-4 py-2 text-gray-800 hover:bg-gray-200 ${
+                              isActive("/inst/TestReport") ? "bg-gray-200" : ""
+                            }`}
+                          >
+                            Test Report
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </li>
+            )}
 
             <li>
               <Link
                 to="/"
-                className="mt-28 flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="mt-28 flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-orange-200 dark:hover:bg-gray-700 group"
               >
-                <IoExitOutline className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                <span className="flex-1 ms-3 whitespace-nowrap text-white hover:text-orange-500">
+                <IoExitOutline className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-black" />
+                <span className="flex-1 ms-3 whitespace-nowrap text-black hover:text-orange-500">
                   Logout
                 </span>
               </Link>
@@ -230,7 +342,7 @@ const Sidebar = () => {
       </aside>
 
       <div className="p-4 sm:ml-64">
-        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+        <div className="p-4 mt-14">
           <Outlet />
         </div>
       </div>
