@@ -103,48 +103,62 @@ const AddQuestions = () => {
     // setSubmitDisabled(false);
   };
 
-  const emptyInputs = ()=> {
+  const emptyInputs = () => {
     setHint(null);
     setQuestionName(null);
-    setOptionA(null);setOptionB(null); setOptionC(null); setOptionD(null);
+    setOptionA(null);
+    setOptionB(null);
+    setOptionC(null);
+    setOptionD(null);
     setAnswer(null);
-  }
+  };
 
   const addQuestionApiCall = async (reqBody) => {
     try {
-      const res =await axios.post(`${BASE_URL}question/addQuestion`,reqBody);
+      const res = await axios.post(`${BASE_URL}question/addQuestion`, reqBody);
       console.log(res.data);
-      alert('Question added successfully');
+      alert("Question added successfully");
       emptyInputs();
       const res2 = await axios.get(`${BASE_URL}test/id/${reqBody.testId}`);
       console.log(res2.data);
       setTest(res2.data.test);
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
     } catch (error) {
       console.log(error);
-      alert('Something went wrong');
+      alert("Something went wrong");
     }
-  }
+  };
 
   const handleAddQuestion = (e) => {
     e.preventDefault();
 
-    if(optionA && optionB && optionC && optionD && answer && test && marks && hint){
-        const reqBody = {
-          "testId": test?._id,
-          "question": questionName,
-          optionA,
-          optionB,
-          optionC,
-          optionD,
-          hint,
-          answer,
-          marks,
-      }
+    if (
+      optionA &&
+      optionB &&
+      optionC &&
+      optionD &&
+      answer &&
+      test &&
+      marks &&
+      hint
+    ) {
+      const reqBody = {
+        testId: test?._id,
+        question: questionName,
+        optionA,
+        optionB,
+        optionC,
+        optionD,
+        hint,
+        answer,
+        marks,
+      };
       console.log(reqBody);
       addQuestionApiCall(reqBody);
-    }else{
-      alert('Please fill all the details. Before you proceed to add a question')
+    } else {
+      alert(
+        "Please fill all the details. Before you proceed to add a question"
+      );
     }
   };
 
@@ -161,17 +175,17 @@ const AddQuestions = () => {
   const [selectedSubject, setSelectedSubject] = useState(null);
   const [selectedChapter, setSelectedChapter] = useState(null);
 
-  const [test,setTest] = useState(null);
-  const [testName,setTestName] = useState(null);
-  const [testDesc,setTestDesc] = useState(null);
+  const [test, setTest] = useState(null);
+  const [testName, setTestName] = useState(null);
+  const [testDesc, setTestDesc] = useState(null);
 
-  const [answer,setAnswer] = useState(null);
-  const [optionA,setOptionA] = useState(null);
-  const [optionB,setOptionB] = useState(null);
-  const [optionC,setOptionC] = useState(null);
-  const [optionD,setOptionD] = useState(null);
-  const [hint,setHint] = useState(null);
-  
+  const [answer, setAnswer] = useState(null);
+  const [optionA, setOptionA] = useState(null);
+  const [optionB, setOptionB] = useState(null);
+  const [optionC, setOptionC] = useState(null);
+  const [optionD, setOptionD] = useState(null);
+  const [hint, setHint] = useState(null);
+
   const navigate = useNavigate();
 
   const fetchSubjectsApiCall = async (reqBody) => {
@@ -217,44 +231,45 @@ const AddQuestions = () => {
     }
   }, [selectedSubject]);
 
-  const fetchTestForChapter = async(chapterId) => {
+  const fetchTestForChapter = async (chapterId) => {
     console.log(chapterId);
     try {
-      const res = await axios.get(`${BASE_URL}test/getTestsForChapter/${chapterId}`);
+      const res = await axios.get(
+        `${BASE_URL}test/getTestsForChapter/${chapterId}`
+      );
       console.log(res.data);
       setTest(res.data.test);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  useEffect(()=> {
-    if(selectedChapter){
-      fetchTestForChapter(selectedChapter)
+  useEffect(() => {
+    if (selectedChapter) {
+      fetchTestForChapter(selectedChapter);
     }
-  },[selectedChapter])
+  }, [selectedChapter]);
 
   const createTestApiCall = async (reqBody) => {
     try {
-      const res = await axios.post(`${BASE_URL}test/addTest`,reqBody);
+      const res = await axios.post(`${BASE_URL}test/addTest`, reqBody);
       console.log(res.data);
-      alert('Test Created successfully')
+      alert("Test Created successfully");
     } catch (error) {
       console.log(error);
-      alert('Something went wrong')
+      alert("Something went wrong");
     }
-  }
+  };
 
-  const handleCreateTest = (e)=> {
+  const handleCreateTest = (e) => {
     e.preventDefault();
-    console.log(testName,testDesc,selectedChapter);
+    console.log(testName, testDesc, selectedChapter);
     createTestApiCall({
-      "chapterId": selectedChapter,
-      "testName": testName,
-      "desc": testDesc
-    })
-  }
-
+      chapterId: selectedChapter,
+      testName: testName,
+      desc: testDesc,
+    });
+  };
 
   return (
     <>
@@ -368,82 +383,101 @@ const AddQuestions = () => {
       </div>
 
       {selectedChapter ? (
-        <div className="my-4">
-          Test for the chapter 
-
+        <div className="my-4 shadow-md p-8 rounded-xl w-fit text-xl">
+          <span className="text-center text-xl font-semibold">
+            Test for the chapter
+          </span>
           {test ? (
-            <div>
-              <h1>{test?.name}</h1>
-              <h1>{test?.desc}</h1>
-              <h1>No of Questions :  {test?.noOfQuestions}</h1>
-              <h1>Total Marks: {test?.totalMarks}</h1>
-              <h1 onClick={()=> navigate('/admin/preview/'+test?._id)}>Preview</h1>
+            <div className="mt-5 grid gap-2">
+              <h1 className="text-xl font-semibold">{test?.name}</h1>
+              <h1 className="text-xl font-semibold">{test?.desc}</h1>
+              <h1>
+                <span className="font-semibold text-xl">
+                  No of Questions :{" "}
+                </span>
+                {test?.noOfQuestions}
+              </h1>
+              <h1>
+                <span className="font-semibold text-xl">Total Marks:</span>{" "}
+                {test?.totalMarks}
+              </h1>
+              <h1
+                className="mt-5 text-center font-semibold text-xl shadow-xl border border-orange-500 py-2 rounded-full cursor-pointer"
+                onClick={() => navigate("/admin/preview/" + test?._id)}
+              >
+                Preview
+              </h1>
             </div>
-          ):(
+          ) : (
             <div>
               <h1>No tests found</h1>
               <form onSubmit={handleCreateTest}>
-
-                  <input type="text" onChange={(e)=> setTestName(e.target.value)} placeholder="Enter Test Name"/>
-                  <input type="text" onChange={(e)=> setTestDesc(e.target.value)} placeholder="Enter Test Description"/>
-                  <button>Create Test</button>
+                <input
+                  type="text"
+                  onChange={(e) => setTestName(e.target.value)}
+                  placeholder="Enter Test Name"
+                />
+                <input
+                  type="text"
+                  onChange={(e) => setTestDesc(e.target.value)}
+                  placeholder="Enter Test Description"
+                />
+                <button>Create Test</button>
               </form>
             </div>
           )}
         </div>
-      ):``}
+      ) : (
+        ``
+      )}
 
       {test ? (
         <form className="w-full mx-12" onSubmit={handleAddQuestion}>
-        <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-3 text-blue-800">
-          Add Question
-        </h3>
+          <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-3 text-blue-800">
+            Add Question
+          </h3>
 
-        <div className="flex w-3/5 justify-center items-center mt-5">
-          <div className="w-full">
-            <p className="mb-1 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-2xl font-semibold flex items-center">
-              <FaCircleCheck className="text-lime-600" /> Marks
-            </p>
-            <input
-              type="text"
-              placeholder=""
-              className="w-4/5 px-2  h-10 rounded-xl bg-white border-2 border-gray-400"
-              onChange={(e) => {
-                setMarks(e.target.value);
-              }}
-            />
+          <div className="flex w-3/5 justify-center items-center mt-5">
+            <div className="w-full">
+              <p className="mb-1 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-2xl font-semibold flex items-center">
+                <FaCircleCheck className="text-lime-600" /> Marks
+              </p>
+              <input
+                type="text"
+                placeholder=""
+                className="w-4/5 px-2  h-10 rounded-xl bg-white border-2 border-gray-400"
+                onChange={(e) => {
+                  setMarks(e.target.value);
+                }}
+              />
+            </div>
           </div>
 
-        </div>
-
-        <div className="grid gap-8 w-full my-5 ">
-          <label className="mr-2 font-semibold text-xl" htmlFor="question1">
-            Question:
-          </label>
-          <div className="flex ml-11">
-            <ReactQuill
-              theme="snow"
-              id="question1"
-              value={questionName}
-              onChange={(value)=>setQuestionName(value)}
-              modules={modules}
-              formats={formats}
-              className=" mb-10 w-5/6"
-            />
-          </div>
+          <div className="grid gap-8 w-full my-5 ">
+            <label className="mr-2 font-semibold text-xl" htmlFor="question1">
+              Question:
+            </label>
+            <div className="flex ml-11">
+              <ReactQuill
+                theme="snow"
+                id="question1"
+                value={questionName}
+                onChange={(value) => setQuestionName(value)}
+                modules={modules}
+                formats={formats}
+                className=" mb-10 w-5/6"
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-
-          <div className="flex" >
+            <div className="flex">
               <div>
-                <label className="text-xl" >
-                  A.
-                </label>
+                <label className="text-xl">A.</label>
                 <input
                   type="radio"
                   name="option"
-                  onChange={(e)=> setAnswer('A')}
+                  onChange={(e) => setAnswer("A")}
                 />
               </div>
               <ReactQuill
@@ -451,19 +485,17 @@ const AddQuestions = () => {
                 modules={modules}
                 formats={formats}
                 value={optionA}
-                onChange={(e)=> setOptionA(e)}
+                onChange={(e) => setOptionA(e)}
                 className="ml-4 mb-10 w-5/6"
               />
             </div>
-            <div className="flex" >
+            <div className="flex">
               <div>
-                <label className="text-xl" >
-                  B.
-                </label>
+                <label className="text-xl">B.</label>
                 <input
                   type="radio"
                   name="option"
-                  onChange={(e)=> setAnswer('B')}
+                  onChange={(e) => setAnswer("B")}
                 />
               </div>
               <ReactQuill
@@ -471,20 +503,17 @@ const AddQuestions = () => {
                 modules={modules}
                 formats={formats}
                 value={optionB}
-                onChange={(e)=> setOptionB(e)}
+                onChange={(e) => setOptionB(e)}
                 className="ml-4 mb-10 w-5/6"
               />
             </div>
-            <div className="flex" >
+            <div className="flex">
               <div>
-                <label className="text-xl" >
-                  C.
-                </label>
+                <label className="text-xl">C.</label>
                 <input
                   type="radio"
                   name="option"
-                  
-                  onChange={(e)=> setAnswer('C')}
+                  onChange={(e) => setAnswer("C")}
                 />
               </div>
               <ReactQuill
@@ -492,20 +521,17 @@ const AddQuestions = () => {
                 modules={modules}
                 formats={formats}
                 value={optionC}
-                onChange={(e)=> setOptionC(e)}
+                onChange={(e) => setOptionC(e)}
                 className="ml-4 mb-10 w-5/6"
               />
             </div>
-            <div className="flex" >
+            <div className="flex">
               <div>
-                <label className="text-xl" >
-                  D.
-                </label>
+                <label className="text-xl">D.</label>
                 <input
                   type="radio"
                   name="option"
-                  
-                  onChange={(e)=> setAnswer('D')}
+                  onChange={(e) => setAnswer("D")}
                 />
               </div>
               <ReactQuill
@@ -513,33 +539,27 @@ const AddQuestions = () => {
                 modules={modules}
                 formats={formats}
                 value={optionD}
-                onChange={(e)=> setOptionD(e)}
+                onChange={(e) => setOptionD(e)}
                 className="ml-4 mb-10 w-5/6"
               />
             </div>
           </div>
 
-          <div className="flex" >
-              <div>
-                <label className="text-xl" >
-                  Summary
-                </label>
+          <div className="flex">
+            <div>
+              <label className="text-xl">Summary</label>
               <ReactQuill
                 theme="snow"
                 modules={modules}
                 formats={formats}
                 value={hint}
-                onChange={(e)=> setHint(e)}
+                onChange={(e) => setHint(e)}
                 className="ml-4 mb-10 w-5/6"
               />
             </div>
-          
+          </div>
 
-          
-        </div>
-
-        <div className="mt-10">
-          
+          <div className="mt-10">
             <button
               type="submit"
               // disabled={submitDisabled}
@@ -547,12 +567,11 @@ const AddQuestions = () => {
             >
               Submit
             </button>
-          
-        </div>
-      </form>
-      ):``
-      }
-      
+          </div>
+        </form>
+      ) : (
+        ``
+      )}
     </>
   );
 };

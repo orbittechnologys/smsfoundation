@@ -43,10 +43,9 @@ const TestReport = () => {
 
   const dataToRender = filteredData || tableData;
 
+  const [testReport, setTestReport] = useState([]);
 
-  const [testReport,setTestReport] = useState([]);
-
-  const fetchTestReport = async ()=> {
+  const fetchTestReport = async () => {
     try {
       const res = await axios.get(`${BASE_URL}studentTest/testReport`);
       console.log(res.data);
@@ -54,11 +53,11 @@ const TestReport = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  useEffect(()=> {
-      fetchTestReport();
-  },[])
+  useEffect(() => {
+    fetchTestReport();
+  }, []);
 
   return (
     <>
@@ -70,7 +69,7 @@ const TestReport = () => {
           <p className="text-lg font-semibold">Test Report</p>
         </div>
         <div>
-          <form className="max-w-md mx-auto">
+          {/* <form className="max-w-md mx-auto">
             <label
               htmlFor="default-search"
               className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -111,7 +110,7 @@ const TestReport = () => {
                 Search
               </button>
             </div>
-          </form>
+          </form> */}
         </div>
       </div>
       <div className="table-container">
@@ -131,14 +130,18 @@ const TestReport = () => {
           <tbody>
             {testReport.map((rowData, index) => (
               <tr key={index}>
-                <td>{rowData?.student?.firstName} {rowData?.student?.lastName}</td>
+                <td>
+                  {rowData?.student?.firstName} {rowData?.student?.lastName}
+                </td>
                 <td>{rowData?.student?.rollNo}</td>
                 <td>{rowData?.student?.standard}</td>
                 <td>{rowData?.student?.medium}</td>
                 <td>{rowData?.test?.name}</td>
                 <td>{rowData?.marks}</td>
                 <td>{rowData?.test?.totalMarks}</td>
-                <td>{getPercentage(rowData?.marks, rowData?.test?.totalMarks)}%</td>
+                <td>
+                  {getPercentage(rowData?.marks, rowData?.test?.totalMarks)}%
+                </td>
               </tr>
             ))}
           </tbody>

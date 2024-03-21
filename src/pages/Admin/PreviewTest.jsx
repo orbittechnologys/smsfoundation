@@ -39,41 +39,55 @@ const PreviewTest = () => {
   }, []);
 
   return (
-    <div>
-      <h1>PreviewTest</h1>
+    <div className=" mx-auto bg-white shadow-md p-8 rounded-md">
+      <h1 className="text-2xl my-5 font-semibold">PreviewTest</h1>
       <div>
-        <h1>Test Name : {test?.name}</h1>
-        <h1>Test Description : {test?.desc}</h1>
-        <h1>Number of questions : {test?.noOfQuestions}</h1>
-        <h1>Total Marks : {test?.totalMarks}</h1>
+        <h1 className="mb-2">Test Name: {test?.name}</h1>
+        <h1 className="mb-2">Test Description: {test?.desc}</h1>
+        <h1 className="mb-2">Number of questions: {test?.noOfQuestions}</h1>
+        <h1 className="mb-2">Total Marks: {test?.totalMarks}</h1>
       </div>
       {questions?.map((question, index) => {
         return (
-          <div key={index}>
-            <hr/>
-            <h1>Marks : {question?.marks}</h1>
-            <div dangerouslySetInnerHTML={{ __html: question?.question }}></div>
+          <div key={index} className="mt-6">
+            <hr className="my-4" />
+            <h1 className="mb-2">Marks: {question?.marks}</h1>
             <div
-              className={cn({
-                "text-green-400 font-bold": question?.answer == "A",
-              })}
-              dangerouslySetInnerHTML={{ __html: question?.optionA }}
+              className="mb-2"
+              dangerouslySetInnerHTML={{ __html: question?.question }}
             ></div>
-            <div
-             className={cn({
-                "text-green-400 font-bold": question?.answer == "B",
-              })}
-            dangerouslySetInnerHTML={{ __html: question?.optionB }}></div>
-            <div 
-             className={cn({
-                "text-green-400 font-bold": question?.answer == "C",
-              })}
-            dangerouslySetInnerHTML={{ __html: question?.optionC }}></div>
-            <div
-             className={cn({
-                "text-green-400 font-bold": question?.answer == "D",
-              })}
-            dangerouslySetInnerHTML={{ __html: question?.optionD }}></div>
+            <div className="mb-2 flex items-center">
+              <span
+                className={
+                  question?.answer === "A"
+                    ? "text-green-400 font-bold mr-2"
+                    : "mr-2"
+                }
+                dangerouslySetInnerHTML={{ __html: question?.optionA }}
+              ></span>
+              <span
+                className={
+                  question?.answer === "B"
+                    ? "text-green-400 font-bold mr-2"
+                    : "mr-2"
+                }
+                dangerouslySetInnerHTML={{ __html: question?.optionB }}
+              ></span>
+              <span
+                className={
+                  question?.answer === "C"
+                    ? "text-green-400 font-bold mr-2"
+                    : "mr-2"
+                }
+                dangerouslySetInnerHTML={{ __html: question?.optionC }}
+              ></span>
+              <span
+                className={
+                  question?.answer === "D" ? "text-green-400 font-bold" : ""
+                }
+                dangerouslySetInnerHTML={{ __html: question?.optionD }}
+              ></span>
+            </div>
           </div>
         );
       })}

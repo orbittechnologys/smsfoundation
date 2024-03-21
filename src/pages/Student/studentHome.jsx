@@ -212,25 +212,27 @@ const studentHome = () => {
                 <img src={flask} alt="flask" className="h-10" />
                 <p className="font-semibold">{card?.name}</p>
                 <p className="text-gray-600">{card?.desc}</p>
-                <button
-                  onClick={() => navigate(`/pdf/${card?._id}`)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex justify-center items-center mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center"
-                >
-                  <GrDocumentPdf className="mr-2" />
-                  View
-                </button>
-                {card?.test ? (
+                <div className="flex justify-center items-center gap-2">
                   <button
-                    className="my-2 text-gray-500"
-                    onClick={() => navigate("/mcq/" + card?.test)}
+                    onClick={() => navigate(`/pdf/${card?._id}`)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex justify-center items-center mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center"
                   >
-                    Take Test
+                    <GrDocumentPdf className="mr-2" />
+                    View
                   </button>
-                ) : (
-                  ``
-                )}
+                  {card?.test ? (
+                    <button
+                      className="flex justify-center items-center mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center"
+                      onClick={() => navigate("/mcq/" + card?.test)}
+                    >
+                      Take Test
+                    </button>
+                  ) : (
+                    ``
+                  )}
+                </div>
               </div>
             </div>
           ))}

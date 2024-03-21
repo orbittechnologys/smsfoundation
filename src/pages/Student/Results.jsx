@@ -63,18 +63,51 @@ const Results = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <h1>Results</h1>
-      <p>Test Name : {result?.test?.name}</p>
-      <p>Test Description : {result?.test?.desc}</p>
-      <p>Marks scored : {result?.marks}</p>
-      <p>Total Marks: {result?.test?.totalMarks}</p>
-      <p>
-        Student Name : {result?.student?.firstName} {result?.student?.lastName}
-      </p>
-      <p>Roll No : {result?.student?.rollNo}</p>
-      <p>Standard : {result?.student?.standard}</p>
-      <button onClick={() => navigate("/mycourse")}>Go to my courses</button>
+    <div className="grid place-items-center h-screen w-full bg-[#F1EDDF]">
+      <div className="max-w-md mx-auto bg-white shadow-md p-8 rounded-md">
+        <h1 className="text-3xl font-semibold mb-4 text-center">
+          Test Results
+        </h1>
+
+        <div className="mb-8">
+          <p className="text-lg mb-2">
+            Test Name:{" "}
+            <span className="font-semibold">{result?.test?.name}</span>
+          </p>
+          <p className="text-lg mb-2">
+            Test Description:{" "}
+            <span className="font-semibold">{result?.test?.desc}</span>
+          </p>
+          <p className="text-lg mb-2">
+            Marks Scored: <span className="font-semibold">{result?.marks}</span>{" "}
+            / <span className="font-semibold">{result?.test?.totalMarks}</span>
+          </p>
+        </div>
+
+        <div className="mb-8">
+          <p className="text-lg mb-2">
+            Student Name:{" "}
+            <span className="font-semibold">
+              {result?.student?.firstName} {result?.student?.lastName}
+            </span>
+          </p>
+          <p className="text-lg mb-2">
+            Roll No:{" "}
+            <span className="font-semibold">{result?.student?.rollNo}</span>
+          </p>
+          <p className="text-lg mb-2">
+            Standard:{" "}
+            <span className="font-semibold">{result?.student?.standard}</span>
+          </p>
+        </div>
+
+        <button
+          onClick={() => navigate("/mycourse")}
+          className="w-full bg-orange-500 text-white font-semibold py-2 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+        >
+          Go to My Courses
+        </button>
+      </div>
     </div>
   );
 };

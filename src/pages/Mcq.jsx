@@ -140,10 +140,10 @@ const Mcq = () => {
           <p className="text-xl font-semibold">{test?.name}</p>
           <p>{test?.desc}</p>
         </div>
-        <div className="flex justify-center items-center">
+        {/* <div className="flex justify-center items-center">
           <IoMdStopwatch className="mr-2 text-orange-500" />
           <p className="text-white font-semibold">40.00</p>
-        </div>
+        </div> */}
       </div>
       <div className="max-w-7xl">
         <div className="flex justify-between items-center mx-10">
@@ -160,7 +160,11 @@ const Mcq = () => {
         {Array.isArray(questions) ? (
           <div className="mx-10 my-5">
             <div className="border border-gray-500 p-5 rounded-xl">
-              <p>{questions[questionNumber - 1]?.question}</p>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: questions[questionNumber - 1]?.question,
+                }}
+              ></div>
             </div>
             <div className="mt-5 grid grid-cols-2 gap-5">
               <div
@@ -172,7 +176,14 @@ const Mcq = () => {
                 })}
                 onClick={() => handleOptionClick(questionNumber - 1, "A")}
               >
-                <p>A. {questions[questionNumber - 1]?.optionA}</p>
+                <div className="flex justify-start items-center">
+                  <span className="mr-2 font-semibold">A.</span>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: questions[questionNumber - 1]?.optionA,
+                    }}
+                  ></div>
+                </div>
               </div>
               <div
                 className={cn({
@@ -183,7 +194,14 @@ const Mcq = () => {
                 })}
                 onClick={() => handleOptionClick(questionNumber - 1, "B")}
               >
-                <p>B. {questions[questionNumber - 1]?.optionB}</p>
+                <div className="flex justify-start items-center">
+                  <span className="mr-2 font-semibold">B.</span>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: questions[questionNumber - 1]?.optionB,
+                    }}
+                  ></div>
+                </div>
               </div>
               <div
                 className={cn({
@@ -194,7 +212,14 @@ const Mcq = () => {
                 })}
                 onClick={() => handleOptionClick(questionNumber - 1, "C")}
               >
-                <p>C. {questions[questionNumber - 1]?.optionC}</p>
+                <div className="flex justify-start items-center">
+                  <span className="mr-2 font-semibold">C.</span>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: questions[questionNumber - 1]?.optionC,
+                    }}
+                  ></div>
+                </div>
               </div>
               <div
                 className={cn({
@@ -205,7 +230,14 @@ const Mcq = () => {
                 })}
                 onClick={() => handleOptionClick(questionNumber - 1, "D")}
               >
-                <p>D. {questions[questionNumber - 1]?.optionD}</p>
+                <div className="flex justify-start items-center">
+                  <span className="mr-2 font-semibold">D.</span>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: questions[questionNumber - 1]?.optionD,
+                    }}
+                  ></div>
+                </div>
               </div>
             </div>
           </div>
@@ -213,38 +245,40 @@ const Mcq = () => {
           ``
         )}
 
-        <div className="mx-10">
-          {questionNumber > 1 ? (
-            <button
-              type="button"
-              onClick={() => setQuestionNumber(questionNumber - 1)}
-              className="mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-            >
-              Previous
-            </button>
-          ) : (
-            ``
-          )}
+        <div className="flex justify-start items-center mx-10">
+          <div className="">
+            {questionNumber > 1 ? (
+              <button
+                type="button"
+                onClick={() => setQuestionNumber(questionNumber - 1)}
+                className="mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+              >
+                Previous
+              </button>
+            ) : (
+              ``
+            )}
 
-          {questionNumber < questions?.length ? (
-            <button
-              type="button"
-              onClick={() => setQuestionNumber(questionNumber + 1)}
-              className="mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-            >
-              Next
-            </button>
-          ) : (
-            ``
-          )}
+            {questionNumber < questions?.length ? (
+              <button
+                type="button"
+                onClick={() => setQuestionNumber(questionNumber + 1)}
+                className="mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+              >
+                Next
+              </button>
+            ) : (
+              ``
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => handleSubmitTest()}
+            className="m-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+          >
+            Submit Test
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => handleSubmitTest()}
-          className="m-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-        >
-          Submit Test
-        </button>
       </div>
     </>
   );
