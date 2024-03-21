@@ -410,19 +410,26 @@ const AddQuestions = () => {
             </div>
           ) : (
             <div>
-              <h1>No tests found</h1>
-              <form onSubmit={handleCreateTest}>
+              <h1 className="my-2">No tests found</h1>
+              <form
+                onSubmit={handleCreateTest}
+                className="flex justify-center items-center gap-5 my-5"
+              >
                 <input
                   type="text"
                   onChange={(e) => setTestName(e.target.value)}
                   placeholder="Enter Test Name"
+                  className="rounded-full"
                 />
                 <input
                   type="text"
                   onChange={(e) => setTestDesc(e.target.value)}
                   placeholder="Enter Test Description"
+                  className="rounded-full"
                 />
-                <button>Create Test</button>
+                <button className="text-white bg-orange-300 hover:bg-orange-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">
+                  Create Test
+                </button>
               </form>
             </div>
           )}
@@ -432,8 +439,8 @@ const AddQuestions = () => {
       )}
 
       {test ? (
-        <form className="w-full mx-12" onSubmit={handleAddQuestion}>
-          <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-3 text-blue-800">
+        <form className="w-full" onSubmit={handleAddQuestion}>
+          <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold mb-3 text-orange-500 text-center bg-gray-100 py-5 rounded-3xl">
             Add Question
           </h3>
 
@@ -444,8 +451,8 @@ const AddQuestions = () => {
               </p>
               <input
                 type="text"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-1/2"
                 placeholder=""
-                className="w-4/5 px-2  h-10 rounded-xl bg-white border-2 border-gray-400"
                 onChange={(e) => {
                   setMarks(e.target.value);
                 }}
@@ -453,11 +460,11 @@ const AddQuestions = () => {
             </div>
           </div>
 
-          <div className="grid gap-8 w-full my-5 ">
-            <label className="mr-2 font-semibold text-xl" htmlFor="question1">
+          <div className="grid gap-8 w-full  my-5 ">
+            <label className="font-semibold text-xl" htmlFor="question1">
               Question:
             </label>
-            <div className="flex ml-11">
+            <div className="flex  justify-center ">
               <ReactQuill
                 theme="snow"
                 id="question1"
@@ -465,7 +472,7 @@ const AddQuestions = () => {
                 onChange={(value) => setQuestionName(value)}
                 modules={modules}
                 formats={formats}
-                className=" mb-10 w-5/6"
+                className="mb-10 w-5/6"
               />
             </div>
           </div>
@@ -545,7 +552,7 @@ const AddQuestions = () => {
             </div>
           </div>
 
-          <div className="flex">
+          <div className="flex mx-10 my-5">
             <div>
               <label className="text-xl">Summary</label>
               <ReactQuill
@@ -554,7 +561,7 @@ const AddQuestions = () => {
                 formats={formats}
                 value={hint}
                 onChange={(e) => setHint(e)}
-                className="ml-4 mb-10 w-5/6"
+                className="ml-4 my-5 w-5/6"
               />
             </div>
           </div>

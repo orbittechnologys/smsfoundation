@@ -128,7 +128,7 @@ const studentHome = () => {
         <section className="bg-[#140342] py-8 h-2/4">
           <div className="flex justify-center items-center w-full h-full">
             <div className="text-center">
-              <h1 className="text-3xl  text-white font-semibold mb-4">
+              <h1 className="text-3xl  text-white font-bold mb-4">
                 Empowering students to shape their <br /> futures with knowledge
                 as their guide.
               </h1>
@@ -143,27 +143,13 @@ const studentHome = () => {
           </div>
         </section>
 
-        <div className="absolute top-1/2 left-1/2 w-fit transform -translate-x-1/2 -translate-y-1/2  mx-auto p-6 bg-orange-600 rounded-2xl shadow-md">
+        <div className="absolute top-1/2 left-1/2 w-fit transform -translate-x-1/2 -translate-y-1/2  mx-auto p-6 rounded-2xl shadow-md bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400">
           <div className="flex justify-center items-center px-10">
             <div className="space-y-10">
               <div className="flex items-center p-3 space-x-6 bg-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-500">
-                <div className="flex justify-center items-center bg-gray-100 p-4 w-72 space-x-4 rounded-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 opacity-30"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
+                <div className="flex justify-center items-center  p-4 w-72 space-x-4 rounded-full">
                   <input
-                    className="bg-gray-100 outline-none border-none"
+                    className=" outline-none border-none"
                     type="text"
                     placeholder="Search by Chapter Name"
                   />
@@ -187,7 +173,26 @@ const studentHome = () => {
                   </select>
                 </div>
                 <div className="bg-gray-800 py-3 px-5 text-white font-semibold rounded-full hover:shadow-lg transition duration-3000 cursor-pointer">
-                  <button onClick={() => handleSearch()}>Search</button>
+                  <button
+                    className="flex justify-center items-center gap-2"
+                    onClick={() => handleSearch()}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 opacity-30"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>{" "}
+                    Search
+                  </button>
                 </div>
               </div>
             </div>

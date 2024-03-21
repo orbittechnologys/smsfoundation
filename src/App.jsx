@@ -23,6 +23,7 @@ import PDFViewer from "./pages/Student/PDFViewer";
 import AddTest from "./pages/AddTest";
 import PreviewTest from "./pages/Admin/PreviewTest";
 import Results from "./pages/Student/Results";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -45,12 +46,13 @@ const App = () => {
     <div>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/studentHome" element={<StudentHome />} />
-        <Route path="/pdf/:chapterId" element={<PDFViewer />} />
-        <Route path="/mycourse" element={<MyCourse />} />
-        <Route path="/mcq/:testId" element={<Mcq />} />
-        <Route path="/results/:testId" element={<Results />} />
-
+        <Route path="" element={<Navbar />}>
+          <Route path="/studentHome" element={<StudentHome />} />
+          <Route path="/pdf/:chapterId" element={<PDFViewer />} />
+          <Route path="/mycourse" element={<MyCourse />} />
+          <Route path="/mcq/:testId" element={<Mcq />} />
+          <Route path="/results/:testId" element={<Results />} />
+        </Route>
         <Route path="/inst/*" element={<Sidebar />}>
           <Route path="addStudent" element={<AddStudent />} />
           <Route path="LearningReport" element={<LearningReport />} />
