@@ -263,12 +263,12 @@ const UpdateContent = () => {
                   required
                 />
               </div>
-              <button
+              {/* <button
                 onClick={() => document.getElementById("cont").click()}
                 className="mt-5 ml-5"
               >
                 <FaSquarePlus className="text-xl" />
-              </button>
+              </button> */}
             </div>
             {fileName && (
               <div className="grid mt-2">
