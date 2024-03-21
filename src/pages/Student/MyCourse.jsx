@@ -68,6 +68,18 @@ const MyCourse = () => {
     }
   };
 
+  const [studentTest,setStudentTest] = useState([]);
+
+  const fetchStudentTests = async (studentId) => {
+    try {
+      const res = await axios.get(`${BASE_URL}studentTest/getByStudent/${studentId}`);
+      console.log(res.data);
+      setStudentTest(res.data.studentTests);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const fetchStudent = async () => {
     const userId = sessionStorage.getItem("user_id");
     console.log(userId);
@@ -78,10 +90,13 @@ const MyCourse = () => {
       console.log(res.data);
       setStudent(res.data.studentDoc);
       fetchChaptersForStudent(res.data.studentDoc?._id);
+      fetchStudentTests(res.data.studentDoc?._id);
     } catch (error) {
       console.log(error);
     }
   };
+
+  
 
   useEffect(() => {
     fetchStudent();
@@ -128,11 +143,11 @@ const MyCourse = () => {
                   style={{ backgroundImage: `url(${Hexbg})` }}
                   className=" grid border border-gray-200 shadow-lg place-items-center bg-white p-4 rounded-xl text-center w-fit"
                 >
-                  <div className="flex justify-start items-start w-full">
+                  {/* <div className="flex justify-start items-start w-full">
                     <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
                       Science
                     </span>
-                  </div>
+                  </div> */}
                   <img src={flask} alt="flask" className="h-10" />
                   <p className="font-semibold mt-5">{chapter?.chapter?.name}</p>
                   <p className="text-gray-600">{chapter?.chapter?.desc}</p>
@@ -156,6 +171,45 @@ const MyCourse = () => {
               </div>
             );
           })}
+
+          {filter == "completed" && 
+            studentTest?.map((st,index)=> {
+              return(
+                <div key={index} className="grid ">
+                <div
+                  style={{ backgroundImage: `url(${Hexbg})` }}
+                  className=" grid border border-gray-200 shadow-lg place-items-center bg-white p-4 rounded-xl text-center w-fit"
+                >
+                  {/* <div className="flex justify-start items-start w-full">
+                    <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
+                      Science
+                    </span>
+                  </div> */}
+                  <img src={flask} alt="flask" className="h-10" />
+                  <p className="font-semibold mt-5">{st?.test?.chapter?.name}</p>
+                  <p className="text-gray-600">{st?.test?.chapter?.desc}</p>
+                  <div className="ongoing mt-10">
+                    <span className="p-3 rounded-full bg-gray-300 text-orange-500">
+                      {st?.marks} / {st?.test?.totalMarks}
+                    </span>
+                    <div className="grid place-items-center ">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          navigate(`/mcq/${st?.test?._id}`)
+                        }
+                        className="mt-5 flex justify-center items-center text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+                      >
+                        <PiPlayPauseLight className="mr-2 text-xl" /> Retake Test
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              )
+            })
+          }
+
       </section>
     </div>
   );

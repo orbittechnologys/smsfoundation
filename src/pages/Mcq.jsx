@@ -94,7 +94,7 @@ const Mcq = () => {
       const res = await axios.post(`${BASE_URL}studentTest/submitTest`,reqBody);
       console.log(res.data);
       alert('Test submitted successfully');
-      navigate('/mycourse')
+      navigate('/results/'+test?._id)
     } catch (error) {
       console.log(error);
       alert('Something went wrong')

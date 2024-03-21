@@ -10,4 +10,12 @@ function convertSeconds(seconds) {
     return str;
 }
 
-export { BASE_URL, convertSeconds };
+function getPercentage(num, denom) {
+    if (denom === 0) {
+        return 0; // Avoid division by zero
+    }
+    const percentage = (num / denom) * 100;
+    return Math.round(percentage * 100) / 100; // Round to two decimal points
+}
+
+export { BASE_URL, convertSeconds , getPercentage};

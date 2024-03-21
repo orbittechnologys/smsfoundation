@@ -22,6 +22,7 @@ import useAuth from "./authService";
 import PDFViewer from "./pages/Student/PDFViewer";
 import AddTest from "./pages/AddTest";
 import PreviewTest from "./pages/Admin/PreviewTest";
+import Results from "./pages/Student/Results";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -49,6 +50,7 @@ const App = () => {
 
         <Route path="/mycourse" element={<MyCourse />} />
         <Route path="/mcq/:testId" element={<Mcq />} />
+        <Route path="/results/:testId" element={<Results/>}/>
         <Route path="/inst/*" element={<Sidebar />}>
           <Route path="addStudent" element={<AddStudent />} />
           <Route path="LearningReport" element={<LearningReport />} />
