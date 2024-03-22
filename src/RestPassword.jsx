@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import sfLogo from "../assets/sflogo.png";
-import useAuth from "../authService";
+import sfLogo from "./assets/sflogo.png";
+import useAuth from "./authService";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import { BASE_URL } from "../constants";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Icons from "../assets/icons.png";
-import Img1 from "../assets/img1.png";
-import { Link } from "react-router-dom";
 
-const Login = () => {
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Icons from "./assets/icons.png";
+import Img1 from "./assets/img1.png";
+import { BASE_URL } from "./constants";
+
+const RestPassword = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { auth, setAuth } = useAuth();
@@ -79,9 +79,9 @@ const Login = () => {
         </div>
         <div className="mx-auto p-6 bg-white grid place-items-center">
           <div>
-            <div className="grid place-items-center gap-2">
+            <div className="flex justify-center items-center gap-2">
               <h1 className="text-xl font-bold leading-tight text-center tracking-tight text-gray-900 md:text-2xl">
-                Login
+                Reset Password
               </h1>
               <img src={Img1} alt="" />
             </div>
@@ -94,7 +94,7 @@ const Login = () => {
                   htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Email
+                  Roll No
                 </label>
                 <input
                   type="email"
@@ -105,6 +105,36 @@ const Login = () => {
                   required=""
                   onChange={(e) => setEmail(e.target.value)}
                 />
+              </div>
+              <div className="mb-8">
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Create New password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <FaEye className="w-5 h-5 text-gray-500" />
+                    ) : (
+                      <FaEyeSlash className="w-5 h-5 text-gray-500" />
+                    )}
+                  </button>
+                </div>
               </div>
               <div className="mb-8">
                 <label
@@ -135,20 +165,20 @@ const Login = () => {
                     )}
                   </button>
                 </div>
-                <div className="text-right">
-                  <Link to="/RestPassword">
-                    <p className="text-orange-500 my-2">Forgot Password ?</p>
-                  </Link>
-                </div>
               </div>
 
               <div className="grid place-items-center">
                 <button
                   type="submit"
-                  className="text-white bg-orange-500 font-semibold hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-7 py-1.5 text-center border-2 border-orange-500 "
+                  className="text-white bg-orange-500 font-semibold hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300  rounded-lg text-sm px-7 py-1.5 text-center border-2 border-orange-500 "
                 >
-                  Login
+                  Confirm password
                 </button>
+                <div>
+                  <a href="" className="text-orange-500 underline my-2">
+                    Notify Instructor
+                  </a>
+                </div>
               </div>
               <div>
                 <p className="text-xl">
@@ -165,4 +195,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default RestPassword;

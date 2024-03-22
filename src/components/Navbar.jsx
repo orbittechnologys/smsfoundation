@@ -4,19 +4,23 @@ import { Outlet } from "react-router";
 import { CiUser } from "react-icons/ci";
 import axios from "axios";
 import { BASE_URL } from "../constants";
+import { FaCaretDown } from "react-icons/fa6";
+import { AiOutlineLogout } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { FaUserGraduate } from "react-icons/fa";
 
 const Navbar = () => {
-  const [student, setStudent] = useState(null);
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState("");
 
   const fetchStudent = async () => {
     const userId = sessionStorage.getItem("user_id");
+    setRole(sessionStorage.getItem("role"));
     console.log(userId);
     try {
-      const res = await axios.get(
-        `${BASE_URL}student/getStudentByUserId/${userId}`
-      );
-      console.log(res.data);
-      setStudent(res.data.studentDoc);
+      const res = await axios.get(`${BASE_URL}user/id/${userId}`);
+      console.log(res.data.userDoc);
+      setUser(res.data.userDoc);
     } catch (error) {
       console.log(error);
     }
@@ -26,25 +30,60 @@ const Navbar = () => {
     fetchStudent();
   }, []);
 
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <>
-      <div className="flex justify-between items-center px-10 py-3 bg-gray-100 w-full">
+      <div
+        className={`flex justify-between items-center px-10 py-5 ${
+          role === "ADMIN" || role === "INSTRUCTOR"
+            ? "bg-white border-b border-gray-400"
+            : "bg-gray-100"
+        } w-full`}
+      >
         <div className="flex justify-center items-center">
-          <div>
-            <img src={sfLogo} alt="logo" className="h-10" />
-          </div>
+          {role !== "ADMIN" && role !== "INSTRUCTOR" && (
+            <Link to="/">
+              <img src={sfLogo} alt="logo" className="h-10" />
+            </Link>
+          )}
         </div>
         <div className="flex justify-center items-center gap-5">
           <div className="flex justify-center items-center gap-5">
             <span>Language</span>
             <button>English</button>
           </div>
-          <div className="flex justify-center items-center gap-2">
-            <CiUser />
-            <div className="flex justify-center items-center gap-1">
-              <span> {student?.firstName}</span>
-              <span> {student?.lastName}</span>
-            </div>
+          <div className="relative">
+            <button
+              onClick={toggleDropdown}
+              className="flex items-center gap-2"
+            >
+              <FaUserGraduate />
+              <div className="flex justify-center items-center flex-col gap-1">
+                <span>{user?.username}</span>
+                {(user?.role === "ADMIN" || user?.role === "INSTRUCTOR") && (
+                  <span className="text-sm absolute top-6 text-gray-500">
+                    {user?.role === "ADMIN" ? "Admin" : "Instructor"}
+                  </span>
+                )}
+              </div>
+
+              <FaCaretDown className="h-4 w-4" />
+            </button>
+            {dropdownOpen && (
+              <div className="z-50 absolute right-0 mt-2 w-48 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
+                <a
+                  href="/"
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                >
+                  <AiOutlineLogout className="text-red-500" /> Logout
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>

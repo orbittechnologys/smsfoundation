@@ -273,7 +273,7 @@ const AddQuestions = () => {
 
   return (
     <>
-      <div className="grid lg:grid-cols-2 sm:grid-cols-2 gap-5">
+      <div className="grid lg:grid-cols-2 sm:grid-cols-2 gap-5 mt-5">
         <div className="border shadow-md p-5 rounded-xl grid gap-5">
           <div>
             <label

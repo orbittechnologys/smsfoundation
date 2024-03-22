@@ -9,6 +9,9 @@ import { TfiReload } from "react-icons/tfi";
 import { BsGraphUpArrow } from "react-icons/bs";
 import { IoExitOutline } from "react-icons/io5";
 import useAuth from "../authService";
+import { SlNote } from "react-icons/sl";
+import { FaUserGraduate } from "react-icons/fa";
+import { FaChalkboardTeacher } from "react-icons/fa";
 
 const Sidebar = () => {
   const { auth, setAuth } = useAuth();
@@ -91,7 +94,7 @@ const Sidebar = () => {
                     isActive("/admin/AddInstructor") ? "bg-orange-200" : ""
                   }`}
                 >
-                  <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <FaChalkboardTeacher className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
                     className={`${
                       isActive("/admin/AddInstructor")
@@ -114,7 +117,7 @@ const Sidebar = () => {
                     isActive("/admin/addStudent") ? "bg-orange-200" : ""
                   }`}
                 >
-                  <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
                     className={`${
                       isActive("/admin/addStudent")
@@ -134,7 +137,7 @@ const Sidebar = () => {
                     isActive("/inst/addStudent") ? "bg-orange-200" : ""
                   }`}
                 >
-                  <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
                     className={`${
                       isActive("/inst/addStudent") ? "text-black" : "text-black"
@@ -154,7 +157,7 @@ const Sidebar = () => {
                     isActive("/admin/AddTest") ? "bg-orange-200" : ""
                   }`}
                 >
-                  <FaRegCircleUser className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <SlNote className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
                     className={`${
                       isActive("/admin/AddTest") ? "text-black" : "text-black"
@@ -342,7 +345,7 @@ const Sidebar = () => {
       </aside>
 
       <div className="p-4 sm:ml-64">
-        <div className="p-4 mt-14">
+        <div className="p-4">
           <Outlet />
         </div>
       </div>

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import cn from "classnames";
+import Img3 from "../assets/img3.png";
 
 const Mcq = () => {
   const { testId } = useParams();
@@ -135,10 +136,15 @@ const Mcq = () => {
 
   return (
     <>
-      <div className="flex justify-between px-10 py-10 mb-5 bg-[#140342]">
-        <div className="text-white">
-          <p className="text-xl font-semibold">{test?.name}</p>
-          <p>{test?.desc}</p>
+      <div className="flex justify-between px-10 py-6 mb-5 bg-[#140342]">
+        <div className="flex justify-center items-center">
+          <div className="mr-2">
+            <img src={Img3} alt="" className="h-10" />
+          </div>
+          <div className="text-white">
+            <p className="text-xl font-semibold">{test?.name}</p>
+            <p>{test?.desc}</p>
+          </div>
         </div>
         {/* <div className="flex justify-center items-center">
           <IoMdStopwatch className="mr-2 text-orange-500" />

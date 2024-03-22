@@ -24,6 +24,7 @@ import AddTest from "./pages/AddTest";
 import PreviewTest from "./pages/Admin/PreviewTest";
 import Results from "./pages/Student/Results";
 import Navbar from "./components/Navbar";
+import RestPassword from "./RestPassword";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -46,6 +47,8 @@ const App = () => {
     <div>
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/RestPassword" element={<RestPassword />} />
+
         <Route path="" element={<Navbar />}>
           <Route path="/studentHome" element={<StudentHome />} />
           <Route path="/pdf/:chapterId" element={<PDFViewer />} />
@@ -54,20 +57,24 @@ const App = () => {
           <Route path="/results/:testId" element={<Results />} />
         </Route>
         <Route path="/inst/*" element={<Sidebar />}>
-          <Route path="addStudent" element={<AddStudent />} />
-          <Route path="LearningReport" element={<LearningReport />} />
-          <Route path="TestReport" element={<TestReport />} />
-          {/* <Route path="UpdateContent" element={<UpdateContent />} /> */}
+          <Route path="" element={<Navbar />}>
+            <Route path="addStudent" element={<AddStudent />} />
+            <Route path="LearningReport" element={<LearningReport />} />
+            <Route path="TestReport" element={<TestReport />} />
+            {/* <Route path="UpdateContent" element={<UpdateContent />} /> */}
+          </Route>
         </Route>
 
         <Route path="/admin/*" element={<Sidebar />}>
-          <Route path="LearningReport" element={<LearningReport />} />
-          <Route path="addStudent" element={<AddStudent />} />
-          <Route path="TestReport" element={<TestReport />} />
-          <Route path="UpdateContent" element={<UpdateContent />} />
-          <Route path="AddInstructor" element={<AddInstructor />} />
-          <Route path="AddTest" element={<AddTest />} />
-          <Route path="preview/:testId" element={<PreviewTest />} />
+          <Route path="" element={<Navbar />}>
+            <Route path="LearningReport" element={<LearningReport />} />
+            <Route path="addStudent" element={<AddStudent />} />
+            <Route path="TestReport" element={<TestReport />} />
+            <Route path="UpdateContent" element={<UpdateContent />} />
+            <Route path="AddInstructor" element={<AddInstructor />} />
+            <Route path="AddTest" element={<AddTest />} />
+            <Route path="preview/:testId" element={<PreviewTest />} />
+          </Route>
         </Route>
       </Routes>
     </div>

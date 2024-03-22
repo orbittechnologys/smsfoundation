@@ -6,6 +6,8 @@ import { BASE_URL } from "../../constants";
 import useAuth from "../../Hooks/useAuth";
 import { useNavigate } from "react-router";
 import Slogan from "../../assets/slogan.png";
+import Img2 from "../../assets/img2.png";
+import Hexbg from "../../assets/hexbg.png";
 
 const studentHome = () => {
   const [subjects, setSubjects] = useState([]);
@@ -206,9 +208,12 @@ const studentHome = () => {
           {chapter.map((card, index) => (
             <div
               key={index}
-              className="grid border border-gray-300 rounded-lg shadow-2xl "
+              className="grid border border-gray-300 rounded-lg shadow-2xl"
             >
-              <div className="grid place-items-center bg-white p-4 rounded-xl text-center">
+              <div
+                style={{ backgroundImage: `url(${Hexbg})` }}
+                className="grid place-items-center bg-white p-4 rounded-xl text-center"
+              >
                 <div className="flex justify-start items-start w-full">
                   <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
                     {card.subject.name}
@@ -243,7 +248,8 @@ const studentHome = () => {
           ))}
         </section>
       </div>
-      <div className="grid place-items-center my-5">
+      <div className="flex justify-center items-center my-5 static">
+        <img src={Img2} alt="" />
         <img src={Slogan} alt="" />
       </div>
       <footer className="bg-[#140342]">
