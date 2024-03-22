@@ -131,9 +131,7 @@ const MyCourse = () => {
           </p>
         </div>
       </div>
-      <div className=" w-full col-span-3 text-center">
-        <p>{filteredData.length} Materials Found</p>
-      </div>
+     
       <section className="py-8 px-5 grid lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-4 place-items-center">
         {filter == "ongoing" &&
           chapters?.map((chapter, index) => {

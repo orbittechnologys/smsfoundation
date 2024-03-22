@@ -58,7 +58,7 @@ const addStudent = () => {
     <>
       <div className="flex justify-start items-center">
         <div className="flex mx-5 my-5 ">
-          <p>Add Student</p>
+          <p className="font-bold text-lg">Add Student</p>
         </div>
       </div>
 
