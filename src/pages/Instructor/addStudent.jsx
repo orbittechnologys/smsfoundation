@@ -11,7 +11,7 @@ const addStudent = () => {
   const [school, setSchool] = useState("");
   const [medium, setMedium] = useState("");
   const [syllabus, setSyllabus] = useState("");
-  const [standard, setStandard] = useState("")
+  const [standard, setStandard] = useState("");
   // const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -64,156 +64,156 @@ const addStudent = () => {
 
       <div>
         <form className="1" onSubmit={handleSubmit}>
-        <div className="grid grid-cols-2 gap-4">
-        <div>
-            <label
-              htmlFor="email"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="John"
-              required
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                htmlFor="email"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="John"
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
 
-          <div>
-            <label
-              htmlFor="name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-             First Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              required
-              onChange={(e)=> setName(e.target.value)}
-            />
-          </div>
+            <div>
+              <label
+                htmlFor="name"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                First Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
 
-          <div>
-            <label
-              htmlFor="lastname"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Last Name
-            </label>
-            <input
-              type="text"
-              id="lastName"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              required
-              onChange={(e)=> setsetLastName(e.target.value)}
-            />
-          </div>
+            <div>
+              <label
+                htmlFor="lastname"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Last Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                onChange={(e) => setsetLastName(e.target.value)}
+              />
+            </div>
 
-          <div>
-            <label
-              htmlFor="rollno"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Roll No
-            </label>
-            <input
-              type="text"
-              id="rollno"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              required
-              onChange={(e)=> setRollNo(e.target.value)}
-            />
+            <div>
+              <label
+                htmlFor="rollno"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Roll No
+              </label>
+              <input
+                type="text"
+                id="rollno"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                onChange={(e) => setRollNo(e.target.value)}
+              />
+            </div>
           </div>
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label
-              htmlFor="password"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Password
-            </label>
-            <input
-              type="text"
-              id="password"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              required
-              onChange={(e)=> setPassword(e.target.value)}
-            />
-          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Password
+              </label>
+              <input
+                type="text"
+                id="password"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
 
-          <div>
-            <label
-              htmlFor="standard"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Standard
-            </label>
-            <input
-              type="text"
-              id="standard"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              required
-              onChange={(e)=> setStandard(e.target.value)}
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="school"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              School
-            </label>
-            <input
-              type="text"
-              id="school"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              required
-              onChange={(e)=> setSchool(e.target.value)}
-            />
-          </div>
+            <div>
+              <label
+                htmlFor="standard"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Standard
+              </label>
+              <input
+                type="text"
+                id="standard"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                onChange={(e) => setStandard(e.target.value)}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="school"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                School
+              </label>
+              <input
+                type="text"
+                id="school"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                onChange={(e) => setSchool(e.target.value)}
+              />
+            </div>
 
-          <div>
-            <label
-              htmlFor="syllabus"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Syllabus
-            </label>
-            <input
-              type="text"
-              id="syllabus"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              required
-              onChange={(e)=> setSyllabus(e.target.value)}
-            />
-          </div>
+            <div>
+              <label
+                htmlFor="syllabus"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Syllabus
+              </label>
+              <input
+                type="text"
+                id="syllabus"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                onChange={(e) => setSyllabus(e.target.value)}
+              />
+            </div>
 
-          <div>
-            <label
-              htmlFor="medium"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
-            >
-              Medium
-            </label>
-            <select
-              id="medium"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              value={medium}
-              onChange={handleMedium}
-            >
-              <option selected>Choose a medium</option>
-              <option value="ENGLISH">English</option>
-              <option value="KANNADA">Kannada</option>
-              <option value="MALYALAM">Malyalam</option>
-              <option value="TELUGU">Telgu</option>
-            </select>
-          </div>
+            <div>
+              <label
+                htmlFor="medium"
+                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              >
+                Medium
+              </label>
+              <select
+                id="medium"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value={medium}
+                onChange={handleMedium}
+              >
+                <option selected>Choose a medium</option>
+                <option value="ENGLISH">English</option>
+                <option value="KANNADA">Kannada</option>
+                <option value="MALYALAM">Malyalam</option>
+                <option value="TELUGU">Telgu</option>
+              </select>
+            </div>
           </div>
           <div>
             <button
