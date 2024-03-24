@@ -12,6 +12,7 @@ import useAuth from "../authService";
 import { SlNote } from "react-icons/sl";
 import { FaUserGraduate } from "react-icons/fa";
 import { FaChalkboardTeacher } from "react-icons/fa";
+import { IoMdHome } from "react-icons/io";
 
 const Sidebar = () => {
   const { auth, setAuth } = useAuth();
@@ -89,6 +90,27 @@ const Sidebar = () => {
             {role == "ADMIN" ? (
               <li>
                 <Link
+                  to="/admin/AdminHome"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/admin/AdminHome") ? "bg-orange-200" : ""
+                  }`}
+                >
+                  <IoMdHome className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/admin/AdminHome") ? "text-black" : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    Home
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              ``
+            )}
+            {role == "ADMIN" ? (
+              <li>
+                <Link
                   to="/admin/AddInstructor"
                   className={`flex items-center p-2 rounded-lg group ${
                     isActive("/admin/AddInstructor") ? "bg-orange-200" : ""
@@ -132,18 +154,18 @@ const Sidebar = () => {
             ) : (
               <li>
                 <Link
-                  to="/inst/addStudent"
+                  to="/inst/InstHome"
                   className={`flex items-center p-2 rounded-lg group ${
-                    isActive("/inst/addStudent") ? "bg-orange-200" : ""
+                    isActive("/inst/InstHome") ? "bg-orange-200" : ""
                   }`}
                 >
-                  <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <IoMdHome className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
                     className={`${
-                      isActive("/inst/addStudent") ? "text-black" : "text-black"
+                      isActive("/inst/InstHome") ? "text-black" : "text-black"
                     } ms-3 hover:text-orange-500`}
                   >
-                    Add Student
+                    Home
                   </span>
                 </Link>
               </li>
@@ -168,7 +190,23 @@ const Sidebar = () => {
                 </Link>
               </li>
             ) : (
-              ``
+              <li>
+                <Link
+                  to="/inst/addStudent"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/inst/addStudent") ? "bg-orange-200" : ""
+                  }`}
+                >
+                  <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/inst/addStudent") ? "text-black" : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    Add Student
+                  </span>
+                </Link>
+              </li>
             )}
 
             {role == "ADMIN" ? (

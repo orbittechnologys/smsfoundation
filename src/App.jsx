@@ -25,6 +25,8 @@ import PreviewTest from "./pages/Admin/PreviewTest";
 import Results from "./pages/Student/Results";
 import Navbar from "./components/Navbar";
 import RestPassword from "./RestPassword";
+import AdminHome from "./pages/Admin/AdminHome";
+import InstHome from "./pages/Instructor/InstHome";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -58,6 +60,7 @@ const App = () => {
         </Route>
         <Route path="/inst/*" element={<Sidebar />}>
           <Route path="" element={<Navbar />}>
+            <Route path="InstHome" element={<InstHome />} />
             <Route path="addStudent" element={<AddStudent />} />
             <Route path="LearningReport" element={<LearningReport />} />
             <Route path="TestReport" element={<TestReport />} />
@@ -67,6 +70,7 @@ const App = () => {
 
         <Route path="/admin/*" element={<Sidebar />}>
           <Route path="" element={<Navbar />}>
+            <Route path="AdminHome" element={<AdminHome />} />
             <Route path="LearningReport" element={<LearningReport />} />
             <Route path="addStudent" element={<AddStudent />} />
             <Route path="TestReport" element={<TestReport />} />
