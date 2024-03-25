@@ -5,6 +5,7 @@ import axios from "axios";
 import { BASE_URL, convertSeconds } from "../../constants";
 import { useNavigate } from "react-router";
 import Hexbg from "../../assets/hexbg.png";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 const MyCourse = () => {
   const [filter, setFilter] = useState("ongoing");
@@ -102,10 +103,18 @@ const MyCourse = () => {
     fetchStudent();
   }, []);
 
+  const goBack = () => {
+    window.history.back();
+  };
+
   return (
     <div>
       <div className="mt-5 flex justify-between items-center mx-10">
-        <div>
+        <div className="flex">
+          <button className="flex justify-center items-center" onClick={goBack}>
+            <IoIosArrowRoundBack className="mr-2 text-3xl" />
+          </button>
+
           <p className="text-2xl font-semibold">My Course</p>
         </div>
         <div className="flex cursor-pointer">
@@ -131,7 +140,7 @@ const MyCourse = () => {
           </p>
         </div>
       </div>
-     
+
       <section className="py-8 px-5 grid lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-4 place-items-center">
         {filter == "ongoing" &&
           chapters?.map((chapter, index) => {

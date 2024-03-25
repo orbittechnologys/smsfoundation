@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Slogan from "../../assets/slogan.png";
 import Img2 from "../../assets/img2.png";
 import { Chart as ChartJs, ArcElement, Tooltip, Legend } from "chart.js";
@@ -13,10 +13,14 @@ import {
 } from "recharts";
 import { TbFileImport } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { BASE_URL } from "../../constants";
 
 ChartJs.register(ArcElement, Tooltip, Legend);
 
 const AdminHome = () => {
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState("");
   const data = {
     labels: ["Registered Last Week", "Registered This Week"],
     datasets: [
@@ -101,13 +105,37 @@ const AdminHome = () => {
     },
   ];
 
+  const fetchUser = async () => {
+    const userId = sessionStorage.getItem("user_id");
+    setRole(sessionStorage.getItem("role"));
+    console.log(userId);
+    try {
+      const res = await axios.get(`${BASE_URL}user/id/${userId}`);
+      console.log(res.data.userDoc);
+      setUser(res.data.userDoc);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   return (
     <>
       <div className="">
         <div className="flex justify-between items-center my-5">
           <div>
             <h1 className="text-3xl font-semibold">
-              <span className="text-orange-400">Welcome</span> Desh Rahija
+              <span className="text-orange-400">Welcome </span>
+
+              {role === "ADMIN" && user && (
+                <span>
+                  {user?.username.charAt(0).toUpperCase() +
+                    user?.username.slice(1)}
+                </span>
+              )}
             </h1>
           </div>
           <div>

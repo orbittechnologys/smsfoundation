@@ -27,7 +27,7 @@ const Login = () => {
       if (res.data.role === "STUDENT") {
         navigate("/studenthome");
       } else if (res.data.role === "ADMIN") {
-        navigate("/admin/LearningReport");
+        navigate("/admin/AdminHome");
       } else if (res.data.role === "INSTRUCTOR") {
         navigate("/inst/addstudent");
       }
