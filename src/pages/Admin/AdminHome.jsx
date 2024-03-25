@@ -12,18 +12,19 @@ import {
   YAxis,
 } from "recharts";
 import { TbFileImport } from "react-icons/tb";
+import { Link } from "react-router-dom";
 
 ChartJs.register(ArcElement, Tooltip, Legend);
 
 const AdminHome = () => {
   const data = {
-    labels: ["Yes", "No"],
+    labels: ["Registered Last Week", "Registered This Week"],
     datasets: [
       {
         label: "Poll",
         data: [3, 6],
-        backgroundColor: ["black", "red"],
-        borderColor: ["black", "red"],
+        backgroundColor: ["#D9D9D9", "#F26651"],
+        borderColor: ["#D9D9D9", "#F26651"],
       },
     ],
   };
@@ -116,7 +117,7 @@ const AdminHome = () => {
             </div>
           </div>
         </div>
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5">
+        <div className="grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1 gap-5">
           <div className="shadow-xl rounded-2xl p-5 bg-white ">
             <div className="flex justify-between items-center mb-4">
               <p className="text-lg font-semibold">Schools Registered</p>
@@ -131,7 +132,7 @@ const AdminHome = () => {
 
           <div className="shadow-xl rounded-2xl p-5">
             <div className="flex justify-between items-center">
-              <p>Student Progress</p>
+              <p className="text-xl font-semibold">Student Progress</p>
               <div>
                 <select
                   id="small"
@@ -145,7 +146,18 @@ const AdminHome = () => {
                 </select>
               </div>
             </div>
-            <p>Usage</p>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  backgroundColor: "#F2665166",
+                  borderRadius: "50%",
+                  marginRight: "8px",
+                }}
+              ></div>
+              <p className="my-2">Usage</p>
+            </div>
             <div
               style={{
                 width: "100%",
@@ -162,7 +174,7 @@ const AdminHome = () => {
                 >
                   <XAxis dataKey="name" />
                   <YAxis />
-                  <Bar dataKey="student" fill="#8884d8" />
+                  <Bar dataKey="student" fill="#F2665166" />
                   <RechartsTooltip />
                 </BarChart>
               </ResponsiveContainer>
@@ -171,40 +183,45 @@ const AdminHome = () => {
           <div className="grid place-items-center">
             <div className="grid place-items-center gap-3">
               <p className="text-xl font-semibold">Schools Registered</p>
-              <span className="px-4 py-1 bg-gray-200 rounded-xl font-semibold">
+              <span className="px-10 py-1 bg-[#F1EDDF] rounded-xl font-semibold">
                 55
               </span>
             </div>
             <div className="grid place-items-center gap-3">
               <p className="text-xl font-semibold">Students Registered</p>
-              <span className="px-4 py-1 bg-gray-200 rounded-xl font-semibold">
+              <span className="px-10 py-1 bg-[#F1EDDF] rounded-xl font-semibold">
                 55
               </span>
             </div>
             <div className="grid place-items-center gap-3">
               <p className="text-xl font-semibold">Instructor Registered</p>
-              <span className="px-4 py-1 bg-gray-200 rounded-xl font-semibold">
+              <span className="px-10 py-1 bg-[#F1EDDF] rounded-xl font-semibold">
                 55
               </span>
             </div>
           </div>
         </div>
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1  w-fit">
+        <div className="flex justify-center items-center w-full">
+          <Link to="/admin/AddSchool">
+            <button
+              type="button"
+              className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+            >
+              Add School
+            </button>
+          </Link>
+          <Link to="/admin/AddInstructor">
+            <button
+              type="button"
+              className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+            >
+              Add Instructor
+            </button>
+          </Link>
+
           <button
             type="button"
-            className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-          >
-            Add School
-          </button>
-          <button
-            type="button"
-            className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-          >
-            Plus Instructor
-          </button>
-          <button
-            type="button"
-            className="flex justify-center items-center mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+            className="flex bg-gray-100 justify-center items-center mt-5 text-orange-500 font-semibold hover:text-white border  hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2"
           >
             <TbFileImport className="mr-2" />
             Import Report
