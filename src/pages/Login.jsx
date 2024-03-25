@@ -29,7 +29,7 @@ const Login = () => {
       } else if (res.data.role === "ADMIN") {
         navigate("/admin/AdminHome");
       } else if (res.data.role === "INSTRUCTOR") {
-        navigate("/inst/addstudent");
+        navigate("/inst/InstHome");
       }
     } catch (error) {
       console.log(error);
