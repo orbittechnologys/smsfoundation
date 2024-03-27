@@ -139,10 +139,10 @@ const AddSchool = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
                   <option selected>Choose a Language</option>
-                  <option value="EN">English</option>
-                  <option value="KN">Kannada</option>
-                  <option value="TL">Telgu</option>
-                  <option value="MH">Marathi</option>
+                  <option value="ENGLISH">English</option>
+                  <option value="KANNADA">Kannada</option>
+                  <option value="TELUGU">Telugu</option>
+                  <option value="MARATHI">Marathi</option>
                 </select>
               </div>
               <div>
@@ -151,10 +151,10 @@ const AddSchool = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 >
                   <option selected>Choose a Board</option>
-                  <option value="NC">NCERT</option>
-                  <option value="CB">CBSE</option>
-                  <option value="IC">ICSE</option>
-                  <option value="NS">NIOS</option>
+                  <option value="NCERT">NCERT</option>
+                  <option value="CBSE">CBSE</option>
+                  <option value="ICSE">ICSE</option>
+                  <option value="NIOS">NIOS</option>
                 </select>
               </div>
             </div>

@@ -247,13 +247,13 @@ const AdminHome = () => {
             </button>
           </Link>
 
-          <button
+          {/* <button
             type="button"
             className="flex bg-gray-100 justify-center items-center mt-5 text-orange-500 font-semibold hover:text-white border  hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2"
           >
             <TbFileImport className="mr-2" />
             Import Report
-          </button>
+          </button> */}
         </div>
       </div>
     </>
