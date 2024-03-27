@@ -14,6 +14,8 @@ const addStudent = () => {
   const [standard, setStandard] = useState("");
   const [selectedSchool, setSelectedSchool] = useState("NO");
   const [dropSchool, setDropSchool] = useState([]);
+  const [instructor, setInstructor] = useState(null);
+  const [role, setRole] = useState("");
   // const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -26,18 +28,23 @@ const addStudent = () => {
       rollNo,
       standard,
       selectedSchool,
+      instructor,
       password
     );
+
     const reqbody = {
       email: email,
       firstName: name,
       lastName: lastName,
       rollNo: rollNo,
       standard: standard,
-      school: selectedSchool?._id,
+      // school: selectedSchool?._id,
       password: password,
-      syllabus: selectedSchool?.syllabus,
-      medium: selectedSchool?.medium,
+      school: role === "INSTRUCTOR" ? instructor?._id : selectedSchool?._id,
+      syllabus:
+        role === "INSTRUCTOR" ? instructor?.syllabus : selectedSchool?.syllabus,
+      medium:
+        role === "INSTRUCTOR" ? instructor?.medium : selectedSchool?.medium,
     };
     console.log(reqbody);
 
@@ -63,8 +70,24 @@ const addStudent = () => {
       console.log(error);
     }
   };
+
+  const fetchInstructor = async () => {
+    try {
+      const userId = sessionStorage.getItem("user_id");
+      setRole(sessionStorage.getItem("role"));
+      const res = await axios.get(
+        `${BASE_URL}instructor/getByUserId/${userId}`
+      );
+      console.log(res.data.instructorDoc.school);
+      setInstructor(res.data.instructorDoc.school);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchSchool();
+    fetchInstructor();
   }, []);
 
   return (
@@ -175,23 +198,25 @@ const addStudent = () => {
                 onChange={(e) => setStandard(e.target.value)}
               />
             </div>
-            <div>
-              <select
-                className="bg-gray-50 border mt-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                onChange={(e) => {
-                  setSelectedSchool(dropSchool[e.target.value]);
-                  console.log(dropSchool[e.target.value]);
-                }}
-              >
-                <option value="NO">Select School</option>
-                {Array.isArray(dropSchool) &&
-                  dropSchool?.map((school, index) => (
-                    <option key={index} value={index}>
-                      {school?.name}
-                    </option>
-                  ))}
-              </select>
-            </div>
+            {role !== "INSTRUCTOR" && (
+              <div>
+                <select
+                  className="bg-gray-50 border mt-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) => {
+                    setSelectedSchool(dropSchool[e.target.value]);
+                    console.log(dropSchool[e.target.value]);
+                  }}
+                >
+                  <option value="NO">Select School</option>
+                  {Array.isArray(dropSchool) &&
+                    dropSchool?.map((school, index) => (
+                      <option key={index} value={index}>
+                        {school?.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            )}
 
             <div>
               {/* <label
@@ -207,11 +232,8 @@ const addStudent = () => {
                 required
                 onChange={(e) => setSyllabus(e.target.value)}
               /> */}
-              {selectedSchool? (
-                <p>{selectedSchool?.syllabus}</p>
-              ):``}
+              {selectedSchool ? <p>{selectedSchool?.syllabus}</p> : ``}
             </div>
-            
 
             <div>
               {/* <label
@@ -232,9 +254,7 @@ const addStudent = () => {
                 <option value="MALYALAM">Malyalam</option>
                 <option value="TELUGU">Telgu</option>
               </select> */}
-              {selectedSchool? (
-                <p>{selectedSchool?.medium}</p>
-              ):``}
+              {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``}
             </div>
           </div>
           <div>
