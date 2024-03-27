@@ -21,12 +21,17 @@ ChartJs.register(ArcElement, Tooltip, Legend);
 const AdminHome = () => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
+  const [totals,setTotals] = useState({
+    totalSchool:1,
+    totalInstructor:1,
+    totalStudents:1
+  })
   const data = {
     labels: ["Registered Last Week", "Registered This Week"],
     datasets: [
       {
-        label: "Poll",
-        data: [3, 6],
+        label: "Schools",
+        data: [100, 3],
         backgroundColor: ["#D9D9D9", "#F26651"],
         borderColor: ["#D9D9D9", "#F26651"],
       },
@@ -118,8 +123,19 @@ const AdminHome = () => {
     }
   };
 
+  const fetchTotal = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}school/getTotals`);
+      console.log(res.data);
+      setTotals(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     fetchUser();
+    fetchTotal();
   }, []);
 
   return (
@@ -149,7 +165,7 @@ const AdminHome = () => {
           <div className="shadow-xl rounded-2xl p-5 bg-white ">
             <div className="flex justify-between items-center mb-4">
               <p className="text-lg font-semibold">Schools Registered</p>
-              <span className="p-2 bg-gray-200 rounded-full">55</span>
+              <span className="p-2 bg-gray-200 rounded-full">{totals?.totalSchool}</span>
             </div>
             <div className="flex justify-center items-center">
               <div style={{ width: "400px", height: "400px" }}>
@@ -212,19 +228,19 @@ const AdminHome = () => {
             <div className="grid place-items-center gap-3">
               <p className="text-xl font-semibold">Schools Registered</p>
               <span className="px-10 py-1 bg-[#F1EDDF] rounded-xl font-semibold">
-                55
+                {totals?.totalSchool}
               </span>
             </div>
             <div className="grid place-items-center gap-3">
               <p className="text-xl font-semibold">Students Registered</p>
               <span className="px-10 py-1 bg-[#F1EDDF] rounded-xl font-semibold">
-                55
+                {totals?.totalStudents}
               </span>
             </div>
             <div className="grid place-items-center gap-3">
               <p className="text-xl font-semibold">Instructor Registered</p>
               <span className="px-10 py-1 bg-[#F1EDDF] rounded-xl font-semibold">
-                55
+                {totals?.totalInstructor}
               </span>
             </div>
           </div>
