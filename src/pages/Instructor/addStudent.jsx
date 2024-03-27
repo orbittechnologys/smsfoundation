@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 
 const addStudent = () => {
@@ -12,6 +12,8 @@ const addStudent = () => {
   const [medium, setMedium] = useState("");
   const [syllabus, setSyllabus] = useState("");
   const [standard, setStandard] = useState("");
+  const [selectedSchool, setSelectedSchool] = useState("NO");
+  const [dropSchool, setDropSchool] = useState([]);
   // const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -53,6 +55,19 @@ const addStudent = () => {
   const handleMedium = (e) => {
     setMedium(e.target.value);
   };
+
+  const fetchSchool = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}school/getAllSchools`);
+      console.log(res.data.schools);
+      setDropSchool(res.data.schools);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchSchool();
+  }, []);
 
   return (
     <>
@@ -163,19 +178,21 @@ const addStudent = () => {
               />
             </div>
             <div>
-              <label
-                htmlFor="school"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              <select
+                className="bg-gray-50 border mt-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={(e) => {
+                  setSelectedSchool(e.target.value);
+                  console.log(e.target.value);
+                }}
               >
-                School
-              </label>
-              <input
-                type="text"
-                id="school"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                required
-                onChange={(e) => setSchool(e.target.value)}
-              />
+                <option value="NO">Select School</option>
+                {Array.isArray(dropSchool) &&
+                  dropSchool?.map((school, index) => (
+                    <option key={index} value={school?._id}>
+                      {school?.name}
+                    </option>
+                  ))}
+              </select>
             </div>
 
             <div>
