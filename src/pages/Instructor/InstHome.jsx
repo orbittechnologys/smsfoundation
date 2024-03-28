@@ -7,10 +7,13 @@ import Vresult from "../../assets/result 1.png";
 import Cariculamv from "../../assets/curriculum-vitae 1.png";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
+import { useNavigate } from "react-router";
 
 const InstHome = () => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
+
+  const navigate = useNavigate();
 
   const fetchUser = async () => {
     const userId = sessionStorage.getItem("user_id");
@@ -70,7 +73,7 @@ const InstHome = () => {
               <p className="text-xl font-bold">View Results</p>
               {/* <p className="text-gray-500">Instruction goes here</p> */}
             </div>
-            <div className=" grid place-items-center shadow-xl rounded-2xl p-5 border">
+            <div className=" grid place-items-center shadow-xl rounded-2xl p-5 border" onClick={()=> navigate('/inst/editStudent')}>
               <img src={Cariculamv} alt="" />
               <p className="text-xl font-bold">Edit Student Profile</p>
               {/* <p className="text-gray-500">Instruction goes here</p> */}
