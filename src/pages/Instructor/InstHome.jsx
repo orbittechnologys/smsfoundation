@@ -68,12 +68,12 @@ const InstHome = () => {
               <p className="text-xl font-bold">Upload Content</p>
               <p className="text-gray-500">Instruction goes here</p>
             </div> */}
-            <div className=" grid place-items-center shadow-xl rounded-2xl p-5 border">
+            <div className=" grid place-items-center shadow-xl rounded-2xl p-5 border" onClick={()=> navigate('/inst/LearningReport')}>
               <img src={Vresult} alt="" />
               <p className="text-xl font-bold">View Results</p>
               {/* <p className="text-gray-500">Instruction goes here</p> */}
             </div>
-            <div className=" grid place-items-center shadow-xl rounded-2xl p-5 border" onClick={()=> navigate('/inst/editStudent')}>
+            <div className=" grid place-items-center shadow-xl rounded-2xl p-5 border" onClick={()=> navigate('/inst/editStudent  ')}>
               <img src={Cariculamv} alt="" />
               <p className="text-xl font-bold">Edit Student Profile</p>
               {/* <p className="text-gray-500">Instruction goes here</p> */}
