@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -11,6 +11,8 @@ const AddInstructor = () => {
   const [school, setSchool] = useState("");
   const [medium, setMedium] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedSchool, setSelectedSchool] = useState("NO");
+  const [dropSchool, setDropSchool] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +23,7 @@ const AddInstructor = () => {
       lastName: lastName,
       email: email,
       password: password,
-      school: school,
+      school: selectedSchool,
       medium: medium,
     };
 
@@ -48,6 +50,18 @@ const AddInstructor = () => {
     setMedium(e.target.value);
   };
 
+  const fetchSchool = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}school/getAllSchools`);
+      console.log(res.data.schools);
+      setDropSchool(res.data.schools);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchSchool();
+  }, []);
   return (
     <>
       <div className="my-5">
@@ -124,8 +138,8 @@ const AddInstructor = () => {
           </div>
         </div>
         <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-5">
-          <div>
-            <label
+          <div className="flex justify-center items-center">
+            {/* <label
               htmlFor="school"
               className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
             >
@@ -138,16 +152,31 @@ const AddInstructor = () => {
               placeholder="school"
               required
               onChange={(e) => setSchool(e.target.value)}
-            />
+            /> */}
+            <select
+              className="bg-gray-50 border mt-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={(e) => {
+                setSelectedSchool(dropSchool[e.target.value]);
+                console.log(dropSchool[e.target.value]);
+              }}
+            >
+              <option value="NO">Select School</option>
+              {Array.isArray(dropSchool) &&
+                dropSchool?.map((school, index) => (
+                  <option key={index} value={index}>
+                    {school?.name}
+                  </option>
+                ))}
+            </select>
           </div>
           <div>
             <label
               htmlFor="medium"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Medium
             </label>
-            <select
+            {/* <select
               id="medium"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               value={medium}
@@ -158,7 +187,10 @@ const AddInstructor = () => {
               <option value="KANNADA">Kannada</option>
               <option value="MALYALAM">Malyalam</option>
               <option value="TELUGU">Telugu</option>
-            </select>
+            </select> */}
+            <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+              {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``}
+            </div>
           </div>
         </div>
         <div className="flex justify-start items-center">

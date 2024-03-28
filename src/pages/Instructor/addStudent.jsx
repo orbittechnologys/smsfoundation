@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 
 const addStudent = () => {
@@ -12,6 +12,10 @@ const addStudent = () => {
   const [medium, setMedium] = useState("");
   const [syllabus, setSyllabus] = useState("");
   const [standard, setStandard] = useState("");
+  const [selectedSchool, setSelectedSchool] = useState("NO");
+  const [dropSchool, setDropSchool] = useState([]);
+  const [instructor, setInstructor] = useState(null);
+  const [role, setRole] = useState("");
   // const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -23,21 +27,24 @@ const addStudent = () => {
       lastName,
       rollNo,
       standard,
-      school,
-      password,
-      syllabus,
-      medium
+      selectedSchool,
+      instructor,
+      password
     );
+
     const reqbody = {
       email: email,
       firstName: name,
       lastName: lastName,
       rollNo: rollNo,
       standard: standard,
-      school: school,
+      // school: selectedSchool?._id,
       password: password,
-      syllabus: syllabus,
-      medium: medium,
+      school: role === "INSTRUCTOR" ? instructor?._id : selectedSchool?._id,
+      syllabus:
+        role === "INSTRUCTOR" ? instructor?.syllabus : selectedSchool?.syllabus,
+      medium:
+        role === "INSTRUCTOR" ? instructor?.medium : selectedSchool?.medium,
     };
     console.log(reqbody);
 
@@ -53,6 +60,35 @@ const addStudent = () => {
   const handleMedium = (e) => {
     setMedium(e.target.value);
   };
+
+  const fetchSchool = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}school/getAllSchools`);
+      console.log(res.data.schools);
+      setDropSchool(res.data.schools);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchInstructor = async () => {
+    try {
+      const userId = sessionStorage.getItem("user_id");
+      setRole(sessionStorage.getItem("role"));
+      const res = await axios.get(
+        `${BASE_URL}instructor/getByUserId/${userId}`
+      );
+      console.log(res.data.instructorDoc.school);
+      setInstructor(res.data.instructorDoc.school);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSchool();
+    fetchInstructor();
+  }, []);
 
   return (
     <>
@@ -130,7 +166,7 @@ const addStudent = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 mt-2">
             <div>
               <label
                 htmlFor="password"
@@ -162,58 +198,72 @@ const addStudent = () => {
                 onChange={(e) => setStandard(e.target.value)}
               />
             </div>
-            <div>
-              <label
-                htmlFor="school"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                School
-              </label>
-              <input
-                type="text"
-                id="school"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                required
-                onChange={(e) => setSchool(e.target.value)}
-              />
-            </div>
+            {role !== "INSTRUCTOR" && (
+              <div className="mt-2">
+                <select
+                  className="bg-gray-50 border mt-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) => {
+                    setSelectedSchool(dropSchool[e.target.value]);
+                    console.log(dropSchool[e.target.value]);
+                  }}
+                >
+                  <option value="NO">Select School</option>
+                  {Array.isArray(dropSchool) &&
+                    dropSchool?.map((school, index) => (
+                      <option key={index} value={index}>
+                        {school?.name}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            )}
 
-            <div>
-              <label
-                htmlFor="syllabus"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Syllabus
-              </label>
-              <input
-                type="text"
-                id="syllabus"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                required
-                onChange={(e) => setSyllabus(e.target.value)}
-              />
-            </div>
+            {role !== "INSTRUCTOR" && (
+              <div>
+                <label
+                  htmlFor="syllabus"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Syllabus
+                </label>
+                {/* <input
+  type="text"
+  id="syllabus"
+  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+  required
+  onChange={(e) => setSyllabus(e.target.value)}
+/> */}
+                <div className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                  {selectedSchool ? <p>{selectedSchool?.syllabus}</p> : ``}
+                </div>
+              </div>
+            )}
 
-            <div>
-              <label
-                htmlFor="medium"
-                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
-              >
-                Medium
-              </label>
-              <select
-                id="medium"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                value={medium}
-                onChange={handleMedium}
-              >
-                <option selected>Choose a medium</option>
-                <option value="ENGLISH">English</option>
-                <option value="KANNADA">Kannada</option>
-                <option value="MALYALAM">Malyalam</option>
-                <option value="TELUGU">Telgu</option>
-              </select>
-            </div>
+            {role !== "INSTRUCTOR" && (
+              <div>
+                <label
+                  htmlFor="medium"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Medium
+                </label>
+                {/* <select
+    id="medium"
+    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    value={medium}
+    onChange={handleMedium}
+  >
+    <option selected>Choose a medium</option>
+    <option value="ENGLISH">English</option>
+    <option value="KANNADA">Kannada</option>
+    <option value="MALYALAM">Malyalam</option>
+    <option value="TELUGU">Telgu</option>
+  </select> */}
+                <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                  {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``}
+                </div>
+              </div>
+            )}
           </div>
           <div>
             <button
