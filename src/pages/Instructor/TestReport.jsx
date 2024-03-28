@@ -44,27 +44,44 @@ const TestReport = () => {
   const dataToRender = filteredData || tableData;
 
   const [testReport, setTestReport] = useState([]);
-  const [school,setSchool] = useState(null);
-
+  const [school, setSchool] = useState(null);
+  const [districts, setDistricts] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState("NO");
+  const [syllabus, setSyllabus] = useState([]);
+  const [selectedSyllabus, setSelectedSyllabus] = useState("NO");
+  const [medium, setMedium] = useState([]);
+  const [selectedMedium, setSelectedMedium] = useState("NO");
+  const [fillterSchool, setFillterSchool] = useState([]);
+  const [selectedSchool, setSelectedSchool] = useState("NO");
   const fetchSchoolTestReport = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}instructor/getByUserId/${sessionStorage.getItem('user_id')}`);
+      const res = await axios.get(
+        `${BASE_URL}instructor/getByUserId/${sessionStorage.getItem("user_id")}`
+      );
       console.log(res.data);
       setSchool(res.data.intructorDoc?.school);
-
-      const res2 = await axios.get(`${BASE_URL}studentTest/testReportForSchool/${res.data.instructorDoc?.school?._id}`);
-      console.log(res2.data);
-      setTestReport(res2.data.testReport);
+      fetchTestReportbySchoolId(res.data.intructorDoc?.school?._id);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  const fetchTestReportbySchoolId = async (schoolId) => {
+    try {
+      const res = await axios.get(
+        `${BASE_URL}studentTest/testReportForSchool/${schoolId}`
+      );
+      console.log(res.data);
+      setTestReport(res.data.testReport);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchTestReport = async () => {
-
-    if(sessionStorage.getItem('role') == 'INSTRUCTOR'){
+    if (sessionStorage.getItem("role") == "INSTRUCTOR") {
       fetchSchoolTestReport();
-    }else {
+    } else {
       try {
         const res = await axios.get(`${BASE_URL}studentTest/testReport`);
         console.log(res.data);
@@ -73,12 +90,11 @@ const TestReport = () => {
         console.log(error);
       }
     }
-
-    
   };
 
   useEffect(() => {
     fetchTestReport();
+    fetchDistric();
   }, []);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -90,6 +106,48 @@ const TestReport = () => {
 
   const toggleModal = () => {
     setModalOpen(!modalOpen);
+  };
+
+  const fetchDistric = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}school/getDistricts`);
+      console.log(res.data.districts);
+      setDistricts(res.data.districts);
+      setSyllabus(res.data.syllabus);
+      setMedium(res.data.medium);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchSchools = async (district, syllabus, medium) => {
+    try {
+      const res = await axios.post(`${BASE_URL}school/getSchool`, {
+        district,
+        syllabus,
+        medium,
+      });
+      setFillterSchool(res.data.schools);
+      console.log(res.data.schools);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      selectedDistrict != "NO" &&
+      selectedSyllabus != "NO" &&
+      selectedMedium != "NO"
+    ) {
+      fetchSchools(selectedDistrict, selectedSyllabus, selectedMedium);
+    }
+  }, [selectedDistrict, selectedSyllabus, selectedMedium]);
+
+  const applyFilter = () => {
+    console.log(selectedSchool);
+    fetchTestReportbySchoolId(selectedSchool);
+    toggleModal();
   };
 
   return (
@@ -211,63 +269,102 @@ const TestReport = () => {
                   <div className="grid grid-cols-4 gap-4">
                     <div>
                       <label
-                        htmlFor="filter1"
+                        htmlFor="District"
                         className="block text-sm font-medium text-gray-700"
                       ></label>
                       <select
-                        id="filter1"
-                        name="filter1"
+                        id="District"
+                        name="District"
+                        onChange={(e) => {
+                          setSelectedDistrict(e.target.value);
+                          console.log(e.target.value);
+                        }}
                         className="mt-1 block w-full pl-3 pr-10  py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                       >
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
-                      </select>
-                    </div>
+                        <option>Select District</option>
 
-                    <div>
-                      <label
-                        htmlFor="filter2"
-                        className="block text-sm font-medium text-gray-700"
-                      ></label>
-                      <select
-                        id="filter2"
-                        name="filter2"
-                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                      >
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
+                        {districts?.map((district, index) => {
+                          return (
+                            <option key={index} value={district}>
+                              {district}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                     <div>
                       <label
-                        htmlFor="filter3"
+                        htmlFor="Medium"
                         className="block text-sm font-medium text-gray-700"
                       ></label>
                       <select
-                        id="filter3"
-                        name="filter3"
-                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                        id="Medium"
+                        name="Medium"
+                        onChange={(e) => {
+                          setSelectedMedium(e.target.value);
+                          console.log(e.target.value);
+                        }}
+                        className="mt-1 block w-full pl-3 pr-10  py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                       >
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
+                        <option>Select Medium</option>
+
+                        {medium?.map((medium, index) => {
+                          return (
+                            <option key={index} value={medium}>
+                              {medium}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                     <div>
                       <label
-                        htmlFor="filter4"
+                        htmlFor="Syllabus"
                         className="block text-sm font-medium text-gray-700"
                       ></label>
                       <select
-                        id="filter4"
-                        name="filter4"
-                        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                        id="Syllabus"
+                        name="Syllabus"
+                        onChange={(e) => {
+                          setSelectedSyllabus(e.target.value);
+                          console.log(e.target.value);
+                        }}
+                        className="mt-1 block w-full pl-3 pr-10  py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                       >
-                        <option>Option 1</option>
-                        <option>Option 2</option>
-                        <option>Option 3</option>
+                        <option>Select Syllabus</option>
+
+                        {syllabus?.map((syllabuss, index) => {
+                          return (
+                            <option key={index} value={syllabuss}>
+                              {syllabuss}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="school"
+                        className="block text-sm font-medium text-gray-700"
+                      ></label>
+                      <select
+                        id="school"
+                        name="school"
+                        onChange={(e) => {
+                          setSelectedSchool(e.target.value);
+                          console.log(e.target.value);
+                        }}
+                        className="mt-1 block w-full pl-3 pr-10  py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                      >
+                        <option>Select School</option>
+
+                        {fillterSchool?.map((school, index) => {
+                          return (
+                            <option key={index} value={school?._id}>
+                              {school?.name}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   </div>
@@ -276,7 +373,7 @@ const TestReport = () => {
               <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
-                  onClick={toggleModal}
+                  onClick={applyFilter}
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-500 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
                 >
                   Apply Filter
