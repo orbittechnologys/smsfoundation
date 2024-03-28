@@ -44,15 +44,37 @@ const TestReport = () => {
   const dataToRender = filteredData || tableData;
 
   const [testReport, setTestReport] = useState([]);
+  const [school,setSchool] = useState(null);
 
-  const fetchTestReport = async () => {
+  const fetchSchoolTestReport = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}studentTest/testReport`);
+      const res = await axios.get(`${BASE_URL}instructor/getByUserId/${sessionStorage.getItem('user_id')}`);
       console.log(res.data);
-      setTestReport(res.data.testReport);
+      setSchool(res.data.intructorDoc?.school);
+
+      const res2 = await axios.get(`${BASE_URL}studentTest/testReportForSchool/${res.data.instructorDoc?.school?._id}`);
+      console.log(res2.data);
+      setTestReport(res2.data.testReport);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const fetchTestReport = async () => {
+
+    if(sessionStorage.getItem('role') == 'INSTRUCTOR'){
+      fetchSchoolTestReport();
+    }else {
+      try {
+        const res = await axios.get(`${BASE_URL}studentTest/testReport`);
+        console.log(res.data);
+        setTestReport(res.data.testReport);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    
   };
 
   useEffect(() => {
@@ -138,6 +160,8 @@ const TestReport = () => {
               <th>Roll no</th>
               <th>Standard</th>
               <th>Medium</th>
+              <th>School</th>
+              <th>District</th>
               <th>Test </th>
               <th>Scored marks</th>
               <th>Total marks</th>
@@ -153,6 +177,8 @@ const TestReport = () => {
                 <td>{rowData?.student?.rollNo}</td>
                 <td>{rowData?.student?.standard}</td>
                 <td>{rowData?.student?.medium}</td>
+                <td>{rowData?.school?.name}</td>
+                <td>{rowData?.school?.district}</td>
                 <td>{rowData?.test?.name}</td>
                 <td>{rowData?.marks}</td>
                 <td>{rowData?.test?.totalMarks}</td>

@@ -29,15 +29,39 @@ const LearningReport = () => {
   ];
 
   const [learningReport,setLearningReport] = useState([]);
-  
-  const fetchLearningReport = async () => {
+
+  const [school,setSchool] = useState(null);
+
+  const fetchSchoolLearningReport = async () => {
+    console.log('Fetching learning report');
     try {
-      const res = await axios.get(`${BASE_URL}subjectTime/getLearningReport`);
+      const res = await axios.get(`${BASE_URL}instructor/getByUserId/${sessionStorage.getItem('user_id')}`);
       console.log(res.data);
-      setLearningReport(res.data.subjectReport);
+      setSchool(res.data.instructorDoc?.school);
+
+      const res2 = await axios.get(`${BASE_URL}subjectTime/getLearningReportForSchool/${res.data.instructorDoc?.school?._id}`);
+      console.log(res2.data);
+      setLearningReport(res2.data.subjectReport);
     } catch (error) {
       console.log(error);
     }
+   
+  }
+
+  
+  const fetchLearningReport = async () => {
+    if(sessionStorage.getItem('role') == 'INSTRUCTOR'){
+      fetchSchoolLearningReport();
+    }else{
+      try {
+        const res = await axios.get(`${BASE_URL}subjectTime/getLearningReport`);
+        console.log(res.data);
+        setLearningReport(res.data.subjectReport);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
   }
 
   useEffect(()=> {
@@ -120,6 +144,8 @@ const LearningReport = () => {
               <th>Roll no</th>
               <th>Standard</th>
               <th>Medium</th>
+              <th>School</th>
+              <th>District</th>
               <th>Subject</th>
               <th>Time Spent</th>
               
@@ -132,6 +158,8 @@ const LearningReport = () => {
                 <td>{rowData?.student?.rollNo}</td>
                 <td>{rowData?.student?.standard}</td>
                 <td>{rowData?.student?.medium}</td>
+                <td>{rowData?.school?.name}</td>
+                <td>{rowData?.school?.district}</td>
                 <td>{rowData?.subject?.name}</td>
                 <td>{convertSeconds(rowData?.time)}</td>
               
