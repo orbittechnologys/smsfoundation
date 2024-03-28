@@ -166,7 +166,7 @@ const addStudent = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 mt-2">
             <div>
               <label
                 htmlFor="password"
@@ -199,7 +199,7 @@ const addStudent = () => {
               />
             </div>
             {role !== "INSTRUCTOR" && (
-              <div>
+              <div className="mt-2">
                 <select
                   className="bg-gray-50 border mt-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   onChange={(e) => {
@@ -218,44 +218,52 @@ const addStudent = () => {
               </div>
             )}
 
-            <div>
-              {/* <label
-                htmlFor="syllabus"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Syllabus
-              </label>
-              <input
-                type="text"
-                id="syllabus"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                required
-                onChange={(e) => setSyllabus(e.target.value)}
-              /> */}
-              {selectedSchool ? <p>{selectedSchool?.syllabus}</p> : ``}
-            </div>
+            {role !== "INSTRUCTOR" && (
+              <div>
+                <label
+                  htmlFor="syllabus"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Syllabus
+                </label>
+                {/* <input
+  type="text"
+  id="syllabus"
+  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+  required
+  onChange={(e) => setSyllabus(e.target.value)}
+/> */}
+                <div className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                  {selectedSchool ? <p>{selectedSchool?.syllabus}</p> : ``}
+                </div>
+              </div>
+            )}
 
-            <div>
-              {/* <label
-                htmlFor="medium"
-                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
-              >
-                Medium
-              </label>
-              <select
-                id="medium"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                value={medium}
-                onChange={handleMedium}
-              >
-                <option selected>Choose a medium</option>
-                <option value="ENGLISH">English</option>
-                <option value="KANNADA">Kannada</option>
-                <option value="MALYALAM">Malyalam</option>
-                <option value="TELUGU">Telgu</option>
-              </select> */}
-              {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``}
-            </div>
+            {role !== "INSTRUCTOR" && (
+              <div>
+                <label
+                  htmlFor="medium"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  Medium
+                </label>
+                {/* <select
+    id="medium"
+    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+    value={medium}
+    onChange={handleMedium}
+  >
+    <option selected>Choose a medium</option>
+    <option value="ENGLISH">English</option>
+    <option value="KANNADA">Kannada</option>
+    <option value="MALYALAM">Malyalam</option>
+    <option value="TELUGU">Telgu</option>
+  </select> */}
+                <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                  {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``}
+                </div>
+              </div>
+            )}
           </div>
           <div>
             <button
