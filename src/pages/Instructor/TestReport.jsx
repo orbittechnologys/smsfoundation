@@ -235,8 +235,19 @@ const TestReport = () => {
                 <td>{rowData?.student?.rollNo}</td>
                 <td>{rowData?.student?.standard}</td>
                 <td>{rowData?.student?.medium}</td>
-                <td>{rowData?.school?.name}</td>
-                <td>{rowData?.school?.district}</td>
+                {rowData?.school ? (
+                  <td>{rowData?.school?.name}</td>
+                ): (
+                  <td>{rowData?.student?.school?.name}</td>
+                )
+                }
+                
+                {rowData?.school ? (
+                  <td>{rowData?.school?.district}</td>
+                ): (
+                  <td>{rowData?.student?.school?.district}</td>
+                )
+                }
                 <td>{rowData?.test?.name}</td>
                 <td>{rowData?.marks}</td>
                 <td>{rowData?.test?.totalMarks}</td>

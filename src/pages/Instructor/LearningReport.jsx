@@ -73,10 +73,10 @@ const LearningReport = () => {
   const fetchTestReportbySchoolId = async (schoolId) => {
     try {
       const res = await axios.get(
-        `${BASE_URL}studentTest/testReportForSchool/${schoolId}`
+        `${BASE_URL}subjectTime/getLearningReportForSchool/${schoolId}`
       );
       console.log(res.data);
-      setLearningReport(res.data.testReport);
+      setLearningReport(res.data.subjectReport);
     } catch (error) {
       console.log(error);
     }
@@ -251,8 +251,19 @@ const LearningReport = () => {
                 <td>{rowData?.student?.rollNo}</td>
                 <td>{rowData?.student?.standard}</td>
                 <td>{rowData?.student?.medium}</td>
-                <td>{rowData?.school?.name}</td>
-                <td>{rowData?.school?.district}</td>
+                {rowData?.school ? (
+                  <td>{rowData?.school?.name}</td>
+                ): (
+                  <td>{rowData?.student?.school?.name}</td>
+                )
+                }
+                
+                {rowData?.school ? (
+                  <td>{rowData?.school?.district}</td>
+                ): (
+                  <td>{rowData?.student?.school?.district}</td>
+                )
+                }
                 <td>{rowData?.subject?.name}</td>
                 <td>{convertSeconds(rowData?.time)}</td>
               </tr>
