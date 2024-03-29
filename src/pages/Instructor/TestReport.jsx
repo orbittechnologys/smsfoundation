@@ -53,34 +53,38 @@ const TestReport = () => {
   const [selectedMedium, setSelectedMedium] = useState("NO");
   const [fillterSchool, setFillterSchool] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState("NO");
+  const [role,setRole] = useState('ADMIN');
   const fetchSchoolTestReport = async () => {
     try {
       const res = await axios.get(
         `${BASE_URL}instructor/getByUserId/${sessionStorage.getItem("user_id")}`
       );
       console.log(res.data);
+      fetchTestReportbySchoolId(res.data.instructorDoc?.school?._id);
       setSchool(res.data.intructorDoc?.school);
-      fetchTestReportbySchoolId(res.data.intructorDoc?.school?._id);
     } catch (error) {
       console.log(error);
     }
   };
 
   const fetchTestReportbySchoolId = async (schoolId) => {
-    try {
-      const res = await axios.get(
-        `${BASE_URL}studentTest/testReportForSchool/${schoolId}`
-      );
-      console.log(res.data);
-      setTestReport(res.data.testReport);
-    } catch (error) {
-      console.log(error);
+    if(schoolId){
+      try {
+        const res = await axios.get(
+          `${BASE_URL}studentTest/testReportForSchool/${schoolId}`
+        );
+        console.log(res.data);
+        setTestReport(res.data.testReport);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
   const fetchTestReport = async () => {
     if (sessionStorage.getItem("role") == "INSTRUCTOR") {
       fetchSchoolTestReport();
+      setRole('INSTRUCTOR')
     } else {
       try {
         const res = await axios.get(`${BASE_URL}studentTest/testReport`);
@@ -202,12 +206,15 @@ const TestReport = () => {
               </button>
             </div>
           </form> */}
-          <button
+                    {role!= 'INSTRUCTOR' ? (
+            <button
             onClick={toggleModal}
             className="border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
           >
             Filter
           </button>
+          ):``
+          }
         </div>
       </div>
       <div className="table-container">

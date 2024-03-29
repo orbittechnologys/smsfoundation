@@ -104,7 +104,7 @@ const MyCourse = () => {
   }, []);
 
   const goBack = () => {
-    window.history.back();
+    navigate('/studenthome')
   };
 
   return (
@@ -150,11 +150,11 @@ const MyCourse = () => {
                   style={{ backgroundImage: `url(${Hexbg})` }}
                   className=" grid border border-gray-200 shadow-lg place-items-center bg-white p-4 rounded-xl text-center w-fit"
                 >
-                  {/* <div className="flex justify-start items-start w-full">
+                  <div className="flex justify-start items-start w-full">
                     <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
-                      Science
+                      {chapter?.chapter?.subject?.name}
                     </span>
-                  </div> */}
+                  </div>
                   <img src={flask} alt="flask" className="h-10" />
                   <p className="font-semibold mt-5">{chapter?.chapter?.name}</p>
                   <p className="text-gray-600">{chapter?.chapter?.desc}</p>

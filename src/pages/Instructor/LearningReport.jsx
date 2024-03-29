@@ -52,6 +52,7 @@ const LearningReport = () => {
   const [selectedMedium, setSelectedMedium] = useState("NO");
   const [fillterSchool, setFillterSchool] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState("NO");
+  const [role,setRole] = useState('ADMIN');
 
   const fetchSchoolLearningReport = async () => {
     console.log("Fetching learning report");
@@ -64,7 +65,7 @@ const LearningReport = () => {
       // const res2 = await axios.get(`${BASE_URL}subjectTime/getLearningReportForSchool/${res.data.instructorDoc?.school?._id}`);
       // console.log(res2.data);
       // setLearningReport(res2.data.subjectReport);
-      fetchLearningReportbySchoolId(res.data.instructorDoc?.school?._id);
+      fetchTestReportbySchoolId(res.data.instructorDoc?.school?._id);
     } catch (error) {
       console.log(error);
     }
@@ -85,6 +86,7 @@ const LearningReport = () => {
   const fetchLearningReport = async () => {
     if (sessionStorage.getItem("role") == "INSTRUCTOR") {
       fetchSchoolLearningReport();
+      setRole('INSTRUCTOR')
     } else {
       try {
         const res = await axios.get(`${BASE_URL}subjectTime/getLearningReport`);
@@ -220,12 +222,16 @@ const LearningReport = () => {
               </button>
             </div>
           </form> */}
-          <button
+          {role!= 'INSTRUCTOR' ? (
+            <button
             onClick={toggleModal}
             className="border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
           >
             Filter
           </button>
+          ):``
+          }
+          
         </div>
       </div>
       <div className="table-container">
@@ -393,7 +399,8 @@ const LearningReport = () => {
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+              
+                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
                   onClick={applyFilter}
@@ -409,6 +416,8 @@ const LearningReport = () => {
                   Cancel
                 </button>
               </div>
+             
+              
             </div>
           </div>
         </div>

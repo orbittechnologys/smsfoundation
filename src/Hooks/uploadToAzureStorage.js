@@ -23,7 +23,7 @@ const uploadToAzureStorage = async (file, blobName) => {
 
     const uuid = generateUUID()
 
-      const blobClient = containerClient.getBlockBlobClient(file.name + uuid);
+      const blobClient = containerClient.getBlockBlobClient(uuid + file.name );
 
   // set mimetype as determined from browser with file upload control
          const options = { blobHTTPHeaders: { blobContentType: file.type } };
@@ -39,7 +39,7 @@ const uploadToAzureStorage = async (file, blobName) => {
     console.log('File uploaded successfully. URL:', url);
 
 
-    const imageUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${folderName}/${file.name}${uuid}`
+    const imageUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${folderName}/${uuid}${file.name}`
 
     return imageUrl;
 };

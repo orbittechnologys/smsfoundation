@@ -116,12 +116,14 @@ const Results = () => {
         <div className="grid grid-cols-2 gap-5 my-5">
           <button
             type="button"
+            onClick={() => navigate('/preview/'+testId)}
             className="text-white bg-orange-500 hover:bg-blue-800 font-semibold focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none "
           >
             Review Test
           </button>
           <button
             type="button"
+            onClick={()=> navigate('/mcq/'+testId)}
             className="text-white bg-orange-500 hover:bg-blue-800 font-semibold focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none "
           >
             Retake Test
