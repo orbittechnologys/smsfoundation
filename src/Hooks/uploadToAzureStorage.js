@@ -21,7 +21,9 @@ const uploadToAzureStorage = async (file, blobName) => {
 
     const containerClient =  blobService.getContainerClient(folderName); // Folder name 
 
-      const blobClient = containerClient.getBlockBlobClient(file.name);
+    const uuid = generateUUID()
+
+      const blobClient = containerClient.getBlockBlobClient(file.name + uuid);
 
   // set mimetype as determined from browser with file upload control
          const options = { blobHTTPHeaders: { blobContentType: file.type } };
@@ -37,9 +39,26 @@ const uploadToAzureStorage = async (file, blobName) => {
     console.log('File uploaded successfully. URL:', url);
 
 
-    const imageUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${folderName}/${file.name}`
+    const imageUrl = `https://${storageAccount}.blob.core.windows.net/${containerName}/${folderName}/${file.name}${uuid}`
 
     return imageUrl;
 };
+
+function generateUUID() {
+  // Generate a random hexadecimal string of length 4
+  function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+          .toString(16)
+          .substring(1);
+  }
+  // Return a UUID of the form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+  return (
+      s4() + s4() + "-" +
+      s4() + "-4" +
+      s4().substr(0, 3) + "-" +
+      s4() + "-" +
+      s4() + s4() + s4()
+  );
+}
 
 export default uploadToAzureStorage;

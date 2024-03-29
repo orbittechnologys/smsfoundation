@@ -7,6 +7,7 @@ import uploadToAzureStorage from "../../Hooks/uploadToAzureStorage";
 
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
+  const [audioFileName,setAudioFileName] = useState("");
 
   const [standard, setStandard] = useState(null);
   const [medium, setMedium] = useState(null);
@@ -22,6 +23,10 @@ const UpdateContent = () => {
   const [chapterName, setChapterName] = useState(null);
   const [chapterDesc, setChapterDesc] = useState(null);
 
+  const [vidoeUrl,setVideoUrl] = useState(null);
+
+  const [uploadedAudioUrl,setUploadedAudioUrl] = useState(null);
+
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file && file.type === "application/pdf") {
@@ -30,6 +35,21 @@ const UpdateContent = () => {
       const url = await uploadToAzureStorage(file, blobName);
       console.log(url);
       setUploadedFileUrl(url);
+    } else {
+      // Handle invalid file type
+      alert("Please upload a PDF file.");
+    }
+  };
+
+  const handleFileChangeAudio = async (event) => {
+    const file = event.target.files[0];
+    const audioTypeRegex = /^audio\//;
+    if (file && audioTypeRegex.test(file.type)) {
+      setAudioFileName(file.name);
+      const blobName = file?.name;
+      const url = await uploadToAzureStorage(file, blobName);
+      console.log(url);
+      setUploadedAudioUrl(url);
     } else {
       // Handle invalid file type
       alert("Please upload a PDF file.");
@@ -84,6 +104,8 @@ const UpdateContent = () => {
       if (chapterName && chapterDesc && uploadedFileUrl && selectedSubject) {
         const reqBody = {
           chapterUrl: uploadedFileUrl,
+          audioUrl:uploadedAudioUrl,
+          videoUrl:vidoeUrl,
           subjectId: selectedSubject,
           name: chapterName,
           desc: chapterDesc,
@@ -96,7 +118,7 @@ const UpdateContent = () => {
       }
     } catch (error) {
       console.log(error);
-      alert("Something went wrong");
+      alert("Something went wrong. Please ensure all the fields are present");
     }
   };
 
@@ -180,7 +202,7 @@ const UpdateContent = () => {
               >
                 <option selected>Choose a Subject</option>
                 {subjects?.map((subject, index) => {
-                  return <option value={subject?._id}>{subject?.name}</option>;
+                  return <option key={index} value={subject?._id}>{subject?.name}</option>;
                 })}
               </select>
             </div>
@@ -197,13 +219,35 @@ const UpdateContent = () => {
             <div key={index} className="my-4">
               <h1 className="text-xl font-semibold mb-2">{chapter?.name}</h1>
               <p className="text-gray-600 mb-2">{chapter?.desc}</p>
+              <div className="flex justify-start">
               <a
                 href={chapter?.chapterUrl}
                 target="_blank"
-                className="border border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white"
+                className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white"
               >
                 View PDF
               </a>
+              {chapter?.audioUrl ? (
+                <a
+                href={chapter?.audioUrl}
+                target="_blank"
+                className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white"
+              >
+                View Audio
+              </a>
+              ):``
+              }
+              {chapter?.videoUrl ? (
+                <a
+                href={chapter?.videoUrl}
+                target="_blank"
+                className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white"
+              >
+                View Video
+              </a>
+              ):``
+              }
+              </div>
             </div>
           ))}
         </div>
@@ -269,6 +313,41 @@ const UpdateContent = () => {
               >
                 <FaSquarePlus className="text-xl" />
               </button> */}
+            </div>
+            <div className="flex justify-center items-center">
+              <div>
+                <label
+                  htmlFor="cont"
+                  className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                >
+                  Upload Audio File
+                </label>
+                <input
+                  type="file"
+                  id="cont"
+                  accept="audio/*"
+                  onChange={handleFileChangeAudio}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Upload Content"
+                  required
+                />
+              </div>
+            </div>
+            <div>
+              <label
+                htmlFor="desc"
+                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              >
+                Video URL
+              </label>
+              <input
+                type="text"
+                id="desc"
+                onChange={(e) => setVideoUrl(e.target.value)}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Enter Description"
+                required
+              />
             </div>
             {fileName && (
               <div className="grid mt-2">
