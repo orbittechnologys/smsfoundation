@@ -8,10 +8,9 @@ import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
-import AudioPlayer from 'react-h5-audio-player';
-import 'react-h5-audio-player/lib/styles.css';
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
- 
 const PDFViewer = () => {
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
   const [pdfFile, setPdfFile] = useState(null);
@@ -24,10 +23,10 @@ const PDFViewer = () => {
   const [elapsedTime, setElapsedTime] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
 
-  const [initPage,setInitPage] = useState(0);
+  const [initPage, setInitPage] = useState(0);
 
-  const [audioFile,setAudioFile] = useState(null);
-  const [currPage,setCurrPage] = useState(0);
+  const [audioFile, setAudioFile] = useState(null);
+  const [currPage, setCurrPage] = useState(0);
 
   const navigate = useNavigate();
 
@@ -54,27 +53,30 @@ const PDFViewer = () => {
     }
   };
 
-  const fetchChapterTime = async (studentId,chapterId) => {
+  const fetchChapterTime = async (studentId, chapterId) => {
     try {
-      const res = await axios.post(`${BASE_URL}chapterTime/getForChapterStudent`, {
-        studentId,
-        chapterId
-      })
+      const res = await axios.post(
+        `${BASE_URL}chapterTime/getForChapterStudent`,
+        {
+          studentId,
+          chapterId,
+        }
+      );
       console.log(res.data);
       setInitPage(res.data.chapterTime?.page);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const fetchChapter = async (chapterId) => {
     try {
       const res = await axios.get(`${BASE_URL}chapter/id/${chapterId}`);
       console.log(res.data);
-      
+
       setChapter(res.data);
       fetchPdf(res.data.chapterUrl);
-      if(res.data.audioUrl){
+      if (res.data.audioUrl) {
         fetchAudio(res.data.audioUrl);
       }
     } catch (error) {
@@ -92,7 +94,7 @@ const PDFViewer = () => {
         `${BASE_URL}student/getStudentByUserId/${userId}`
       );
       console.log(res.data);
-      fetchChapterTime(res.data.studentDoc?._id,chapterId);
+      fetchChapterTime(res.data.studentDoc?._id, chapterId);
       setStudent(res.data.studentDoc);
     } catch (error) {
       console.log(error);
@@ -186,7 +188,7 @@ const PDFViewer = () => {
     let intervalId;
     if (isRunning) {
       // setting time from 0 to 1 every 10 milisecond using javascript setInterval method
-      intervalId = setInterval(() => setTime(prevTime => prevTime + 1), 10);
+      intervalId = setInterval(() => setTime((prevTime) => prevTime + 1), 10);
     }
     return () => clearInterval(intervalId);
   }, [isRunning, time]);
@@ -214,9 +216,11 @@ const PDFViewer = () => {
   };
 
   function getYouTubeID(url) {
-    const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/[^/]+\/|(?:v|e(?:mbed)?)\/|[^#]*[?&]v=|[^#]*#(?:[^/]*[?&]v=))|youtu\.be\/)([^"&?/ ]{11})/);
+    const match = url.match(
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^/]+\/[^/]+\/|(?:v|e(?:mbed)?)\/|[^#]*[?&]v=|[^#]*#(?:[^/]*[?&]v=))|youtu\.be\/)([^"&?/ ]{11})/
+    );
     return match && match[1];
-}
+  }
 
   const chapterTimeUpdateApi = async (reqBody) => {
     console.log("i am here");
@@ -235,7 +239,7 @@ const PDFViewer = () => {
       chapterId: chapterId,
       studentId: student?._id,
       time: seconds,
-      page:currPage
+      page: currPage,
     };
     console.log(reqBody);
     chapterTimeUpdateApi(reqBody);
@@ -275,20 +279,20 @@ const PDFViewer = () => {
         ></input>
         {pdfError && <span className="text-danger">{pdfError}</span>}
       </form> */}
-      {chapter?.audioUrl ? (
-        <AudioPlayer
-         
-        src={chapter?.audioUrl}
-        showJumpControls={true}
-        onPlay={e => console.log("onPlay")}
-        onSeeked={e => console.log("Seeked")}
-        onSeeking={e => console.log("Seeking")} 
-        // other props here
-      />
-      ): ``
-      }
+        {chapter?.audioUrl ? (
+          <AudioPlayer
+            src={chapter?.audioUrl}
+            showJumpControls={true}
+            onPlay={(e) => console.log("onPlay")}
+            onSeeked={(e) => console.log("Seeked")}
+            onSeeking={(e) => console.log("Seeking")}
+            // other props here
+          />
+        ) : (
+          ``
+        )}
 
-{chapter?.videoUrl ? (
+        {/* {chapter?.videoUrl ? (
     <iframe
         title="Chapter Video"
         width="560"
@@ -296,8 +300,7 @@ const PDFViewer = () => {
         src={`https://www.youtube.com/embed/${getYouTubeID(chapter.videoUrl)}`}
         allowFullScreen
     ></iframe>
-) : null}
-      
+) : null} */}
 
         <div
           className="viewer"
@@ -317,7 +320,7 @@ const PDFViewer = () => {
                 fileUrl={pdfFile}
                 plugins={[defaultLayoutPluginInstance]}
                 initialPage={initPage}
-                onPageChange={(e)=> setCurrPage(e.currentPage)}
+                onPageChange={(e) => setCurrPage(e.currentPage)}
               ></Viewer>
             </Worker>
           )}

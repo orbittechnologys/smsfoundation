@@ -28,20 +28,6 @@ const LearningReport = () => {
     },
   ];
 
-  const handleSearch = (e) => {
-    const searchTerm = e.target.value.toLowerCase();
-    setSearchTerm(searchTerm);
-    const filtered = tableData.filter((item) =>
-      Object.values(item).some(
-        (field) =>
-          typeof field === "string" && field.toLowerCase().includes(searchTerm)
-      )
-    );
-    setFilteredData(filtered);
-  };
-
-  const dataToRender = filteredData || tableData;
-
   const [learningReport, setLearningReport] = useState([]);
   const [school, setSchool] = useState(null);
   const [districts, setDistricts] = useState([]);
@@ -52,7 +38,7 @@ const LearningReport = () => {
   const [selectedMedium, setSelectedMedium] = useState("NO");
   const [fillterSchool, setFillterSchool] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState("NO");
-  const [role,setRole] = useState('ADMIN');
+  const [role, setRole] = useState("ADMIN");
 
   const fetchSchoolLearningReport = async () => {
     console.log("Fetching learning report");
@@ -86,7 +72,7 @@ const LearningReport = () => {
   const fetchLearningReport = async () => {
     if (sessionStorage.getItem("role") == "INSTRUCTOR") {
       fetchSchoolLearningReport();
-      setRole('INSTRUCTOR')
+      setRole("INSTRUCTOR");
     } else {
       try {
         const res = await axios.get(`${BASE_URL}subjectTime/getLearningReport`);
@@ -156,20 +142,6 @@ const LearningReport = () => {
     toggleModal();
   };
 
-  // const handleSearch = (e) => {
-  //   const searchTerm = e.target.value.toLowerCase();
-  //   setSearchTerm(searchTerm);
-  //   const filtered = tableData.filter((item) =>
-  //     Object.values(item).some(
-  //       (field) =>
-  //         typeof field === "string" && field.toLowerCase().includes(searchTerm)
-  //     )
-  //   );
-  //   setFilteredData(filtered);
-  // };
-
-  // const dataToRender = filteredData || tableData;
-
   return (
     <>
       <div className="flex justify-between items-center my-5">
@@ -180,58 +152,16 @@ const LearningReport = () => {
           <p className="text-lg font-semibold">Learning Report</p>
         </div>
         <div>
-          {/* <form className="max-w-md mx-auto">
-            <label
-              htmlFor="default-search"
-              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
-            >
-              Search
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                <svg
-                  className="w-4 h-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-              </div>
-              <input
-                type="search"
-                id="default-search"
-                className="block w-full p-4 ps-10 text-sm text-gray-900 border border-orange-500 rounded-lg bg-gray-50  "
-                placeholder="Search"
-                value={searchTerm}
-                onChange={handleSearch}
-                required
-              />
-              <button
-                type="submit"
-                className="text-orange-500 hover:text-white absolute end-2.5 bottom-2.5 border border-orange-500 hover:bg-orange-500  font-medium rounded-lg text-sm px-4 py-2"
-              >
-                Search
-              </button>
-            </div>
-          </form> */}
-          {role!= 'INSTRUCTOR' ? (
+          {role != "INSTRUCTOR" ? (
             <button
-            onClick={toggleModal}
-            className="border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
-          >
-            Filter
-          </button>
-          ):``
-          }
-          
+              onClick={toggleModal}
+              className="border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
+            >
+              Filter
+            </button>
+          ) : (
+            ``
+          )}
         </div>
       </div>
       <div className="table-container">
@@ -259,17 +189,15 @@ const LearningReport = () => {
                 <td>{rowData?.student?.medium}</td>
                 {rowData?.school ? (
                   <td>{rowData?.school?.name}</td>
-                ): (
+                ) : (
                   <td>{rowData?.student?.school?.name}</td>
-                )
-                }
-                
+                )}
+
                 {rowData?.school ? (
                   <td>{rowData?.school?.district}</td>
-                ): (
+                ) : (
                   <td>{rowData?.student?.school?.district}</td>
-                )
-                }
+                )}
                 <td>{rowData?.subject?.name}</td>
                 <td>{convertSeconds(rowData?.time)}</td>
               </tr>
@@ -399,8 +327,8 @@ const LearningReport = () => {
                   </div>
                 </div>
               </div>
-              
-                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+
+              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
                   type="button"
                   onClick={applyFilter}
@@ -416,8 +344,6 @@ const LearningReport = () => {
                   Cancel
                 </button>
               </div>
-             
-              
             </div>
           </div>
         </div>

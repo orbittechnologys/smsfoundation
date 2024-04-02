@@ -4,63 +4,76 @@ import { BASE_URL } from "../../constants";
 
 const EditStudent = () => {
   const [query, setQuery] = useState("");
-
   const [instructor, setInstructor] = useState(null);
-
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
-
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
-  const [rollNo, setRollNo] = useState(null);
-  const [standard, setStandard] = useState(null);
-
-  const [password, setPassword] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [rollNo, setRollNo] = useState("");
+  const [standard, setStandard] = useState("");
+  const [password, setPassword] = useState("");
+  const [getAllStudents, setGetAllStudents] = useState([]);
 
   const fetchInstructorByUserId = async (userId) => {
     try {
       const res = await axios.get(
         `${BASE_URL}instructor/getByUserId/${userId}`
       );
-      console.log(res.data);
       setInstructor(res.data.instructorDoc);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const getStudentsBySchool = async () => {
+    try {
+      const res = await axios.get(
+        `${BASE_URL}student/getStudentsBySchool/${instructor?.school?._id}`
+      );
+      setGetAllStudents(res.data.students);
+      setStudents(res.data.students);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    fetchInstructorByUserId(sessionStorage.getItem("user_id"));
+    const userId = sessionStorage.getItem("user_id");
+    fetchInstructorByUserId(userId);
   }, []);
+
+  useEffect(() => {
+    if (instructor) {
+      getStudentsBySchool();
+    }
+  }, [instructor]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStudents([]);
-    console.log(query);
-    console.log(instructor);
-    const res = await axios.get(`${BASE_URL}student/getStudentQuerySchool`, {
-      headers: {
-        query: query,
-        school: instructor?.school?._id,
-      },
-    });
-    console.log(res.data);
-    setStudents(res.data.students);
+    try {
+      const res = await axios.get(`${BASE_URL}student/getStudentQuerySchool`, {
+        headers: {
+          query: query,
+          school: instructor?.school?._id,
+        },
+      });
+      console.log(res.data);
+      setStudents(res.data.students);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleStudentSelect = (student) => {
-    console.log(student, "selected");
-    setStudents([]);
     setSelectedStudent(student);
-    setFirstName(student?.firstName);
-    setLastName(student?.lastName);
-    setRollNo(student?.rollNo);
-    setStandard(student?.standard);
+    setFirstName(student?.firstName || "");
+    setLastName(student?.lastName || "");
+    setRollNo(student?.rollNo || "");
+    setStandard(student?.standard || "");
   };
 
   const handleStudentUpdate = async (e) => {
     e.preventDefault();
-
     const reqBody = {
       studentId: selectedStudent?._id,
       firstName: firstName,
@@ -68,8 +81,6 @@ const EditStudent = () => {
       rollNo: rollNo,
       standard: standard,
     };
-
-    console.log(reqBody);
 
     try {
       const res = await axios.post(`${BASE_URL}student/updateStudent`, reqBody);
@@ -83,12 +94,10 @@ const EditStudent = () => {
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
-
     const reqBody = {
       studentId: selectedStudent?._id,
       newPassword: password,
     };
-    console.log(reqBody);
 
     try {
       const res = await axios.post(`${BASE_URL}student/resetPassword`, reqBody);
@@ -101,7 +110,7 @@ const EditStudent = () => {
   };
 
   return (
-    <div className="mx-auto ">
+    <div className="mx-auto">
       <form className="max-w-md mx-auto my-5" onSubmit={handleSubmit}>
         <label
           htmlFor="default-search"
@@ -143,48 +152,42 @@ const EditStudent = () => {
           </button>
         </div>
       </form>
-      {Array.isArray(students) && students.length > 0 ? (
-        <div className="z-10 my-5 mx-auto lg:w-1/2 bg-white rounded-lg shadow-lg">
-          <table className="w-full table-auto border-collapse">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="py-3 px-4 text-sm text-gray-600 font-medium border">
-                  Name
-                </th>
-                <th className="py-3 px-4 text-sm text-gray-600 font-medium border">
-                  Roll No
-                </th>
-                <th className="py-3 px-4 text-sm text-gray-600 font-medium border">
-                  Standard
-                </th>
+      <div className="max-w-md mx-auto my-5">
+        <table className="w-full border-collapse border border-gray-300 rounded-lg">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="py-3 px-4 text-sm text-gray-600 font-medium border">
+                Name
+              </th>
+              <th className="py-3 px-4 text-sm text-gray-600 font-medium border">
+                Roll No
+              </th>
+              <th className="py-3 px-4 text-sm text-gray-600 font-medium border">
+                Standard
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {students.map((student, index) => (
+              <tr
+                key={index}
+                onClick={() => handleStudentSelect(student)}
+                className="cursor-pointer hover:bg-gray-100 border-b text-center"
+              >
+                <td className="py-3 px-4 text-sm text-gray-900 font-normal border">
+                  {student.firstName} {student.lastName}
+                </td>
+                <td className="py-3 px-4 text-sm text-gray-900 font-normal border">
+                  {student.rollNo}
+                </td>
+                <td className="py-3 px-4 text-sm text-gray-900 font-normal border">
+                  {student.standard}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {students?.map((student, index) => {
-                return (
-                  <tr
-                    key={index}
-                    onClick={() => handleStudentSelect(student)}
-                    className="cursor-pointer hover:bg-gray-100 border-b text-center"
-                  >
-                    <td className="py-3 px-4 text-sm text-gray-900 font-normal border">
-                      {student?.firstName} {student?.lastName}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-900 font-normal border">
-                      {student?.rollNo}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-900 font-normal border">
-                      {student?.standard}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      ) : (
-        ``
-      )}
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {selectedStudent ? (
         <form

@@ -51,8 +51,8 @@ const Login = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 h-screen w-full">
-        <div className="bg-[#140342] grid place-items-center">
+      <div className="grid lg:grid-cols-2 sm:grid-cols-1 h-screen w-full">
+        <div className="bg-[#140342] grid place-items-center p-10">
           <div className="grid place-items-center">
             <div className="flex justify-center items-center w-full">
               <div>
@@ -77,7 +77,7 @@ const Login = () => {
             </div>
           </div>
         </div>
-        <div className="mx-auto p-6 bg-white grid place-items-center">
+        <div className="mx-auto p-6 bg-white grid place-items-center p-10">
           <div>
             <div className="grid place-items-center gap-2">
               <h1 className="text-xl font-bold leading-tight text-center tracking-tight text-gray-900 md:text-2xl">

@@ -7,12 +7,14 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import { BsCloudUpload } from "react-icons/bs";
 import { TfiReload } from "react-icons/tfi";
 import { BsGraphUpArrow } from "react-icons/bs";
-import { IoExitOutline } from "react-icons/io5";
+import { IoCloseCircle, IoExitOutline } from "react-icons/io5";
 import useAuth from "../authService";
 import { SlNote } from "react-icons/sl";
 import { FaUserGraduate } from "react-icons/fa";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
+import { BiSolidSchool } from "react-icons/bi";
+import { GiTeacher } from "react-icons/gi";
 
 const Sidebar = () => {
   const { auth, setAuth } = useAuth();
@@ -45,9 +47,20 @@ const Sidebar = () => {
   const isActive = (path) => {
     return location.pathname === path;
   };
+
+  const [showSidebar, setShowSidebar] = useState(false);
+  const handleToggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+
+  const handleCloseSidebar = () => {
+    setShowSidebar(false);
+  };
+
   return (
     <>
       <button
+        onClick={handleToggleSidebar}
         data-drawer-target="logo-sidebar"
         data-drawer-toggle="logo-sidebar"
         aria-controls="logo-sidebar"
@@ -72,9 +85,17 @@ const Sidebar = () => {
 
       <aside
         id="logo-sidebar"
-        className=" fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 "
+        className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+          showSidebar ? "" : "-translate-x-full sm:translate-x-0"
+        }  `}
         aria-label="Sidebar"
       >
+        <button
+          onClick={handleCloseSidebar}
+          className="absolute top-3 right-5 text-orange-500 dark:text-gray-400 lg:hidden md:hidden sm:block"
+        >
+          <IoCloseCircle className="h-8 w-8" />
+        </button>
         <div
           className="h-full py-10 px-3  overflow-y-auto bg-[#F1EDDF]"
           style={{ borderRadius: "0 50px 50px 0" }}
@@ -108,6 +129,52 @@ const Sidebar = () => {
             ) : (
               ``
             )}
+            {role == "ADMIN" ? (
+              <li>
+                <Link
+                  to="/admin/Schools"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/admin/Schools") ? "bg-orange-200" : ""
+                  }`}
+                >
+                  <GiTeacher className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/admin/Schools") ? "text-black" : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    All Schools
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              ``
+            )}
+
+            {role == "ADMIN" ? (
+              <li>
+                <Link
+                  to="/admin/allInstructor"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/admin/allInstructor") ? "bg-orange-200" : ""
+                  }`}
+                >
+                  <BiSolidSchool className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/admin/allInstructor")
+                        ? "text-black"
+                        : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    All Instructors
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              ``
+            )}
+
             {role == "ADMIN" ? (
               <li>
                 <Link

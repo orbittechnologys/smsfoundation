@@ -104,12 +104,12 @@ const MyCourse = () => {
   }, []);
 
   const goBack = () => {
-    navigate('/studenthome')
+    navigate("/studenthome");
   };
 
   return (
     <div>
-      <div className="mt-5 flex justify-between items-center mx-10">
+      <div className="mt-5 flex flex-wrap justify-between items-center mx-10">
         <div className="flex">
           <button className="flex justify-center items-center" onClick={goBack}>
             <IoIosArrowRoundBack className="mr-2 text-3xl" />
@@ -141,13 +141,17 @@ const MyCourse = () => {
         </div>
       </div>
 
-      <section className="py-8 px-5 grid lg:grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-4 place-items-center">
+      <section className="py-8 px-5 grid lg:grid-cols-4 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
         {filter == "ongoing" &&
           chapters?.map((chapter, index) => {
             return (
               <div key={index} className="grid ">
                 <div
-                  style={{ backgroundImage: `url(${Hexbg})` }}
+                  style={{
+                    backgroundImage: `url(${Hexbg})`,
+                    height: "300px",
+                    width: "350px",
+                  }}
                   className=" grid border border-gray-200 shadow-lg place-items-center bg-white p-4 rounded-xl text-center w-fit"
                 >
                   <div className="flex justify-start items-start w-full">
@@ -184,8 +188,12 @@ const MyCourse = () => {
             return (
               <div key={index} className="grid ">
                 <div
-                  style={{ backgroundImage: `url(${Hexbg})` }}
-                  className=" grid border border-gray-200 shadow-lg place-items-center bg-white p-4 rounded-xl text-center w-fit"
+                  style={{
+                    backgroundImage: `url(${Hexbg})`,
+                    height: "300px",
+                    width: "350px",
+                  }}
+                  className=" grid border place-items-center border-gray-200 shadow-lg  bg-white p-4 rounded-xl text-center w-fit"
                 >
                   {/* <div className="flex justify-start items-start w-full">
                     <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">

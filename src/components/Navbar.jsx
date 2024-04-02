@@ -39,7 +39,7 @@ const Navbar = () => {
   return (
     <>
       <div
-        className={`flex justify-between items-center px-10 py-5 ${
+        className={`flex justify-between flex-wrap items-center px-10 py-5 ${
           role === "ADMIN" || role === "INSTRUCTOR"
             ? "bg-white border-b border-gray-400"
             : "bg-gray-100"
@@ -53,10 +53,10 @@ const Navbar = () => {
           )}
         </div>
         <div className="flex justify-center items-center gap-5">
-          <div className="flex justify-center items-center gap-5">
+          {/* <div className="flex justify-center items-center gap-5">
             <span>Language</span>
             <button>English</button>
-          </div>
+          </div> */}
           <div className="relative">
             <button
               onClick={toggleDropdown}

@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* .search-inputt {
+  background-color: blue;
+} */
+
+.search-maindiv {
+  width: auto;
+}
+
+/* .search-div {
+  background-color: blue;
+} */
+
+@media screen and (max-width: 800px) {
+  .search-inputt {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .search-maindiv {
+    width: 360px;
+    padding: 10px 30px 10px 30px;
+  }
+  .search-div {
+    width: 350px;
+  }
+}

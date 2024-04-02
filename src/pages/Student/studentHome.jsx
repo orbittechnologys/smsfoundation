@@ -145,13 +145,16 @@ const studentHome = () => {
           </div>
         </section>
 
-        <div className="absolute top-1/2 left-1/2 w-fit transform -translate-x-1/2 -translate-y-1/2  mx-auto p-6 rounded-2xl shadow-md bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400">
+        <div className="search-maindiv absolute top-1/2 left-1/2 w-fit transform -translate-x-1/2 -translate-y-1/2  mx-auto p-6 rounded-2xl shadow-md bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400">
           <div className="flex justify-center items-center px-10">
-            <div className="space-y-10">
-              <div className="flex items-center p-3 space-x-6 bg-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-500">
-                <div className="flex justify-center items-center  p-4 w-72 space-x-4 rounded-full">
+            <div className="space-y-10 w-auto search-div">
+              <div className="flex justify-center items-center lg:flex-wrap p-3 space-x-6 bg-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-500">
+                <div
+                  className="search-inputt flex justify-center items-center p-4 w-72 space-x-4 rounded-full"
+                  id="search-inputt"
+                >
                   <input
-                    className=" outline-none border-none"
+                    className=" outline-none border-none "
                     type="text"
                     placeholder="Search by Chapter Name"
                   />
@@ -200,14 +203,14 @@ const studentHome = () => {
             </div>
           </div>
         </div>
-
-        <section className=" py-8 px-5 grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          <div className="mt-20 w-full col-span-3 text-center">
-            <p>{chapter?.length} Materials Found</p>
-          </div>
+        <div className="mt-20 w-full text-center">
+          <p>{chapter?.length} Materials Found</p>
+        </div>
+        <section className=" py-8 px-5 grid lg:grid-cols-4 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
           {chapter.map((card, index) => (
             <div
               key={index}
+              style={{ width: "350px", height: "300px" }}
               className="grid border border-gray-300 rounded-lg shadow-2xl"
             >
               <div
@@ -224,7 +227,8 @@ const studentHome = () => {
                 <p className="text-gray-600">{card?.desc}</p>
                 <div className="flex justify-center items-center gap-2">
                   <button
-                    onClick={() => navigate(`/pdf/${card?._id}`)}
+                    // onClick={() => navigate(`/pdf/${card?._id}`)}
+                    onClick={() => navigate(`/Content/${card?._id}`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex justify-center items-center mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center"
@@ -247,16 +251,16 @@ const studentHome = () => {
             </div>
           ))}
         </section>
-      </div>
-      <div className="flex justify-center items-center my-5 static">
-        <img src={Img2} alt="" />
-        <img src={Slogan} alt="" />
-      </div>
-      <footer className="bg-[#140342]">
-        <div className="grid place-items-center py-5">
-          <p className="text-white">Copyright © 2024 | All Rights Reserved</p>
+        <div className="flex justify-center items-center my-5 static">
+          <img src={Img2} alt="" />
+          <img src={Slogan} alt="" />
         </div>
-      </footer>
+        <footer className="bg-[#140342]">
+          <div className="grid place-items-center py-5">
+            <p className="text-white">Copyright © 2024 | All Rights Reserved</p>
+          </div>
+        </footer>
+      </div>
     </>
   );
 };

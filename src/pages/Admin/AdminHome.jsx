@@ -11,7 +11,7 @@ import {
   Tooltip as RechartsTooltip,
   YAxis,
 } from "recharts";
-import { TbFileImport } from "react-icons/tb";
+// import { TbFileImport } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
@@ -21,11 +21,11 @@ ChartJs.register(ArcElement, Tooltip, Legend);
 const AdminHome = () => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
-  const [totals,setTotals] = useState({
-    totalSchool:1,
-    totalInstructor:1,
-    totalStudents:1
-  })
+  const [totals, setTotals] = useState({
+    totalSchool: 1,
+    totalInstructor: 1,
+    totalStudents: 1,
+  });
   const data = {
     labels: ["Registered Last Week", "Registered This Week"],
     datasets: [
@@ -131,7 +131,7 @@ const AdminHome = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     fetchUser();
@@ -161,11 +161,13 @@ const AdminHome = () => {
             </div>
           </div>
         </div>
-        <div className="grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1 gap-5">
-          <div className="shadow-xl rounded-2xl p-5 bg-white ">
+        <div className="grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1 gap-5 place-items-center">
+          <div className="shadow-xl rounded-2xl p-5 bg-white lg:w-auto md:w-auto sm:w-80">
             <div className="flex justify-between items-center mb-4">
               <p className="text-lg font-semibold">Schools Registered</p>
-              <span className="p-2 bg-gray-200 rounded-full">{totals?.totalSchool}</span>
+              <span className="p-2 bg-gray-200 rounded-full">
+                {totals?.totalSchool}
+              </span>
             </div>
             <div className="flex justify-center items-center">
               <div style={{ width: "400px", height: "400px" }}>
@@ -174,9 +176,11 @@ const AdminHome = () => {
             </div>
           </div>
 
-          <div className="shadow-xl rounded-2xl p-5">
-            <div className="flex justify-between items-center">
-              <p className="text-xl font-semibold">Student Progress</p>
+          <div className="shadow-xl rounded-2xl p-5" style={{ width: "500px" }}>
+            <div className="grid lg:grid-cols-2 sm:grid-cols-2 place-items-center">
+              <div>
+                <p className="text-xl font-semibold">Student Progress</p>
+              </div>
               <div>
                 <select
                   id="small"
@@ -205,7 +209,7 @@ const AdminHome = () => {
             <div
               style={{
                 width: "100%",
-                height: 400,
+                height: 350,
                 padding: "10px",
                 backgroundColor: "#f0f0f0",
                 borderRadius: "10px",
