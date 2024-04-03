@@ -61,7 +61,7 @@ const TestReport = () => {
       );
       console.log(res.data);
       fetchTestReportbySchoolId(res.data.instructorDoc?.school?._id);
-      setSchool(res.data.intructorDoc?.school);
+      
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +69,7 @@ const TestReport = () => {
 
   const fetchTestReportbySchoolId = async (schoolId) => {
     if(schoolId){
+      setSchool(schoolId)
       try {
         const res = await axios.get(
           `${BASE_URL}studentTest/testReportForSchool/${schoolId}`
@@ -154,6 +155,54 @@ const TestReport = () => {
     toggleModal();
   };
 
+  const triggerCsvDownload = async (role) => {
+    try {
+      if(role == "ADMIN"){
+        const res = await axios.get(`${BASE_URL}studentTest/getCSV`,{
+          responseType:'blob'
+        });
+        const blob = res.data;
+        const downloadUrl = window.URL.createObjectURL(blob);
+              // Create a temporary anchor element and trigger a download
+              const link = document.createElement('a');
+              link.href = downloadUrl;
+              const date = new Date();
+              
+              link.setAttribute('download', `testReport${date.getDate()}-${date.getMonth() +1}-${date.getHours()}:${date.getMinutes()}.csv`); // or dynamically set the filename based on content-disposition header
+              document.body.appendChild(link); // Append to the document
+              link.click(); // Programmatically click the link to trigger the download
+        
+              // Clean up: remove the link and revoke the object URL
+              document.body.removeChild(link);
+              window.URL.revokeObjectURL(downloadUrl);
+  
+      }else {
+        console.log(school);
+        const res = await axios.get(`${BASE_URL}studentTest/testReportCSVForSchool/${school}`, {
+          responseType:'blob'
+        });
+        const blob = res.data;
+        const downloadUrl = window.URL.createObjectURL(blob);
+              // Create a temporary anchor element and trigger a download
+              const link = document.createElement('a');
+              link.href = downloadUrl;
+              const date = new Date();
+              
+              link.setAttribute('download', `testReportSchool${date.getDate()}-${date.getMonth() +1}-${date.getHours()}:${date.getMinutes()}.csv`); // or dynamically set the filename based on content-disposition header
+              document.body.appendChild(link); // Append to the document
+              link.click(); // Programmatically click the link to trigger the download
+        
+              // Clean up: remove the link and revoke the object URL
+              document.body.removeChild(link);
+              window.URL.revokeObjectURL(downloadUrl);
+
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
+
   return (
     <>
       <div className="flex justify-between items-center my-5">
@@ -163,7 +212,7 @@ const TestReport = () => {
           </p>
           <p className="text-lg font-semibold">Test Report</p>
         </div>
-        <div>
+        <div className="flex flex-row justify-evenly">
           {/* <form className="max-w-md mx-auto">
             <label
               htmlFor="default-search"
@@ -209,12 +258,18 @@ const TestReport = () => {
                     {role!= 'INSTRUCTOR' ? (
             <button
             onClick={toggleModal}
-            className="border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
+            className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
           >
             Filter
           </button>
           ):``
           }
+          <button
+            onClick={() => triggerCsvDownload(role)}
+            className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
+          >
+            Download CSV
+          </button>
         </div>
       </div>
       <div className="table-container">

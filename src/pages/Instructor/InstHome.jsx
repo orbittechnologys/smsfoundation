@@ -12,8 +12,22 @@ import { useNavigate } from "react-router";
 const InstHome = () => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
+  const [school,setSchool] = useState(null);
+
 
   const navigate = useNavigate();
+
+  const fetchInstructorSchool = async (userId) => {
+    try {
+      const res = await axios.get(
+        `${BASE_URL}instructor/getByUserId/${userId}`
+      );
+      console.log(res.data);
+      setSchool(res.data.instructorDoc?.school?._id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const fetchUser = async () => {
     const userId = sessionStorage.getItem("user_id");
@@ -21,6 +35,7 @@ const InstHome = () => {
     console.log(userId);
     try {
       const res = await axios.get(`${BASE_URL}user/id/${userId}`);
+      fetchInstructorSchool(userId);
       console.log(res.data.userDoc);
       setUser(res.data.userDoc);
     } catch (error) {
@@ -31,6 +46,43 @@ const InstHome = () => {
   useEffect(() => {
     fetchUser();
   }, []);
+
+
+  const downloadCSVFromBlob = (blob,fileName) => {
+    const downloadUrl = window.URL.createObjectURL(blob);
+      // Create a temporary anchor element and trigger a download
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      const date = new Date();
+            
+      link.setAttribute('download', `${fileName}School${date.getDate()}-${date.getMonth() +1}-${date.getHours()}:${date.getMinutes()}.csv`); // or dynamically set the filename based on content-disposition header
+      document.body.appendChild(link); // Append to the document
+      link.click(); // Programmatically click the link to trigger the download
+      
+            // Clean up: remove the link and revoke the object URL
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+  }
+
+  const triggerCsvDownload = async () => {
+    try {
+      console.log(school);
+      const res = await axios.get(`${BASE_URL}subjectTime/learningReportCSVForSchool/${school}`, {
+        responseType:'blob'
+      });
+      const blob = res.data;
+      downloadCSVFromBlob(blob,"LearningReport");
+
+      const res2 = await axios.get(`${BASE_URL}studentTest/testReportCSVForSchool/${school}`, {
+        responseType:'blob'
+      });
+      const blob2 = res2.data;
+      downloadCSVFromBlob(blob2,'TestReport');
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -58,7 +110,7 @@ const InstHome = () => {
       <div className="flex justify-center items-center">
         <div className="w-3/4">
           <div className="grid lg:grid-cols-2 sm:grid-cols-1  gap-5 ">
-            <div className=" grid place-items-center shadow-xl rounded-2xl p-5 border">
+            <div className=" grid place-items-center shadow-xl rounded-2xl p-5 border" onClick={() => triggerCsvDownload()}>
               <img src={Expimg} alt="" />
               <p className="text-xl font-bold">Export Files</p>
               {/* <p className="text-gray-500">Instruction goes here</p> */}
