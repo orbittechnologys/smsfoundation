@@ -374,7 +374,11 @@ const AddQuestions = () => {
               >
                 <option selected>Choose a Chapter</option>
                 {chapters?.map((chapter, index) => {
-                  return <option value={chapter?._id}>{chapter?.name}</option>;
+                  return (
+                    <option key={index} value={chapter?._id}>
+                      {chapter?.name}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -383,7 +387,7 @@ const AddQuestions = () => {
       </div>
 
       {selectedChapter ? (
-        <div className="my-4 shadow-md p-8 rounded-xl w-fit text-xl">
+        <div className="my-4 shadow-md p-8 rounded-xl lg:w-fit sm:w-full text-xl">
           <span className="text-center text-xl font-semibold">
             Test for the chapter
           </span>
@@ -409,11 +413,11 @@ const AddQuestions = () => {
               </h1>
             </div>
           ) : (
-            <div>
+            <div className="w-full">
               <h1 className="my-2">No tests found</h1>
               <form
                 onSubmit={handleCreateTest}
-                className="flex justify-center items-center gap-5 my-5"
+                className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 my-5 "
               >
                 <input
                   type="text"
@@ -444,7 +448,7 @@ const AddQuestions = () => {
             Add Question
           </h3>
 
-          <div className="flex w-3/5 justify-center items-center mt-5">
+          <div className="flex lg:w-3/5 sm:w-full justify-center items-center mt-5">
             <div className="w-full">
               <p className="mb-1 text-base sm:text-lg md:text-xl lg:text-2xl xl:text-2xl font-semibold flex items-center">
                 <FaCircleCheck className="text-lime-600" /> Marks
@@ -460,7 +464,7 @@ const AddQuestions = () => {
             </div>
           </div>
 
-          <div className="grid gap-8 w-full  my-5 ">
+          <div className="grid gap-8 w-full  my-5 lg:mb-5 mb-10 ">
             <label className="font-semibold text-xl" htmlFor="question1">
               Question:
             </label>
@@ -472,13 +476,13 @@ const AddQuestions = () => {
                 onChange={(value) => setQuestionName(value)}
                 modules={modules}
                 formats={formats}
-                className="mb-10 w-5/6"
+                className="mb-10 lg:w-5/6 sm:w-full"
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="flex">
+          <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-3">
+            <div className="flex lg:mb-0 mb-16">
               <div>
                 <label className="text-xl">A.</label>
                 <input
@@ -493,10 +497,10 @@ const AddQuestions = () => {
                 formats={formats}
                 value={optionA}
                 onChange={(e) => setOptionA(e)}
-                className="ml-4 mb-10 w-5/6"
+                className="ml-4 mb-10 lg:w-5/6"
               />
             </div>
-            <div className="flex">
+            <div className="flex lg:mb-0 mb-16">
               <div>
                 <label className="text-xl">B.</label>
                 <input
@@ -511,10 +515,10 @@ const AddQuestions = () => {
                 formats={formats}
                 value={optionB}
                 onChange={(e) => setOptionB(e)}
-                className="ml-4 mb-10 w-5/6"
+                className="ml-4 mb-10 lg:w-5/6"
               />
             </div>
-            <div className="flex">
+            <div className="flex lg:mb-0 mb-16">
               <div>
                 <label className="text-xl">C.</label>
                 <input
@@ -529,10 +533,10 @@ const AddQuestions = () => {
                 formats={formats}
                 value={optionC}
                 onChange={(e) => setOptionC(e)}
-                className="ml-4 mb-10 w-5/6"
+                className="ml-4 mb-10 lg:w-5/6"
               />
             </div>
-            <div className="flex">
+            <div className="flex lg:mb-0 mb-16">
               <div>
                 <label className="text-xl">D.</label>
                 <input
@@ -547,7 +551,7 @@ const AddQuestions = () => {
                 formats={formats}
                 value={optionD}
                 onChange={(e) => setOptionD(e)}
-                className="ml-4 mb-10 w-5/6"
+                className="ml-4 mb-10 lg:w-5/6"
               />
             </div>
           </div>
@@ -561,7 +565,7 @@ const AddQuestions = () => {
                 formats={formats}
                 value={hint}
                 onChange={(e) => setHint(e)}
-                className="ml-4 my-5 w-5/6"
+                className="ml-4 my-5 lg:w-5/6"
               />
             </div>
           </div>

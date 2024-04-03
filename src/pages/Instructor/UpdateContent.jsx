@@ -7,7 +7,7 @@ import uploadToAzureStorage from "../../Hooks/uploadToAzureStorage";
 
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
-  const [audioFileName,setAudioFileName] = useState("");
+  const [audioFileName, setAudioFileName] = useState("");
 
   const [standard, setStandard] = useState(null);
   const [medium, setMedium] = useState(null);
@@ -23,9 +23,9 @@ const UpdateContent = () => {
   const [chapterName, setChapterName] = useState(null);
   const [chapterDesc, setChapterDesc] = useState(null);
 
-  const [vidoeUrl,setVideoUrl] = useState(null);
+  const [vidoeUrl, setVideoUrl] = useState(null);
 
-  const [uploadedAudioUrl,setUploadedAudioUrl] = useState(null);
+  const [uploadedAudioUrl, setUploadedAudioUrl] = useState(null);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -104,8 +104,8 @@ const UpdateContent = () => {
       if (chapterName && chapterDesc && uploadedFileUrl && selectedSubject) {
         const reqBody = {
           chapterUrl: uploadedFileUrl,
-          audioUrl:uploadedAudioUrl,
-          videoUrl:vidoeUrl,
+          audioUrl: uploadedAudioUrl,
+          videoUrl: vidoeUrl,
           subjectId: selectedSubject,
           name: chapterName,
           desc: chapterDesc,
@@ -124,7 +124,7 @@ const UpdateContent = () => {
 
   return (
     <>
-      <div className="grid lg:grid-cols-2 sm:grid-cols-2 gap-5">
+      <div className="grid lg:grid-cols-2 sm:grid-cols-2 gap-5 lg:mt-5 mt-10">
         <div className="border shadow-md p-5 rounded-xl grid gap-5">
           <div>
             <label
@@ -202,7 +202,11 @@ const UpdateContent = () => {
               >
                 <option selected>Choose a Subject</option>
                 {subjects?.map((subject, index) => {
-                  return <option key={index} value={subject?._id}>{subject?.name}</option>;
+                  return (
+                    <option key={index} value={subject?._id}>
+                      {subject?.name}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -212,41 +216,47 @@ const UpdateContent = () => {
 
       {Array.isArray(chapters) && chapters.length > 0 && (
         <div className="my-5 mx-auto bg-white shadow-md p-8 rounded-md">
-          <h1 className="text-2xl my-5 font-semibold">
+          <h1 className="lg:text-2xl md:text-2xl sm:text-xl lg:text-left text-center my-5 font-semibold lg:py-5 py-5 border-b ">
             Chapters found: {chapters?.length}
           </h1>
           {chapters.map((chapter, index) => (
             <div key={index} className="my-4">
-              <h1 className="text-xl font-semibold mb-2">{chapter?.name}</h1>
-              <p className="text-gray-600 mb-2">{chapter?.desc}</p>
-              <div className="flex justify-start">
-              <a
-                href={chapter?.chapterUrl}
-                target="_blank"
-                className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white"
-              >
-                View PDF
-              </a>
-              {chapter?.audioUrl ? (
+              <h1 className="lg:text-xl md:text-lg sm:text-base font-semibold mb-2">
+                {chapter?.name}
+              </h1>
+              <p className="text-gray-600 mb-2 lg:text-lg md:text-base sm:text-xs">
+                {chapter?.desc}
+              </p>
+              <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-fit gap-3">
                 <a
-                href={chapter?.audioUrl}
-                target="_blank"
-                className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white"
-              >
-                View Audio
-              </a>
-              ):``
-              }
-              {chapter?.videoUrl ? (
-                <a
-                href={chapter?.videoUrl}
-                target="_blank"
-                className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white"
-              >
-                View Video
-              </a>
-              ):``
-              }
+                  href={chapter?.chapterUrl}
+                  target="_blank"
+                  className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs flex justify-center items-center whitespace-nowrap"
+                >
+                  View PDF
+                </a>
+                {chapter?.audioUrl ? (
+                  <a
+                    href={chapter?.audioUrl}
+                    target="_blank"
+                    className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
+                  >
+                    View Audio
+                  </a>
+                ) : (
+                  ``
+                )}
+                {chapter?.videoUrl ? (
+                  <a
+                    href={chapter?.videoUrl}
+                    target="_blank"
+                    className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
+                  >
+                    View Video
+                  </a>
+                ) : (
+                  ``
+                )}
               </div>
             </div>
           ))}
@@ -256,7 +266,7 @@ const UpdateContent = () => {
       {selectedSubject && (
         <div>
           <h1>Add a new Chapter</h1>
-          <div className="mt-5 grid grid-cols-3 gap-5 shadow-lg p-5 border rounded-xl">
+          <div className="mt-5 lg:grid grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 shadow-lg p-5 border rounded-xl">
             <div>
               <label
                 htmlFor="desc"

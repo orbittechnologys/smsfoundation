@@ -28,4 +28,53 @@
   .search-div {
     width: 350px;
   }
+  .doughnut-div {
+    width: 350px !important;
+    /* background-color: blue; */
+  }
+  .barr-div {
+    width: 350px !important;
+    /* background-color: blue; */
+  }
+}
+
+.doughhh {
+  width: 400px;
+  height: 400px;
+}
+
+.doughnut-div {
+  width: 400px;
+}
+
+.barr-div {
+  width: 400px;
+}
+
+.cont-boxx {
+  width: 350px;
+  height: 350px;
+}
+
+@media screen and (max-width: 400px) {
+  .doughnut-div {
+    width: 300px !important;
+    /* background-color: blue; */
+  }
+  .barr-div {
+    width: 300px !important;
+    /* background-color: blue; */
+  }
+  .doughhh {
+    width: 280px;
+    height: 280px;
+  }
+  .inputbutton-div {
+    width: 340px;
+    /* background-color: aqua; */
+  }
+  .select-div {
+    /* background-color: black; */
+    width: 150px;
+  }
 }

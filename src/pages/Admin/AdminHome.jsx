@@ -143,7 +143,7 @@ const AdminHome = () => {
       <div className="">
         <div className="flex justify-between items-center my-5">
           <div>
-            <h1 className="text-3xl font-semibold">
+            <h1 className="lg:text-3xl md:text-2xl text-xl  font-semibold">
               <span className="text-orange-400">Welcome </span>
 
               {role === "ADMIN" && user && (
@@ -156,13 +156,13 @@ const AdminHome = () => {
           </div>
           <div>
             <div className="flex justify-center items-center my-5 static">
-              <img src={Img2} alt="" className="h-16" />
-              <img src={Slogan} alt="" className="h-16" />
+              <img src={Img2} alt="" className="lg:h-16 md:h-12 h-10" />
+              <img src={Slogan} alt="" className="lg:h-16 md:h-12 h-10" />
             </div>
           </div>
         </div>
         <div className="grid lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1 gap-5 place-items-center">
-          <div className="shadow-xl rounded-2xl p-5 bg-white lg:w-auto md:w-auto sm:w-80">
+          <div className="shadow-xl rounded-2xl p-5 bg-white doughnut-div">
             <div className="flex justify-between items-center mb-4">
               <p className="text-lg font-semibold">Schools Registered</p>
               <span className="p-2 bg-gray-200 rounded-full">
@@ -170,13 +170,13 @@ const AdminHome = () => {
               </span>
             </div>
             <div className="flex justify-center items-center">
-              <div style={{ width: "400px", height: "400px" }}>
+              <div className="doughhh">
                 <Doughnut data={data} options={options} />
               </div>
             </div>
           </div>
 
-          <div className="shadow-xl rounded-2xl p-5" style={{ width: "500px" }}>
+          <div className="shadow-xl rounded-2xl p-5 barr-div">
             <div className="grid lg:grid-cols-2 sm:grid-cols-2 place-items-center">
               <div>
                 <p className="text-xl font-semibold">Student Progress</p>
@@ -210,7 +210,7 @@ const AdminHome = () => {
               style={{
                 width: "100%",
                 height: 350,
-                padding: "10px",
+                padding: "5px",
                 backgroundColor: "#f0f0f0",
                 borderRadius: "10px",
               }}
@@ -218,7 +218,7 @@ const AdminHome = () => {
               <ResponsiveContainer>
                 <BarChart
                   data={dataArray}
-                  margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
                 >
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -230,19 +230,25 @@ const AdminHome = () => {
           </div>
           <div className="grid place-items-center">
             <div className="grid place-items-center gap-3">
-              <p className="text-xl font-semibold">Schools Registered</p>
+              <p className="lg:text-xl md:text-lg text-base font-semibold">
+                Schools Registered
+              </p>
               <span className="px-10 py-1 bg-[#F1EDDF] rounded-xl font-semibold">
                 {totals?.totalSchool}
               </span>
             </div>
             <div className="grid place-items-center gap-3">
-              <p className="text-xl font-semibold">Students Registered</p>
+              <p className="lg:text-xl md:text-lg text-base font-semibold">
+                Students Registered
+              </p>
               <span className="px-10 py-1 bg-[#F1EDDF] rounded-xl font-semibold">
                 {totals?.totalStudents}
               </span>
             </div>
             <div className="grid place-items-center gap-3">
-              <p className="text-xl font-semibold">Instructor Registered</p>
+              <p className="lg:text-xl md:text-lg text-base font-semibold">
+                Instructor Registered
+              </p>
               <span className="px-10 py-1 bg-[#F1EDDF] rounded-xl font-semibold">
                 {totals?.totalInstructor}
               </span>

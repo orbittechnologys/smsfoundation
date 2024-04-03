@@ -39,16 +39,16 @@ const Navbar = () => {
   return (
     <>
       <div
-        className={`flex justify-between flex-wrap items-center px-10 py-5 ${
+        className={`flex justify-between flex-wrap items-center px-10 lg:py-5 ${
           role === "ADMIN" || role === "INSTRUCTOR"
-            ? "bg-white border-b border-gray-400"
+            ? "bg-white lg:border-b lg:border-gray-400"
             : "bg-gray-100"
         } w-full`}
       >
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center lg:py-0 py-3">
           {role !== "ADMIN" && role !== "INSTRUCTOR" && (
             <Link to="/">
-              <img src={sfLogo} alt="logo" className="h-10" />
+              <img src={sfLogo} alt="logo" className="lg:h-10 h-5" />
             </Link>
           )}
         </div>

@@ -115,9 +115,9 @@ const MyCourse = () => {
             <IoIosArrowRoundBack className="mr-2 text-3xl" />
           </button>
 
-          <p className="text-2xl font-semibold">My Course</p>
+          <p className="lg:text-2xl sm:text-xl font-semibold">My Course</p>
         </div>
-        <div className="flex cursor-pointer">
+        <div className="flex cursor-pointer lg:justify-end md:justify-end lg:items-center md:items-center justify-center items-center lg:w-fit md:w-fit w-full lg:my-0 my-5">
           <p
             className={
               filter === "ongoing"
@@ -145,14 +145,12 @@ const MyCourse = () => {
         {filter == "ongoing" &&
           chapters?.map((chapter, index) => {
             return (
-              <div key={index} className="grid ">
+              <div key={index} className="grid place-items-center">
                 <div
                   style={{
                     backgroundImage: `url(${Hexbg})`,
-                    height: "300px",
-                    width: "350px",
                   }}
-                  className=" grid border border-gray-200 shadow-lg place-items-center bg-white p-4 rounded-xl text-center w-fit"
+                  className="cont-boxx grid border border-gray-200 shadow-lg place-items-center bg-white p-4 rounded-xl text-center w-fit"
                 >
                   <div className="flex justify-start items-start w-full">
                     <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">

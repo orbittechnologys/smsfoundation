@@ -130,7 +130,7 @@ const studentHome = () => {
         <section className="bg-[#140342] py-8 h-2/4">
           <div className="flex justify-center items-center w-full h-full">
             <div className="text-center">
-              <h1 className="text-3xl  text-white font-bold mb-4">
+              <h1 className="lg:text-3xl md:text-2xl text-base  text-white font-bold mb-4">
                 Empowering students to shape their <br /> futures with knowledge
                 as their guide.
               </h1>
@@ -148,7 +148,7 @@ const studentHome = () => {
         <div className="search-maindiv absolute top-1/2 left-1/2 w-fit transform -translate-x-1/2 -translate-y-1/2  mx-auto p-6 rounded-2xl shadow-md bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400">
           <div className="flex justify-center items-center px-10">
             <div className="space-y-10 w-auto search-div">
-              <div className="flex justify-center items-center lg:flex-wrap p-3 space-x-6 bg-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-500">
+              <div className="flex justify-center items-center lg:flex-wrap p-3 space-x-6 bg-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-500 inputbutton-div">
                 <div
                   className="search-inputt flex justify-center items-center p-4 w-72 space-x-4 rounded-full"
                   id="search-inputt"
@@ -159,7 +159,7 @@ const studentHome = () => {
                     placeholder="Search by Chapter Name"
                   />
                 </div>
-                <div className="flex py-3 px-4 rounded-lg text-gray-500 font-semibold cursor-pointer">
+                <div className="flex py-3 px-4 rounded-lg text-gray-500 font-semibold cursor-pointer select-div">
                   <select
                     className="whitespace-nowrap border-none"
                     onChange={(e) => {
@@ -177,7 +177,7 @@ const studentHome = () => {
                     })}
                   </select>
                 </div>
-                <div className="bg-gray-800 py-3 px-5 text-white font-semibold rounded-full hover:shadow-lg transition duration-3000 cursor-pointer">
+                <div className="bg-gray-800 py-3 px-5 text-white font-semibold rounded-full hover:shadow-lg transition duration-3000 cursor-pointer ">
                   <button
                     className="flex justify-center items-center gap-2"
                     onClick={() => handleSearch()}
