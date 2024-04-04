@@ -252,7 +252,7 @@ const Sidebar = () => {
                       isActive("/admin/AddTest") ? "text-black" : "text-black"
                     } ms-3 hover:text-orange-500`}
                   >
-                    Add Test
+                    Add Assessment
                   </span>
                 </Link>
               </li>
