@@ -35,6 +35,9 @@ const AllStudents = () => {
               <th>Roll No</th>
               <th>Standard</th>
               <th>Syllabus</th>
+              <th>School</th>
+              <th>District</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -47,6 +50,9 @@ const AllStudents = () => {
                 <td>{rowData.rollNo}</td>
                 <td>{rowData.standard}</td>
                 <td>{rowData.syllabus}</td>
+                <td>{rowData?.school?.name}</td>
+                <td>{rowData?.school?.district}</td>
+                <td> <button className="font-semibold text-white bg-green-600 px-3 py-2 rounded-lg">Reset Password</button></td>
               </tr>
             ))}
           </tbody>

@@ -33,10 +33,12 @@ const Allinstructor = () => {
           <thead>
             <tr>
               <th>Name</th>
-
-              <th>Medium</th>
               <th>Email</th>
-              <th>Passoword Rest</th>
+              <th>Medium</th>
+              <th>School</th>
+              <th>District</th>
+              <th>Address</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -45,8 +47,13 @@ const Allinstructor = () => {
                 <td>
                   {rowData.firstName} {rowData.lastName}
                 </td>
-                <td>{rowData.medium}</td>
+                
                 <td>{rowData.email}</td>
+                <td>{rowData?.school?.medium}</td>
+                <td>{rowData?.school?.name}</td>
+                <td>{rowData?.school?.district}</td>
+                <td>{rowData?.school?.address}</td>
+                <td> <button className="font-semibold text-white bg-green-600 px-3 py-2 rounded-lg">Reset Password</button></td>
               </tr>
             ))}
           </tbody>

@@ -164,7 +164,7 @@ const AddInstructor = () => {
               {Array.isArray(dropSchool) &&
                 dropSchool?.map((school, index) => (
                   <option key={index} value={index}>
-                    {school?.name}
+                    {school?.name} {school?.district}
                   </option>
                 ))}
             </select>

@@ -8,12 +8,27 @@ const StudentProfile = () => {
   const [user, setUser] = useState(null);
   const { studentId } = useParams();
 
+  const [userDoc,setUserDoc] = useState(null);
+
+  const fetchUser = async (userId) => {
+    try {
+      const res = await axios.get(`${BASE_URL}user/id/${userId}`);
+      console.log(res.data);
+      setUserDoc(res.data.userDoc);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const fetchStudent = async () => {
     try {
       const res = await axios.get(
         `${BASE_URL}student/getStudentByUserId/${studentId}`
       );
+      console.log(res.data);
+      fetchUser(res.data.studentDoc?.user);
       setUser(res.data.studentDoc);
+      
     } catch (error) {
       console.log(error);
     }
@@ -47,6 +62,9 @@ const StudentProfile = () => {
             </p>
             <p className="text-gray-600 mb-4">
               <span className="font-semibold">Medium:</span> {user?.medium}
+            </p>
+            <p className="text-gray-600 mb-4">
+              <span className="font-semibold">Email:</span> {userDoc?.email}
             </p>
           </div>
         </div>
