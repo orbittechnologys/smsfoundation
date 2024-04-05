@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import { PiPasswordDuotone } from "react-icons/pi";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Allinstructor = () => {
   const [allInstructor, setAllInstructor] = useState([]);
@@ -24,20 +23,24 @@ const Allinstructor = () => {
     getAllInstructor();
   }, []);
 
-  const handleResetPassword = (instructorId) => {
+  const handleResetPassword = async (instructorId) => {
+    // e.preventDefault();
     try {
       const reqbody = {
         instructorId: instructorId,
         newPassword: newPassword,
       };
-      const res = axios.post(`${BASE_URL}instructor/resetPassword`, reqbody);
+      const res = await axios.post(
+        `${BASE_URL}instructor/resetPassword`,
+        reqbody
+      );
       console.log(res.data);
+      alert("Password changed successfully");
     } catch (error) {
       console.log(error);
     }
 
     setSelectedInstructorId(instructorId);
-    console.log(instructorId);
     setShowModal(true);
   };
 
@@ -72,7 +75,7 @@ const Allinstructor = () => {
                 <td>
                   <div
                     onClick={() => handleResetPassword(rowData._id)}
-                    className="cursor-pointer flex items-center"
+                    className="cursor-pointer flex items-center justify-center"
                   >
                     <PiPasswordDuotone className="mr-2" />
                     Reset Password
@@ -112,36 +115,34 @@ const Allinstructor = () => {
                   </div>
                 </div>
                 <div className="mt-4">
-                  <div className="mb-8">
-                    <label
-                      htmlFor="password"
-                      className="block mb-2 text-sm font-medium text-gray-900"
-                    >
-                      Create New password
-                    </label>
-                    <div className="relative">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        id="password"
-                        className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        required
-                      />
-                      <button
-                        type="button"
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                        onClick={togglePasswordVisibility}
+                  <form
+                    onSubmit={handleResetPassword}
+                    className="bg-gray-200 rounded-lg p-5 lg:w-1/2 mx-auto"
+                  >
+                    <div>
+                      <label
+                        htmlFor="rest_password"
+                        className="block mb-2 text-sm font-medium text-gray-900 "
                       >
-                        {showPassword ? (
-                          <FaEye className="w-5 h-5 text-gray-500" />
-                        ) : (
-                          <FaEyeSlash className="w-5 h-5 text-gray-500" />
-                        )}
+                        Reset Password
+                      </label>
+                      <input
+                        type="password"
+                        placeholder="Enter new Password"
+                        onChange={(e) => setNewPassword(e.target.value)}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      />
+                    </div>
+                    <div>
+                      <button
+                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center my-5"
+                        type="submit"
+                      >
+                        {" "}
+                        Reset Password
                       </button>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
