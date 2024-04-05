@@ -9,61 +9,13 @@ import Slogan from "../../assets/slogan.png";
 import Img2 from "../../assets/img2.png";
 import Hexbg from "../../assets/hexbg.png";
 
-const studentHome = () => {
+const StudentHome = () => {
   const [subjects, setSubjects] = useState([]);
   const [studentData, setStudentData] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState("NO");
   const [chapter, setChapters] = useState([]);
-  const CardData = [
-    {
-      category: "SCIENCE",
-      title: "Atoms and Substance",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis harum provident at aliquid nulla repellendus, molestias hic cumque unde est.",
-      imageUrl: "path/to/flask-image.jpg",
-      pdfUrl: "path/to/pdf-file.pdf",
-    },
-    {
-      category: "ENGLISH",
-      title: "English study content ",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis harum provident at aliquid nulla repellendus, molestias hic cumque unde est.",
-      imageUrl: "path/to/flask-image.jpg",
-      pdfUrl: "path/to/pdf-file.pdf",
-    },
-    {
-      category: "SCIENCE",
-      title: "Atoms and Substance",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis harum provident at aliquid nulla repellendus, molestias hic cumque unde est.",
-      imageUrl: "path/to/flask-image.jpg",
-      pdfUrl: "path/to/pdf-file.pdf",
-    },
-    {
-      category: "SCIENCE",
-      title: "Atoms and Substance",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis harum provident at aliquid nulla repellendus, molestias hic cumque unde est.",
-      imageUrl: "path/to/flask-image.jpg",
-      pdfUrl: "path/to/pdf-file.pdf",
-    },
-    {
-      category: "ENGLISH",
-      title: "English study content ",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis harum provident at aliquid nulla repellendus, molestias hic cumque unde est.",
-      imageUrl: "path/to/flask-image.jpg",
-      pdfUrl: "path/to/pdf-file.pdf",
-    },
-    {
-      category: "SCIENCE",
-      title: "Atoms and Substance",
-      description:
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis harum provident at aliquid nulla repellendus, molestias hic cumque unde est.",
-      imageUrl: "path/to/flask-image.jpg",
-      pdfUrl: "path/to/pdf-file.pdf",
-    },
-  ];
+  const [query,setQuery] = useState("");
+
 
   const { auth } = useAuth();
   console.log(auth);
@@ -111,7 +63,16 @@ const studentHome = () => {
   };
 
   const handleSearch = async () => {
-    if (selectedSubject != "NO") {
+    if(query?.length > 0){
+      try {
+        const res = await axios.get(`${BASE_URL}chapter/query/${query}`);
+        console.log(res.data);
+        setQuery("")
+        setChapters(res.data.chapters);
+      } catch (error) {
+        console.log(error);
+      }
+    }else if (selectedSubject != "NO") {
       try {
         const res = await axios.get(
           `${BASE_URL}chapter/getChapterBySubject/${selectedSubject}`
@@ -156,6 +117,8 @@ const studentHome = () => {
                   <input
                     className=" outline-none border-none "
                     type="text"
+                    onChange={(e)=> setQuery(e.target.value)}
+                    value={query}
                     placeholder="Search by Chapter Name"
                   />
                 </div>
@@ -265,4 +228,4 @@ const studentHome = () => {
   );
 };
 
-export default studentHome;
+export default StudentHome;
