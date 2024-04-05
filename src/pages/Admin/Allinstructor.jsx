@@ -23,13 +23,14 @@ const Allinstructor = () => {
     getAllInstructor();
   }, []);
 
-  const handleResetPassword = async (instructorId) => {
-    // e.preventDefault();
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    const reqbody = {
+      instructorId: selectedInstructorId,
+      newPassword: newPassword,
+    };
+    console.log(reqbody);
     try {
-      const reqbody = {
-        instructorId: instructorId,
-        newPassword: newPassword,
-      };
       const res = await axios.post(
         `${BASE_URL}instructor/resetPassword`,
         reqbody
@@ -40,8 +41,7 @@ const Allinstructor = () => {
       console.log(error);
     }
 
-    setSelectedInstructorId(instructorId);
-    setShowModal(true);
+    setShowModal(false);
   };
 
   return (
@@ -74,7 +74,10 @@ const Allinstructor = () => {
                 <td>{rowData.email}</td>
                 <td>
                   <div
-                    onClick={() => handleResetPassword(rowData._id)}
+                    onClick={() => {
+                      setSelectedInstructorId(rowData._id);
+                      setShowModal(true);
+                    }}
                     className="cursor-pointer flex items-center justify-center"
                   >
                     <PiPasswordDuotone className="mr-2" />
