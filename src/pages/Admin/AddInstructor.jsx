@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import SearchableDropdown from "../SearchableDropdown";
 
 const AddInstructor = () => {
   const [name, setName] = useState("");
@@ -11,7 +12,8 @@ const AddInstructor = () => {
   const [school, setSchool] = useState("");
   const [medium, setMedium] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedSchool, setSelectedSchool] = useState("NO");
+  // const [selectedSchool, setSelectedSchool] = useState("NO");
+  const [selectedSchool, setSelectedSchool] = useState(null); // Initialize selectedSchool as null
   const [dropSchool, setDropSchool] = useState([]);
 
   const handleSubmit = async (e) => {
@@ -23,7 +25,9 @@ const AddInstructor = () => {
       lastName: lastName,
       email: email,
       password: password,
-      school: selectedSchool,
+      // school: selectedSchool,
+      school: selectedSchool.value, // Access value property of selectedSchool
+
       medium: medium,
     };
 
@@ -50,18 +54,36 @@ const AddInstructor = () => {
     setMedium(e.target.value);
   };
 
+  // const fetchSchool = async () => {
+  //   try {
+  //     const res = await axios.get(`${BASE_URL}school/getAllSchools`);
+  //     console.log(res.data.schools);
+  //     setDropSchool(res.data.schools);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const fetchSchool = async () => {
     try {
       const res = await axios.get(`${BASE_URL}school/getAllSchools`);
       console.log(res.data.schools);
-      setDropSchool(res.data.schools);
+      const transformedSchools = res.data.schools.map((school) => ({
+        // value: school._id,
+        value: school.medium,
+
+        label: school.name,
+      }));
+      setDropSchool(transformedSchools);
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
     fetchSchool();
   }, []);
+
   return (
     <>
       <div className="my-5">
@@ -76,13 +98,13 @@ const AddInstructor = () => {
                 htmlFor="name"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Name
+                First Name
               </label>
               <input
                 type="text"
                 id="name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="John"
+                placeholder="First Name"
                 required
                 onChange={(e) => setName(e.target.value)}
               />
@@ -103,6 +125,65 @@ const AddInstructor = () => {
                 onChange={(e) => setLastName(e.target.value)}
               />
             </div>
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Middle Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Middle Name"
+                required
+                // onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+            <div>
+              <select
+                name=""
+                id=""
+                className="mt-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option value="Gender">Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+            <div>
+              <label
+                htmlFor="phoneNumber"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Phone Number
+              </label>
+              <input
+                type="number"
+                id="phoneNumber"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Phone Number"
+                required
+                // onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="qualification"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Qualification
+              </label>
+              <input
+                type="text"
+                id="qualification"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Qualification"
+                required
+                // onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
           </div>
           <div>
             <label
@@ -120,7 +201,7 @@ const AddInstructor = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <div className="mb-6">
+          <div className="">
             <label
               htmlFor="password"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -134,6 +215,29 @@ const AddInstructor = () => {
               placeholder="•••••••••"
               required
               onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="mb-6">
+            <label
+              htmlFor="cnfrmp"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              id="cnfrmp"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="•••••••••"
+              required
+              // onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="">
+            <SearchableDropdown
+              options={dropSchool}
+              onChange={setSelectedSchool} // Use setSelectedSchool directly
+              placeholder="Select School"
             />
           </div>
         </div>
@@ -153,7 +257,7 @@ const AddInstructor = () => {
               required
               onChange={(e) => setSchool(e.target.value)}
             /> */}
-            <select
+            {/* <select
               className="bg-gray-50 border mt-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={(e) => {
                 setSelectedSchool(dropSchool[e.target.value]);
@@ -167,7 +271,7 @@ const AddInstructor = () => {
                     {school?.name}
                   </option>
                 ))}
-            </select>
+            </select> */}
           </div>
           <div>
             <label
@@ -189,6 +293,7 @@ const AddInstructor = () => {
               <option value="TELUGU">Telugu</option>
             </select> */}
             <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+              {/* {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``} */}
               {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``}
             </div>
           </div>

@@ -152,6 +152,34 @@ const addStudent = () => {
 
             <div>
               <label
+                htmlFor="middlename"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Middle Name
+              </label>
+              <input
+                type="text"
+                id="middlename"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                // onChange={(e) => setsetLastName(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <select
+                name=""
+                id=""
+                className="mt-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option value="Gender">Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+
+            <div>
+              <label
                 htmlFor="rollno"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
@@ -163,6 +191,22 @@ const addStudent = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 required
                 onChange={(e) => setRollNo(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="phoneno"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Phone No
+              </label>
+              <input
+                type="number"
+                id="phoneno"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                // onChange={(e) => setRollNo(e.target.value)}
               />
             </div>
           </div>
@@ -180,6 +224,22 @@ const addStudent = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 required
                 onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="cnfrmpswrd"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Confirm Password
+              </label>
+              <input
+                type="text"
+                id="cnfrmpswrd"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                // onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 

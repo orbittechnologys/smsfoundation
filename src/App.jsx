@@ -34,6 +34,7 @@ import Allinstructor from "./pages/Admin/Allinstructor";
 import Content from "./pages/Student/Content";
 import StudentProfile from "./pages/Student/StudentProfile";
 import AllStudents from "./pages/Admin/AllStudents";
+import SearchableDropdown from "./pages/SearchableDropdown";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -65,6 +66,8 @@ const App = () => {
             element={<StudentProfile />}
           />
           <Route path="/Content/:chapterId" element={<Content />} />
+          <Route path="/SearchableDropdown" element={<SearchableDropdown />} />
+
           <Route path="/pdf/:chapterId" element={<PDFViewer />} />
           <Route path="/mycourse" element={<MyCourse />} />
           <Route path="/mcq/:testId" element={<Mcq />} />
