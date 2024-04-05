@@ -32,6 +32,8 @@ import EditStudent from "./pages/Instructor/EditStudent";
 import Schools from "./pages/Admin/Schools";
 import Allinstructor from "./pages/Admin/Allinstructor";
 import Content from "./pages/Student/Content";
+import StudentProfile from "./pages/Student/StudentProfile";
+import AllStudents from "./pages/Admin/AllStudents";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -58,6 +60,10 @@ const App = () => {
 
         <Route path="" element={<Navbar />}>
           <Route path="/studentHome" element={<StudentHome />} />
+          <Route
+            path="/StudentProfile/:studentId"
+            element={<StudentProfile />}
+          />
           <Route path="/Content/:chapterId" element={<Content />} />
           <Route path="/pdf/:chapterId" element={<PDFViewer />} />
           <Route path="/mycourse" element={<MyCourse />} />
@@ -81,6 +87,7 @@ const App = () => {
             <Route path="AdminHome" element={<AdminHome />} />
             <Route path="Schools" element={<Schools />} />
             <Route path="Allinstructor" element={<Allinstructor />} />
+            <Route path="AllStudents" element={<AllStudents />} />
             <Route path="AddSchool" element={<AddSchool />} />
             <Route path="LearningReport" element={<LearningReport />} />
             <Route path="addStudent" element={<AddStudent />} />

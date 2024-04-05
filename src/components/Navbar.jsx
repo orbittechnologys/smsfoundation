@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import sfLogo from "../assets/logoflex.png";
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { CiUser } from "react-icons/ci";
 import axios from "axios";
 import { BASE_URL } from "../constants";
@@ -8,10 +8,12 @@ import { FaCaretDown } from "react-icons/fa6";
 import { AiOutlineLogout } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { FaUserGraduate } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
+  const navigate = useNavigate();
 
   const fetchStudent = async () => {
     const userId = sessionStorage.getItem("user_id");
@@ -76,6 +78,18 @@ const Navbar = () => {
             </button>
             {dropdownOpen && (
               <div className="z-50 absolute right-0 mt-2 w-48 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
+                {role === "STUDENT" ? (
+                  <div
+                    onClick={() => navigate(`/studentProfile/${user?._id}`)}
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                  >
+                    <CgProfile className="text-blue-500" />
+                    Profile
+                  </div>
+                ) : (
+                  ``
+                )}
+
                 <a
                   href="/"
                   className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"

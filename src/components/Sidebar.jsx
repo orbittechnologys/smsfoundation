@@ -154,6 +154,30 @@ const Sidebar = () => {
             {role == "ADMIN" ? (
               <li>
                 <Link
+                  to="/admin/AllStudents"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/admin/AllStudents") ? "bg-orange-200" : ""
+                  }`}
+                >
+                  <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/admin/AllStudents")
+                        ? "text-black"
+                        : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    All Students
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              ``
+            )}
+
+            {role == "ADMIN" ? (
+              <li>
+                <Link
                   to="/admin/allInstructor"
                   className={`flex items-center p-2 rounded-lg group ${
                     isActive("/admin/allInstructor") ? "bg-orange-200" : ""

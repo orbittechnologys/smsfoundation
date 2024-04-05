@@ -53,7 +53,7 @@ const TestReport = () => {
   const [selectedMedium, setSelectedMedium] = useState("NO");
   const [fillterSchool, setFillterSchool] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState("NO");
-  const [role,setRole] = useState('ADMIN');
+  const [role, setRole] = useState("ADMIN");
   const fetchSchoolTestReport = async () => {
     try {
       const res = await axios.get(
@@ -61,15 +61,14 @@ const TestReport = () => {
       );
       console.log(res.data);
       fetchTestReportbySchoolId(res.data.instructorDoc?.school?._id);
-      
     } catch (error) {
       console.log(error);
     }
   };
 
   const fetchTestReportbySchoolId = async (schoolId) => {
-    if(schoolId){
-      setSchool(schoolId)
+    if (schoolId) {
+      setSchool(schoolId);
       try {
         const res = await axios.get(
           `${BASE_URL}studentTest/testReportForSchool/${schoolId}`
@@ -85,7 +84,7 @@ const TestReport = () => {
   const fetchTestReport = async () => {
     if (sessionStorage.getItem("role") == "INSTRUCTOR") {
       fetchSchoolTestReport();
-      setRole('INSTRUCTOR')
+      setRole("INSTRUCTOR");
     } else {
       try {
         const res = await axios.get(`${BASE_URL}studentTest/testReport`);
@@ -157,62 +156,72 @@ const TestReport = () => {
 
   const triggerCsvDownload = async (role) => {
     try {
-      if(role == "ADMIN"){
-        const res = await axios.get(`${BASE_URL}studentTest/getCSV`,{
-          responseType:'blob'
+      if (role == "ADMIN") {
+        const res = await axios.get(`${BASE_URL}studentTest/getCSV`, {
+          responseType: "blob",
         });
         const blob = res.data;
         const downloadUrl = window.URL.createObjectURL(blob);
-              // Create a temporary anchor element and trigger a download
-              const link = document.createElement('a');
-              link.href = downloadUrl;
-              const date = new Date();
-              
-              link.setAttribute('download', `testReport${date.getDate()}-${date.getMonth() +1}-${date.getHours()}:${date.getMinutes()}.csv`); // or dynamically set the filename based on content-disposition header
-              document.body.appendChild(link); // Append to the document
-              link.click(); // Programmatically click the link to trigger the download
-        
-              // Clean up: remove the link and revoke the object URL
-              document.body.removeChild(link);
-              window.URL.revokeObjectURL(downloadUrl);
-  
-      }else {
-        console.log(school);
-        const res = await axios.get(`${BASE_URL}studentTest/testReportCSVForSchool/${school}`, {
-          responseType:'blob'
-        });
-        const blob = res.data;
-        const downloadUrl = window.URL.createObjectURL(blob);
-              // Create a temporary anchor element and trigger a download
-              const link = document.createElement('a');
-              link.href = downloadUrl;
-              const date = new Date();
-              
-              link.setAttribute('download', `testReportSchool${date.getDate()}-${date.getMonth() +1}-${date.getHours()}:${date.getMinutes()}.csv`); // or dynamically set the filename based on content-disposition header
-              document.body.appendChild(link); // Append to the document
-              link.click(); // Programmatically click the link to trigger the download
-        
-              // Clean up: remove the link and revoke the object URL
-              document.body.removeChild(link);
-              window.URL.revokeObjectURL(downloadUrl);
+        // Create a temporary anchor element and trigger a download
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        const date = new Date();
 
+        link.setAttribute(
+          "download",
+          `testReport${date.getDate()}-${
+            date.getMonth() + 1
+          }-${date.getHours()}:${date.getMinutes()}.csv`
+        ); // or dynamically set the filename based on content-disposition header
+        document.body.appendChild(link); // Append to the document
+        link.click(); // Programmatically click the link to trigger the download
+
+        // Clean up: remove the link and revoke the object URL
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(downloadUrl);
+      } else {
+        console.log(school);
+        const res = await axios.get(
+          `${BASE_URL}studentTest/testReportCSVForSchool/${school}`,
+          {
+            responseType: "blob",
+          }
+        );
+        const blob = res.data;
+        const downloadUrl = window.URL.createObjectURL(blob);
+        // Create a temporary anchor element and trigger a download
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        const date = new Date();
+
+        link.setAttribute(
+          "download",
+          `testReportSchool${date.getDate()}-${
+            date.getMonth() + 1
+          }-${date.getHours()}:${date.getMinutes()}.csv`
+        ); // or dynamically set the filename based on content-disposition header
+        document.body.appendChild(link); // Append to the document
+        link.click(); // Programmatically click the link to trigger the download
+
+        // Clean up: remove the link and revoke the object URL
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(downloadUrl);
       }
     } catch (error) {
       console.log(error);
     }
-    
-  }
+  };
 
   return (
     <>
-      <div className="flex justify-between items-center my-5">
+      <div className="flex flex-wrap justify-between items-center my-5">
         <div>
           <p className="text-orange-500 text-2xl font-semibold">
             Student progress
           </p>
           <p className="text-lg font-semibold">Test Report</p>
         </div>
-        <div className="flex flex-row justify-evenly">
+        <div className="flex flex-row justify-evenly lg:w-fit md:w-fit w-full">
           {/* <form className="max-w-md mx-auto">
             <label
               htmlFor="default-search"
@@ -255,15 +264,16 @@ const TestReport = () => {
               </button>
             </div>
           </form> */}
-                    {role!= 'INSTRUCTOR' ? (
+          {role != "INSTRUCTOR" ? (
             <button
-            onClick={toggleModal}
-            className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
-          >
-            Filter
-          </button>
-          ):``
-          }
+              onClick={toggleModal}
+              className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
+            >
+              Filter
+            </button>
+          ) : (
+            ``
+          )}
           <button
             onClick={() => triggerCsvDownload(role)}
             className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
@@ -299,17 +309,15 @@ const TestReport = () => {
                 <td>{rowData?.student?.medium}</td>
                 {rowData?.school ? (
                   <td>{rowData?.school?.name}</td>
-                ): (
+                ) : (
                   <td>{rowData?.student?.school?.name}</td>
-                )
-                }
-                
+                )}
+
                 {rowData?.school ? (
                   <td>{rowData?.school?.district}</td>
-                ): (
+                ) : (
                   <td>{rowData?.student?.school?.district}</td>
-                )
-                }
+                )}
                 <td>{rowData?.test?.name}</td>
                 <td>{rowData?.marks}</td>
                 <td>{rowData?.test?.totalMarks}</td>

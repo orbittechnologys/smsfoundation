@@ -2,30 +2,28 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 
-const Allinstructor = () => {
-  const [allInstructor, setAllInstructor] = useState([]);
+const AllStudents = () => {
+  const [allStudents, setAllStudents] = useState([]);
 
-  const getAllInstructor = async () => {
+  const getAllStudents = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}instructor/getAll`);
-      console.log(res.data.instructors);
-      setAllInstructor(res.data.instructors);
+      const res = await axios.get(`${BASE_URL}student/getAll`);
+      console.log(res.data.students);
+      setAllStudents(res.data.students);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getAllInstructor();
+    getAllStudents();
   }, []);
 
   return (
     <>
       <div className="flex justify-between flex-wrap items-center my-5">
         <div className="sm:mb-5">
-          <p className="text-orange-500 text-2xl font-semibold">
-            All Instructors
-          </p>
+          <p className="text-orange-500 text-2xl font-semibold">All Students</p>
         </div>
       </div>
       <div className="table-container">
@@ -33,20 +31,22 @@ const Allinstructor = () => {
           <thead>
             <tr>
               <th>Name</th>
-
               <th>Medium</th>
-              <th>Email</th>
-              <th>Passoword Rest</th>
+              <th>Roll No</th>
+              <th>Standard</th>
+              <th>Syllabus</th>
             </tr>
           </thead>
           <tbody>
-            {allInstructor.map((rowData, index) => (
+            {allStudents.map((rowData, index) => (
               <tr key={index}>
                 <td>
                   {rowData.firstName} {rowData.lastName}
                 </td>
                 <td>{rowData.medium}</td>
-                <td>{rowData.email}</td>
+                <td>{rowData.rollNo}</td>
+                <td>{rowData.standard}</td>
+                <td>{rowData.syllabus}</td>
               </tr>
             ))}
           </tbody>
@@ -56,4 +56,4 @@ const Allinstructor = () => {
   );
 };
 
-export default Allinstructor;
+export default AllStudents;
