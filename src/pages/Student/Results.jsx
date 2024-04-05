@@ -20,6 +20,7 @@ const Results = () => {
       );
       console.log(res.data);
       setResult(res.data.testResults);
+      console.log(res.data.testResults);
     } catch (error) {
       console.log(error);
     }
@@ -63,6 +64,40 @@ const Results = () => {
 
   const navigate = useNavigate();
 
+  const renderPerformanceFeedback = () => {
+    if (result && result.test) {
+      const marks = result.marks;
+      const totalMarks = result.test.totalMarks; // Assuming total marks is stored in result.test.totalMarks
+      const percentage = (marks / totalMarks) * 100;
+      let feedback = "";
+
+      // Feedback logic based on percentage
+      if (percentage >= 90) {
+        feedback = "Excellent performance!";
+      } else if (percentage >= 80) {
+        feedback = "Very good!";
+      } else if (percentage >= 70) {
+        feedback = "Good job!";
+      } else if (percentage >= 60) {
+        feedback = "Above average!";
+      } else if (percentage >= 50) {
+        feedback = "Average performance.";
+      } else if (percentage >= 40) {
+        feedback = "Below average. Keep improving!";
+      } else {
+        feedback = "Needs improvement. Practice more!";
+      }
+
+      return (
+        <div className="">
+          <span className="text-black">Performance Feedback: </span>
+          {feedback}
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className="flex flex-col justify-center items-center h-screen w-full bg-[#F1EDDF]">
       <div className="max-w-md mx-auto bg-white shadow-md p-8 rounded-md">
@@ -80,6 +115,7 @@ const Results = () => {
               <span className="font-semibold">{result?.test?.totalMarks}</span>
             </span>
           </div>
+
           {/* <p className="text-lg mb-2">
             Test Description:{" "}
             <span className="font-semibold">{result?.test?.desc}</span>
@@ -87,7 +123,9 @@ const Results = () => {
         </div>
         <div className="my-5 shadow-xl border rounded-xl">
           <p className="px-5 py-2 text-orange-500 font-semibold">
-            Performance Feedback Goes here
+            {/* Performance Feedback Goes here
+             */}
+            {renderPerformanceFeedback()}
           </p>
         </div>
         {/* <div className="mb-8">
@@ -116,14 +154,14 @@ const Results = () => {
         <div className="grid grid-cols-2 gap-5 my-5">
           <button
             type="button"
-            onClick={() => navigate('/preview/'+testId)}
+            onClick={() => navigate("/preview/" + testId)}
             className="text-white bg-orange-500 hover:bg-blue-800 font-semibold focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none "
           >
             Review Test
           </button>
           <button
             type="button"
-            onClick={()=> navigate('/mcq/'+testId)}
+            onClick={() => navigate("/mcq/" + testId)}
             className="text-white bg-orange-500 hover:bg-blue-800 font-semibold focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none "
           >
             Retake Test

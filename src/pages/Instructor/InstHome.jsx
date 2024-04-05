@@ -122,7 +122,7 @@ const InstHome = () => {
               className=" grid place-items-center shadow-xl rounded-2xl p-5 border"
               onClick={() => triggerCsvDownload()}
             >
-              <img src={Expimg} alt="" />
+              <img src={Expimg} alt="" className="lg:h-32 md:h-24 h-14" />
               <p className="text-xl font-bold">Export Files</p>
               {/* <p className="text-gray-500">Instruction goes here</p> */}
             </div>

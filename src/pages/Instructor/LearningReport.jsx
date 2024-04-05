@@ -142,64 +142,73 @@ const LearningReport = () => {
     toggleModal();
   };
 
-
   const triggerCsvDownload = async (role) => {
     try {
-      if(role == "ADMIN"){
-        const res = await axios.get(`${BASE_URL}subjectTime/getCSV`,{
-          responseType:'blob'
+      if (role == "ADMIN") {
+        const res = await axios.get(`${BASE_URL}subjectTime/getCSV`, {
+          responseType: "blob",
         });
         const blob = res.data;
         const downloadUrl = window.URL.createObjectURL(blob);
-              // Create a temporary anchor element and trigger a download
-              const link = document.createElement('a');
-              link.href = downloadUrl;
-              const date = new Date();
-              
-              link.setAttribute('download', `subjectReport${date.getDate()}-${date.getMonth() +1}-${date.getHours()}:${date.getMinutes()}.csv`); // or dynamically set the filename based on content-disposition header
-              document.body.appendChild(link); // Append to the document
-              link.click(); // Programmatically click the link to trigger the download
-        
-              // Clean up: remove the link and revoke the object URL
-              document.body.removeChild(link);
-              window.URL.revokeObjectURL(downloadUrl);
-  
-      }else {
-        const res = await axios.get(`${BASE_URL}subjectTime/learningReportCSVForSchool/${school?._id}`, {
-          responseType:'blob'
-        });
-        const blob = res.data;
-        const downloadUrl = window.URL.createObjectURL(blob);
-              // Create a temporary anchor element and trigger a download
-              const link = document.createElement('a');
-              link.href = downloadUrl;
-              const date = new Date();
-              
-              link.setAttribute('download', `subjectReportSchool${date.getDate()}-${date.getMonth() +1}-${date.getHours()}:${date.getMinutes()}.csv`); // or dynamically set the filename based on content-disposition header
-              document.body.appendChild(link); // Append to the document
-              link.click(); // Programmatically click the link to trigger the download
-        
-              // Clean up: remove the link and revoke the object URL
-              document.body.removeChild(link);
-              window.URL.revokeObjectURL(downloadUrl);
+        // Create a temporary anchor element and trigger a download
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        const date = new Date();
 
+        link.setAttribute(
+          "download",
+          `subjectReport${date.getDate()}-${
+            date.getMonth() + 1
+          }-${date.getHours()}:${date.getMinutes()}.csv`
+        ); // or dynamically set the filename based on content-disposition header
+        document.body.appendChild(link); // Append to the document
+        link.click(); // Programmatically click the link to trigger the download
+
+        // Clean up: remove the link and revoke the object URL
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(downloadUrl);
+      } else {
+        const res = await axios.get(
+          `${BASE_URL}subjectTime/learningReportCSVForSchool/${school?._id}`,
+          {
+            responseType: "blob",
+          }
+        );
+        const blob = res.data;
+        const downloadUrl = window.URL.createObjectURL(blob);
+        // Create a temporary anchor element and trigger a download
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        const date = new Date();
+
+        link.setAttribute(
+          "download",
+          `subjectReportSchool${date.getDate()}-${
+            date.getMonth() + 1
+          }-${date.getHours()}:${date.getMinutes()}.csv`
+        ); // or dynamically set the filename based on content-disposition header
+        document.body.appendChild(link); // Append to the document
+        link.click(); // Programmatically click the link to trigger the download
+
+        // Clean up: remove the link and revoke the object URL
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(downloadUrl);
       }
     } catch (error) {
       console.log(error);
     }
-    
-  }
+  };
 
   return (
     <>
-      <div className="flex justify-between items-center my-5">
+      <div className="flex justify-between flex-wrap items-center my-5">
         <div>
           <p className="text-orange-500 text-2xl font-semibold">
             Student progress
           </p>
           <p className="text-lg font-semibold">Learning Report</p>
         </div>
-        <div className="flex flex-row justify-evenly">
+        <div className="flex flex-row justify-evenly lg:w-fit md:w-fit w-full lg:my-0 sm:my-5">
           {role != "INSTRUCTOR" ? (
             <button
               onClick={toggleModal}
@@ -210,14 +219,13 @@ const LearningReport = () => {
           ) : (
             ``
           )}
-            <button
+          <button
             className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
             onClick={() => triggerCsvDownload(role)}
           >
             Download CSV
           </button>
         </div>
-        
       </div>
       <div className="table-container">
         <table className="custom-table">
