@@ -14,6 +14,7 @@ import { FaUserGraduate } from "react-icons/fa";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { IoMdHome } from "react-icons/io";
 import { BiSolidSchool } from "react-icons/bi";
+import { LuSchool2 } from "react-icons/lu";
 import { GiTeacher } from "react-icons/gi";
 
 const Sidebar = () => {
@@ -55,6 +56,32 @@ const Sidebar = () => {
 
   const handleCloseSidebar = () => {
     setShowSidebar(false);
+  };
+
+  // dropdowns
+  const [dropdownStates, setDropdownStates] = useState({
+    student: false,
+    progress: false,
+    instructor: false,
+    school: false,
+    // Add more dropdown states here if needed
+  });
+
+  const toggleDropdown = (dropdownName) => {
+    setDropdownStates((prevState) => ({
+      ...prevState,
+      [dropdownName]: !prevState[dropdownName],
+    }));
+  };
+
+  const closeDropdowns = () => {
+    setDropdownStates({
+      student: false,
+      progress: false,
+      instructor: false,
+      school: false,
+      // Reset other dropdown states here if needed
+    });
   };
 
   return (
@@ -129,120 +156,271 @@ const Sidebar = () => {
             ) : (
               ``
             )}
-            {role == "ADMIN" ? (
-              <li>
-                <Link
-                  to="/admin/Schools"
-                  className={`flex items-center p-2 rounded-lg group ${
-                    isActive("/admin/Schools") ? "bg-orange-200" : ""
-                  }`}
-                >
-                  <GiTeacher className="w-5 h-5 text-gray-500 transition duration-75" />
-                  <span
-                    className={`${
-                      isActive("/admin/Schools") ? "text-black" : "text-black"
-                    } ms-3 hover:text-orange-500`}
-                  >
-                    All Schools
-                  </span>
-                </Link>
-              </li>
-            ) : (
-              ``
-            )}
+
+            {/* schools */}
 
             {role == "ADMIN" ? (
-              <li>
-                <Link
-                  to="/admin/AllStudents"
-                  className={`flex items-center p-2 rounded-lg group ${
-                    isActive("/admin/AllStudents") ? "bg-orange-200" : ""
-                  }`}
-                >
-                  <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
-                  <span
-                    className={`${
-                      isActive("/admin/AllStudents")
-                        ? "text-black"
-                        : "text-black"
-                    } ms-3 hover:text-orange-500`}
+              <li
+                onMouseEnter={() => toggleDropdown("school")}
+                onMouseLeave={closeDropdowns}
+              >
+                <div className="relative">
+                  <div
+                    className={`flex items-center p-2 rounded-lg group cursor-pointer ${
+                      isActive("/admin/Schools") || isActive("/admin/AddSchool")
+                        ? "bg-orange-200"
+                        : ""
+                    }`}
                   >
-                    All Students
-                  </span>
-                </Link>
-              </li>
-            ) : (
-              ``
-            )}
+                    <LuSchool2 className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" />
+                    <span
+                      className={`flex-1 ms-3 whitespace-nowrap ${
+                        isActive("/admin/Schools") ||
+                        isActive("/admin/AddSchool")
+                          ? "text-black"
+                          : "text-black"
+                      } hover:text-orange-500`}
+                    >
+                      School
+                    </span>
+                  </div>
 
-            {role == "ADMIN" ? (
-              <li>
-                <Link
-                  to="/admin/allInstructor"
-                  className={`flex items-center p-2 rounded-lg group ${
-                    isActive("/admin/allInstructor") ? "bg-orange-200" : ""
-                  }`}
-                >
-                  <BiSolidSchool className="w-5 h-5 text-gray-500 transition duration-75" />
-                  <span
-                    className={`${
-                      isActive("/admin/allInstructor")
-                        ? "text-black"
-                        : "text-black"
-                    } ms-3 hover:text-orange-500`}
-                  >
-                    All Instructors
-                  </span>
-                </Link>
+                  {dropdownStates.school && (
+                    <div
+                      className="absolute left-0 w-48 bg-white rounded-lg shadow-lg z-10"
+                      onMouseEnter={openDropdown}
+                      onMouseLeave={closeDropdown}
+                    >
+                      <ul className="py-1">
+                        {" "}
+                        <li>
+                          <Link
+                            to="/admin/Schools"
+                            className={`flex items-center p-2 rounded-lg group ${
+                              isActive("/admin/Schools") ? "bg-orange-200" : ""
+                            }`}
+                          >
+                            <GiTeacher className="w-5 h-5 text-gray-500 transition duration-75" />
+                            <span
+                              className={`${
+                                isActive("/admin/Schools")
+                                  ? "text-black"
+                                  : "text-black"
+                              } ms-3 hover:text-orange-500`}
+                            >
+                              All Schools
+                            </span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/admin/AddSchool"
+                            className={`flex items-center p-2 rounded-lg group ${
+                              isActive("/admin/AddSchool")
+                                ? "bg-orange-200"
+                                : ""
+                            }`}
+                          >
+                            <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
+                            <span
+                              className={`${
+                                isActive("/admin/AddSchool")
+                                  ? "text-black"
+                                  : "text-black"
+                              } ms-3 hover:text-orange-500`}
+                            >
+                              Add School
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </li>
             ) : (
               ``
             )}
+            {/* schools */}
 
+            {/* Student */}
             {role == "ADMIN" ? (
-              <li>
-                <Link
-                  to="/admin/AddInstructor"
-                  className={`flex items-center p-2 rounded-lg group ${
-                    isActive("/admin/AddInstructor") ? "bg-orange-200" : ""
-                  }`}
-                >
-                  <FaChalkboardTeacher className="w-5 h-5 text-gray-500 transition duration-75" />
-                  <span
-                    className={`${
-                      isActive("/admin/AddInstructor")
-                        ? "text-black"
-                        : "text-black"
-                    } ms-3 hover:text-orange-500`}
-                  >
-                    Add Instructor
-                  </span>
-                </Link>
-              </li>
-            ) : (
-              ``
-            )}
-            {role == "ADMIN" ? (
-              <li>
-                <Link
-                  to="/admin/addStudent"
-                  className={`flex items-center p-2 rounded-lg group ${
-                    isActive("/admin/addStudent") ? "bg-orange-200" : ""
-                  }`}
-                >
-                  <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
-                  <span
-                    className={`${
+              <li
+                onMouseEnter={() => toggleDropdown("student")}
+                onMouseLeave={closeDropdowns}
+              >
+                <div className="relative">
+                  <div
+                    className={`flex items-center p-2 rounded-lg group cursor-pointer ${
+                      isActive("/admin/AllStudents") ||
                       isActive("/admin/addStudent")
-                        ? "text-black"
-                        : "text-black"
-                    } ms-3 hover:text-orange-500`}
+                        ? "bg-orange-200"
+                        : ""
+                    }`}
                   >
-                    Add Student
-                  </span>
-                </Link>
+                    <FaUserGraduate className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" />
+                    <span
+                      className={`flex-1 ms-3 whitespace-nowrap ${
+                        isActive("/admin/AllStudents") ||
+                        isActive("/admin/addStudent")
+                          ? "text-black"
+                          : "text-black"
+                      } hover:text-orange-500`}
+                    >
+                      Student
+                    </span>
+                  </div>
+
+                  {dropdownStates.student && (
+                    <div
+                      className="absolute left-0 w-48 bg-white rounded-lg shadow-lg z-10"
+                      onMouseEnter={openDropdown}
+                      onMouseLeave={closeDropdown}
+                    >
+                      <ul className="py-1">
+                        {" "}
+                        <li>
+                          <Link
+                            to="/admin/AllStudents"
+                            className={`flex items-center p-2 rounded-lg group ${
+                              isActive("/admin/AllStudents")
+                                ? "bg-orange-200"
+                                : ""
+                            }`}
+                          >
+                            <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
+                            <span
+                              className={`${
+                                isActive("/admin/AllStudents")
+                                  ? "text-black"
+                                  : "text-black"
+                              } ms-3 hover:text-orange-500`}
+                            >
+                              All Students
+                            </span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/admin/addStudent"
+                            className={`flex items-center p-2 rounded-lg group ${
+                              isActive("/admin/addStudent")
+                                ? "bg-orange-200"
+                                : ""
+                            }`}
+                          >
+                            <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
+                            <span
+                              className={`${
+                                isActive("/admin/addStudent")
+                                  ? "text-black"
+                                  : "text-black"
+                              } ms-3 hover:text-orange-500`}
+                            >
+                              Add Student
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </li>
             ) : (
+              ``
+            )}
+
+            {/* Student */}
+
+            {/*instructor  */}
+            {role == "ADMIN" ? (
+              <li
+                onMouseEnter={() => toggleDropdown("instructor")}
+                onMouseLeave={closeDropdowns}
+              >
+                <div className="relative">
+                  <div
+                    className={`flex items-center p-2 rounded-lg group cursor-pointer ${
+                      isActive("/admin/allInstructor") ||
+                      isActive("/admin/AddInstructor")
+                        ? "bg-orange-200"
+                        : ""
+                    }`}
+                  >
+                    <FaChalkboardTeacher className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" />
+                    <span
+                      className={`flex-1 ms-3 whitespace-nowrap ${
+                        isActive("/admin/AllStudents") ||
+                        isActive("/admin/AddInstructor")
+                          ? "text-black"
+                          : "text-black"
+                      } hover:text-orange-500`}
+                    >
+                      Instructor
+                    </span>
+                  </div>
+
+                  {dropdownStates.instructor && (
+                    <div
+                      className="absolute left-0 w-48 bg-white rounded-lg shadow-lg z-10"
+                      onMouseEnter={openDropdown}
+                      onMouseLeave={closeDropdown}
+                    >
+                      <ul className="py-1">
+                        {" "}
+                        <li>
+                          <Link
+                            to="/admin/allInstructor"
+                            className={`flex items-center p-2 rounded-lg group ${
+                              isActive("/admin/allInstructor")
+                                ? "bg-orange-200"
+                                : ""
+                            }`}
+                          >
+                            <BiSolidSchool className="w-5 h-5 text-gray-500 transition duration-75" />
+                            <span
+                              className={`${
+                                isActive("/admin/allInstructor")
+                                  ? "text-black"
+                                  : "text-black"
+                              } ms-3 hover:text-orange-500`}
+                            >
+                              All Instructors
+                            </span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/admin/AddInstructor"
+                            className={`flex items-center p-2 rounded-lg group ${
+                              isActive("/admin/AddInstructor")
+                                ? "bg-orange-200"
+                                : ""
+                            }`}
+                          >
+                            <FaChalkboardTeacher className="w-5 h-5 text-gray-500 transition duration-75" />
+                            <span
+                              className={`${
+                                isActive("/admin/AddInstructor")
+                                  ? "text-black"
+                                  : "text-black"
+                              } ms-3 hover:text-orange-500`}
+                            >
+                              Add Instructor
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </li>
+            ) : (
+              ``
+            )}
+            {/*instructor  */}
+
+            {role === "INSTRUCTOR" && (
               <li>
                 <Link
                   to="/inst/InstHome"
@@ -343,7 +521,10 @@ const Sidebar = () => {
             </li> */}
 
             {role == "ADMIN" ? (
-              <li onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
+              <li
+                onMouseEnter={() => toggleDropdown("progress")}
+                onMouseLeave={closeDropdowns}
+              >
                 <div className="relative">
                   <div
                     className={`flex items-center p-2 rounded-lg group cursor-pointer ${
@@ -365,7 +546,7 @@ const Sidebar = () => {
                       Student Progress
                     </span>
                   </div>
-                  {isDropdownOpen && (
+                  {dropdownStates.progress && (
                     <div
                       className="absolute left-0 w-48 bg-white rounded-lg shadow-lg z-10"
                       onMouseEnter={openDropdown}

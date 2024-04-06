@@ -1,13 +1,31 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
-import { PiPasswordDuotone } from "react-icons/pi";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 const Allinstructor = () => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [allInstructor, setAllInstructor] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedInstructorId, setSelectedInstructorId] = useState(null);
   const [newPassword, setNewPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfPassword, setShowConfPassword] = useState(false);
+  const [confPassword, setConfPassword] = useState("");
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfPasswordVisibility = () => {
+    setShowConfPassword(!showConfPassword);
+  };
+
+  const [sortConfig, setSortConfig] = useState({
+    key: "name",
+    direction: "ascending",
+  });
 
   const getAllInstructor = async () => {
     try {
@@ -26,7 +44,7 @@ const Allinstructor = () => {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     const reqbody = {
-      instructorId: selectedInstructorId,
+      instructorId: selectedInstructorId?._id,
       newPassword: newPassword,
     };
     console.log(reqbody);
@@ -44,8 +62,90 @@ const Allinstructor = () => {
     setShowModal(false);
   };
 
+  const columns = [
+    { label: "Name", accessor: "firstName", sortable: true },
+    { label: "Email", accessor: "email", sortable: true },
+    { label: "Medium", accessor: "school?.medium", sortable: true },
+    { label: "School", accessor: "school?.name", sortable: true },
+    { label: "District", accessor: "school?.district", sortable: true },
+    { label: "Address", accessor: "school?.address", sortable: true },
+    { label: "Actions", accessor: "actions", sortable: true },
+  ];
+
+  const handleSortingChange = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedSchools = [...allInstructor].sort((a, b) => {
+    const valueA =
+      typeof a[sortConfig.key] === "string"
+        ? a[sortConfig.key].toLowerCase().trim()
+        : a[sortConfig.key];
+    const valueB =
+      typeof b[sortConfig.key] === "string"
+        ? b[sortConfig.key].toLowerCase().trim()
+        : b[sortConfig.key];
+
+    if (valueA < valueB) {
+      return sortConfig.direction === "ascending" ? -1 : 1;
+    }
+    if (valueA > valueB) {
+      return sortConfig.direction === "ascending" ? 1 : -1;
+    }
+    return 0;
+  });
+
+  const filteredSchools = sortedSchools.filter((rowData) => {
+    // Combine all your rowData values into a single string and then check if the search term is included.
+    // This allows for a very basic "global" search across all fields.
+    let res = Object.values(rowData).join(" ").toLowerCase().includes(searchTerm.toLowerCase());
+    return res ? res : rowData.school? 
+                      Object.values(rowData.school).join(" ").toLowerCase().includes(searchTerm.toLowerCase()) 
+                      :false;
+  });
+
   return (
     <>
+      <form className="max-w-md mx-auto my-5">
+        <label
+          htmlFor="default-search"
+          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+        >
+          Search
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg
+              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            onChange={(e) => setSearchTerm(e.target.value)}
+            type="search"
+            id="default-search"
+            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search ..."
+            required
+          />
+        </div>
+      </form>
+
       <div className="flex justify-between flex-wrap items-center my-5">
         <div className="sm:mb-5">
           <p className="text-orange-500 text-2xl font-semibold">
@@ -57,6 +157,28 @@ const Allinstructor = () => {
         <table className="custom-table">
           <thead>
             <tr>
+              {columns.map(({ label, accessor, sortable }) => (
+                <th
+                  key={accessor}
+                  onClick={
+                    sortable ? () => handleSortingChange(accessor) : null
+                  }
+                  className="cursor-pointer"
+                >
+                  {/* {label} */}
+                  <div className="flex justify-center items-center">
+                    <span>{label}</span>
+                    {sortConfig.key === accessor &&
+                      (sortConfig.direction === "ascending" ? (
+                        <FaCaretUp className="ml-1 text-sm" />
+                      ) : (
+                        <FaCaretDown className="ml-1 text-sm" />
+                      ))}
+                  </div>
+                </th>
+              ))}
+            </tr>
+            {/* <tr>
               <th>Name</th>
               <th>Email</th>
               <th>Medium</th>
@@ -64,17 +186,17 @@ const Allinstructor = () => {
               <th>District</th>
               <th>Address</th>
               <th>Actions</th>
-            </tr>
+            </tr> */}
           </thead>
           <tbody>
-            {allInstructor.map((rowData, index) => (
+            {filteredSchools.map((rowData, index) => (
               <tr key={index}>
                 <td>
                   {rowData.firstName} {rowData.lastName}
                 </td>
-                
+
                 <td>{rowData.email}</td>
-               
+
                 <td>{rowData?.school?.medium}</td>
                 <td>{rowData?.school?.name}</td>
                 <td>{rowData?.school?.district}</td>
@@ -82,13 +204,14 @@ const Allinstructor = () => {
                 <td>
                   <div
                     onClick={() => {
-                      setSelectedInstructorId(rowData._id);
+                      setSelectedInstructorId(rowData);
                       setShowModal(true);
                     }}
                     className="cursor-pointer flex items-center justify-center"
                   >
-                    <PiPasswordDuotone className="mr-2" />
-                    Reset Password
+                    <button className="px-4 py-2 bg-green-600 rounded-lg text-white font-semibold">
+                      Reset Password
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -125,9 +248,32 @@ const Allinstructor = () => {
                   </div>
                 </div>
                 <div className="mt-4">
+                  <div className="border p-5 my-2 bg-gray-100">
+                    <p className="">
+                      {" "}
+                      <span className="text-lg font-bold text-orange-500">
+                        Name :
+                      </span>{" "}
+                      {selectedInstructorId?.firstName}{" "}
+                      {selectedInstructorId?.lastName}
+                    </p>
+                    <p>
+                      {" "}
+                      <span className="text-lg font-bold text-orange-500">
+                        Roll No :
+                      </span>{" "}
+                      {selectedInstructorId?.email}
+                    </p>
+                    <p>
+                      <span className="text-lg font-bold text-orange-500">
+                        Class :
+                      </span>{" "}
+                      {selectedInstructorId?.medium}
+                    </p>
+                  </div>
                   <form
                     onSubmit={handleResetPassword}
-                    className="bg-gray-200 rounded-lg p-5 lg:w-1/2 mx-auto"
+                    className="bg-gray-200 rounded-lg p-5  mx-auto"
                   >
                     <div>
                       <label
@@ -136,13 +282,69 @@ const Allinstructor = () => {
                       >
                         Reset Password
                       </label>
-                      <input
-                        type="password"
-                        placeholder="Enter new Password"
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                      />
+                      <div className="relative">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Enter new Password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                          required
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                          onClick={togglePasswordVisibility}
+                        >
+                          {showPassword ? (
+                            <FaEye className="w-5 h-5 text-gray-500" />
+                          ) : (
+                            <FaEyeSlash className="w-5 h-5 text-gray-500" />
+                          )}
+                        </button>
+                      </div>
                     </div>
+                    <div>
+                      <label
+                        htmlFor="rest_password"
+                        className="block mb-2 text-sm font-medium text-gray-900 "
+                      >
+                        Confirm Password
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showConfPassword ? "text" : "password"}
+                          placeholder="Confirm new Password"
+                          value={confPassword}
+                          onChange={(e) => setConfPassword(e.target.value)}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                          required
+                        />
+                        <button
+                          type="button"
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                          onClick={toggleConfPasswordVisibility}
+                        >
+                          {showConfPassword ? (
+                            <FaEye className="w-5 h-5 text-gray-500" />
+                          ) : (
+                            <FaEyeSlash className="w-5 h-5 text-gray-500" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                    {newPassword != confPassword ? (
+                      <div
+                        className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                        role="alert"
+                      >
+                        <span className="font-medium">
+                          Passwords Don't match
+                        </span>
+                      </div>
+                    ) : (
+                      ``
+                    )}
                     <div>
                       <button
                         className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center my-5"
