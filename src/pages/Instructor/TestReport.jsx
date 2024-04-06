@@ -1,10 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL, getPercentage } from "../../constants";
+import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 const TestReport = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState(null);
+  const [sortConfig, setSortConfig] = useState({
+    key: "name",
+    direction: "ascending",
+  });
 
   const tableData = [
     {
@@ -212,8 +217,98 @@ const TestReport = () => {
     }
   };
 
+  const columns = [
+    { label: "Name", accessor: "firstName", sortable: true },
+    { label: "Roll No", accessor: "student?.rollNo", sortable: true },
+    { label: "Standard", accessor: "student?.standard", sortable: true },
+    { label: "Medium", accessor: "student?.medium", sortable: true },
+    { label: "School", accessor: "school?.name", sortable: true },
+    {
+      label: "District",
+      accessor: "student?.school?.district",
+      sortable: true,
+    },
+    { label: "Test", accessor: "test?.name", sortable: true },
+    { label: "Scored Marks", accessor: "marks", sortable: true },
+    { label: "Total Marks", accessor: "test?.totalMarks", sortable: true },
+    {
+      label: "Percentage",
+      accessor: "marks, rowData?.test?.totalMarks)",
+      sortable: true,
+    },
+  ];
+
+  const handleSortingChange = (key) => {
+    let direction = "ascending";
+    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+      direction = "descending";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedSchools = [...testReport].sort((a, b) => {
+    const valueA =
+      typeof a[sortConfig.key] === "string"
+        ? a[sortConfig.key].toLowerCase().trim()
+        : a[sortConfig.key];
+    const valueB =
+      typeof b[sortConfig.key] === "string"
+        ? b[sortConfig.key].toLowerCase().trim()
+        : b[sortConfig.key];
+
+    if (valueA < valueB) {
+      return sortConfig.direction === "ascending" ? -1 : 1;
+    }
+    if (valueA > valueB) {
+      return sortConfig.direction === "ascending" ? 1 : -1;
+    }
+    return 0;
+  });
+
+  const filteredSchools = sortedSchools.filter((rowData) => {
+    // Combine all your rowData values into a single string and then check if the search term is included.
+    // This allows for a very basic "global" search across all fields.
+    return Object.values(rowData).join(" ").toLowerCase().includes(searchTerm);
+  });
+
   return (
     <>
+      <form className="max-w-md mx-auto my-5">
+        <label
+          htmlFor="default-search"
+          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+        >
+          Search
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg
+              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            onChange={(e) => setSearchTerm(e.target.value)}
+            type="search"
+            id="default-search"
+            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search ..."
+            required
+          />
+        </div>
+      </form>
+
       <div className="flex flex-wrap justify-between items-center my-5">
         <div>
           <p className="text-orange-500 text-2xl font-semibold">
@@ -285,7 +380,29 @@ const TestReport = () => {
       <div className="table-container">
         <table className="custom-table">
           <thead>
-            <tr className="whitespace-nowrap">
+            <tr>
+              {columns.map(({ label, accessor, sortable }) => (
+                <th
+                  key={accessor}
+                  onClick={
+                    sortable ? () => handleSortingChange(accessor) : null
+                  }
+                  className="cursor-pointer"
+                >
+                  {/* {label} */}
+                  <div className="flex justify-center items-center">
+                    <span>{label}</span>
+                    {sortConfig.key === accessor &&
+                      (sortConfig.direction === "ascending" ? (
+                        <FaCaretUp className="ml-1 text-sm" />
+                      ) : (
+                        <FaCaretDown className="ml-1 text-sm" />
+                      ))}
+                  </div>
+                </th>
+              ))}
+            </tr>
+            {/* <tr className="whitespace-nowrap">
               <th>Name</th>
               <th>Roll no</th>
               <th>Standard</th>
@@ -296,10 +413,10 @@ const TestReport = () => {
               <th>Scored marks</th>
               <th>Total marks</th>
               <th>Percentage</th>
-            </tr>
+            </tr> */}
           </thead>
           <tbody>
-            {testReport.map((rowData, index) => (
+            {filteredSchools.map((rowData, index) => (
               <tr key={index}>
                 <td>
                   {rowData?.student?.firstName} {rowData?.student?.lastName}
