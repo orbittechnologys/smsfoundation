@@ -142,6 +142,54 @@ const AddSchool = () => {
               onChange={(e) => setPincode(e.target.value)}
             />
           </div>
+          <div>
+            <label
+              htmlFor="state"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              State
+            </label>
+            <input
+              type="text"
+              id="state"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="state"
+              required
+              // onChange={(e) => setDistrict(e.target.value)}
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="project_name"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Project Name
+            </label>
+            <input
+              type="text"
+              id="project_name"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="project_name"
+              required
+              // onChange={(e) => setDistrict(e.target.value)}
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="partner_name"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Partner Name
+            </label>
+            <input
+              type="text"
+              id="partner_name"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="partner name"
+              required
+              // onChange={(e) => setDistrict(e.target.value)}
+            />
+          </div>
           <div className="">
             <p className="text-xl font-semibold my-5 ">Internet Access</p>
             <div className="flex flex-wrap">
