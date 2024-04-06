@@ -15,6 +15,7 @@ const AddInstructor = () => {
   // const [selectedSchool, setSelectedSchool] = useState("NO");
   const [selectedSchool, setSelectedSchool] = useState(null); // Initialize selectedSchool as null
   const [dropSchool, setDropSchool] = useState([]);
+  console.log(selectedSchool);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,6 +24,7 @@ const AddInstructor = () => {
     const reqbody = {
       firstName: name,
       lastName: lastName,
+      
       email: email,
       password: password,
       // school: selectedSchool,
@@ -71,8 +73,9 @@ const AddInstructor = () => {
       const transformedSchools = res.data.schools.map((school) => ({
         // value: school._id,
         value: school.medium,
-
-        label: school.name,
+        district: school.district,
+        label: school.name + " "+school.district,
+        id : school._id,
       }));
       setDropSchool(transformedSchools);
     } catch (error) {
@@ -294,7 +297,7 @@ const AddInstructor = () => {
             </select> */}
             <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
               {/* {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``} */}
-              {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``}
+              {selectedSchool ? <p>{selectedSchool?.value}</p> : ``}
             </div>
           </div>
         </div>
