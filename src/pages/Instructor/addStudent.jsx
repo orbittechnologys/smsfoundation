@@ -1,13 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
+import SearchableDropdown from "../SearchableDropdown";
+import { useNavigate } from "react-router";
 
 const addStudent = () => {
   const [name, setName] = useState("");
   const [lastName, setsetLastName] = useState("");
+  const [middleName,setMiddleName] = useState("");
+  const [gender,setGender] = useState("");
   const [email, setEmail] = useState("");
+  const [phone,setPhone] = useState("");
   const [rollNo, setRollNo] = useState("");
   const [password, setPassword] = useState("");
+  const [confPassword,setConfPassword] = useState("");
   const [school, setSchool] = useState("");
   const [medium, setMedium] = useState("");
   const [syllabus, setSyllabus] = useState("");
@@ -16,7 +22,9 @@ const addStudent = () => {
   const [dropSchool, setDropSchool] = useState([]);
   const [instructor, setInstructor] = useState(null);
   const [role, setRole] = useState("");
-  // const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,15 +44,18 @@ const addStudent = () => {
       email: email,
       firstName: name,
       lastName: lastName,
+      middleName,
+      gender,
+      phone,
       rollNo: rollNo,
       standard: standard,
       // school: selectedSchool?._id,
       password: password,
-      school: role === "INSTRUCTOR" ? instructor?._id : selectedSchool?._id,
+      school: role === "INSTRUCTOR" ? instructor?._id : selectedSchool?.id,
       syllabus:
         role === "INSTRUCTOR" ? instructor?.syllabus : selectedSchool?.syllabus,
       medium:
-        role === "INSTRUCTOR" ? instructor?.medium : selectedSchool?.medium,
+        role === "INSTRUCTOR" ? instructor?.medium : selectedSchool?.value,
     };
     console.log(reqbody);
 
@@ -52,6 +63,8 @@ const addStudent = () => {
       const res = await axios.post(`${BASE_URL}student/addStudent`, reqbody);
       console.log(res.data);
       alert("student added sucessfully");
+      const navUrl = role == "INSTRUCTOR" ? "/instructor/AllStudents" : "/admin/AllStudents"
+      navigate(navUrl);
     } catch (error) {
       console.log(error);
       alert("student could not be added");
@@ -65,7 +78,15 @@ const addStudent = () => {
     try {
       const res = await axios.get(`${BASE_URL}school/getAllSchools`);
       console.log(res.data.schools);
-      setDropSchool(res.data.schools);
+      const transformedSchools = res.data.schools.map((school) => ({
+        // value: school._id,
+        value: school.medium,
+        district: school.district,
+        label: school.name + " "+school.district,
+        syllabus: school.syllabus,
+        id : school._id,
+      }));
+      setDropSchool(transformedSchools);
     } catch (error) {
       console.log(error);
     }
@@ -133,7 +154,22 @@ const addStudent = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-
+            <div>
+              <label
+                htmlFor="middlename"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Middle Name
+              </label>
+              <input
+                type="text"
+                id="middlename"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                
+                required
+                onChange={(e) => setMiddleName(e.target.value)}
+              />
+            </div>
             <div>
               <label
                 htmlFor="lastname"
@@ -150,29 +186,16 @@ const addStudent = () => {
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="middlename"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Middle Name
-              </label>
-              <input
-                type="text"
-                id="middlename"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                required
-                // onChange={(e) => setsetLastName(e.target.value)}
-              />
-            </div>
+           
 
             <div>
               <select
                 name=""
                 id=""
                 className="mt-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={(e) => setGender(e.target.value)}
               >
-                <option value="Gender">Gender</option>
+                <option value="NONE">Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
@@ -205,6 +228,8 @@ const addStudent = () => {
                 type="number"
                 id="phoneno"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                onChange={(e) => setPhone(e.target.value)}
+                maxLength={10}
                 required
                 // onChange={(e) => setRollNo(e.target.value)}
               />
@@ -239,7 +264,7 @@ const addStudent = () => {
                 id="cnfrmpswrd"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 required
-                // onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setConfPassword(e.target.value)}
               />
             </div>
 
@@ -259,23 +284,19 @@ const addStudent = () => {
               />
             </div>
             {role !== "INSTRUCTOR" && (
-              <div className="mt-2">
-                <select
-                  className="bg-gray-50 border mt-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => {
-                    setSelectedSchool(dropSchool[e.target.value]);
-                    console.log(dropSchool[e.target.value]);
-                  }}
-                >
-                  <option value="NO">Select School</option>
-                  {Array.isArray(dropSchool) &&
-                    dropSchool?.map((school, index) => (
-                      <option key={index} value={index}>
-                        {school?.name} {school?.district}
-                      </option>
-                    ))}
-                </select>
-              </div>
+                          <div className="">
+                          <label
+                              htmlFor="standard"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                              School
+                            </label>
+                          <SearchableDropdown
+                            options={dropSchool}
+                            onChange={setSelectedSchool} // Use setSelectedSchool directly
+                            placeholder="Select School"
+                          />
+                        </div>
             )}
 
             {role !== "INSTRUCTOR" && (
@@ -307,20 +328,8 @@ const addStudent = () => {
                 >
                   Medium
                 </label>
-                {/* <select
-    id="medium"
-    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-    value={medium}
-    onChange={handleMedium}
-  >
-    <option selected>Choose a medium</option>
-    <option value="ENGLISH">English</option>
-    <option value="KANNADA">Kannada</option>
-    <option value="MALYALAM">Malyalam</option>
-    <option value="TELUGU">Telgu</option>
-  </select> */}
                 <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                  {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``}
+                  {selectedSchool ? <p>{selectedSchool?.value}</p> : ``}
                 </div>
               </div>
             )}

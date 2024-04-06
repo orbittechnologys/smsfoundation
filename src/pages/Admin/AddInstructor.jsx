@@ -3,20 +3,27 @@ import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import SearchableDropdown from "../SearchableDropdown";
+import { useNavigate } from "react-router";
 
 const AddInstructor = () => {
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [middleName,setMiddleName] = useState("");
+  const [gender,setGender] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confPassword,setConfPassword] = useState("");
   const [school, setSchool] = useState("");
   const [medium, setMedium] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [phone,setPhone] = useState("");
+  const [qualification,setQualification]= useState("");
   // const [selectedSchool, setSelectedSchool] = useState("NO");
   const [selectedSchool, setSelectedSchool] = useState(null); // Initialize selectedSchool as null
   const [dropSchool, setDropSchool] = useState([]);
-  console.log(selectedSchool);
+  // console.log(selectedSchool);
 
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -24,13 +31,16 @@ const AddInstructor = () => {
     const reqbody = {
       firstName: name,
       lastName: lastName,
-      
+      middleName :middleName,
       email: email,
+      phone,
+      qualification,
       password: password,
+      gender:gender,
       // school: selectedSchool,
-      school: selectedSchool.value, // Access value property of selectedSchool
+      school: selectedSchool.id, // Access value property of selectedSchool
 
-      medium: medium,
+      medium: selectedSchool.value,
     };
 
     console.log(reqbody);
@@ -42,6 +52,7 @@ const AddInstructor = () => {
       );
       console.log(res.data);
       alert("instructor added sucessfully");
+      navigate("/admin/allInstructor")
     } catch (error) {
       console.log(error);
       alert("instructor could not be added");
@@ -112,6 +123,23 @@ const AddInstructor = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
+            
+            <div>
+              <label
+                htmlFor="lastName"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Middle Name
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Middle Name"
+                required
+                onChange={(e) => setMiddleName(e.target.value)}
+              />
+            </div>
             <div>
               <label
                 htmlFor="lastName"
@@ -129,28 +157,13 @@ const AddInstructor = () => {
               />
             </div>
             <div>
-              <label
-                htmlFor="lastName"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Middle Name
-              </label>
-              <input
-                type="text"
-                id="lastName"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Middle Name"
-                required
-                // onChange={(e) => setLastName(e.target.value)}
-              />
-            </div>
-            <div>
               <select
                 name=""
                 id=""
                 className="mt-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={(e) => setGender(e.target.value)}
               >
-                <option value="Gender">Gender</option>
+                <option value="NONE">Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
@@ -167,6 +180,7 @@ const AddInstructor = () => {
                 id="phoneNumber"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Phone Number"
+                onChange={(e) => setPhone(e.target.value)}
                 required
                 // onChange={(e) => setLastName(e.target.value)}
               />
@@ -183,6 +197,7 @@ const AddInstructor = () => {
                 id="qualification"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Qualification"
+                onChange={(e)=> setQualification(e.target.value)}
                 required
                 // onChange={(e) => setLastName(e.target.value)}
               />
@@ -224,6 +239,7 @@ const AddInstructor = () => {
             <label
               htmlFor="cnfrmp"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            
             >
               Confirm Password
             </label>
@@ -233,9 +249,16 @@ const AddInstructor = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="•••••••••"
               required
-              // onChange={(e) => setPassword(e.target.value)}
+               onChange={(e) => setConfPassword(e.target.value)}
             />
           </div>
+          {password != confPassword ? (
+                      <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                      <span className="font-medium">Passwords Don't match</span> 
+                    </div>
+                    ):``
+
+                    }
           <div className="">
             <SearchableDropdown
               options={dropSchool}

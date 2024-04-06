@@ -9,13 +9,45 @@ const AllStudents = () => {
   const [selectedStudentd, setSelectedStudent] = useState(null);
   const [newPassword, setNewPassword] = useState("");
   const [confPassword,setConfPassword] = useState("");
-  const [selectedStudentIdx,setSelectedStudentIdx] = useState(null);
+  const [role,setRole] = useState("NONE");
+  const [instructor,setInstructor] = useState(null);
+
+  const fetchStudentsBySchool = async  (schoolId) => {
+    if(schoolId){
+      try {
+        const res = await axios.get(`${BASE_URL}student/getStudentsBySchool/${schoolId}`);
+        setAllStudents(res.data.students);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
 
   const getAllStudents = async () => {
+    console.log(role);
+    if(role == "ADMIN") {
+      try {
+        const res = await axios.get(`${BASE_URL}student/getAll`);
+        console.log(res.data.students);
+        setAllStudents(res.data.students);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
+  };
+
+  const fetchInstructor = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}student/getAll`);
-      console.log(res.data.students);
-      setAllStudents(res.data.students);
+      const userId = sessionStorage.getItem("user_id");
+      setRole(sessionStorage.getItem("role"));
+      const res = await axios.get(
+        `${BASE_URL}instructor/getByUserId/${userId}`
+      );
+      console.log(res.data.instructorDoc.school);
+      setInstructor(res.data.instructorDoc.school);
+      fetchStudentsBySchool(res.data.instructorDoc.school._id);
     } catch (error) {
       console.log(error);
     }
@@ -23,6 +55,7 @@ const AllStudents = () => {
 
   useEffect(() => {
     getAllStudents();
+    fetchInstructor();
   }, []);
 
   const handleResetPassword = async (e) => {
