@@ -327,7 +327,87 @@ const Sidebar = () => {
                 </div>
               </li>
             ) : (
-              ``
+              <li
+                onMouseEnter={() => toggleDropdown("student")}
+                onMouseLeave={closeDropdowns}
+              >
+                <div className="relative">
+                  <div
+                    className={`flex items-center p-2 rounded-lg group cursor-pointer ${
+                      isActive("/admin/AllStudents") ||
+                      isActive("/admin/addStudent")
+                        ? "bg-orange-200"
+                        : ""
+                    }`}
+                  >
+                    <FaUserGraduate className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75" />
+                    <span
+                      className={`flex-1 ms-3 whitespace-nowrap ${
+                        isActive("/admin/AllStudents") ||
+                        isActive("/admin/addStudent")
+                          ? "text-black"
+                          : "text-black"
+                      } hover:text-orange-500`}
+                    >
+                      Student
+                    </span>
+                  </div>
+
+                  {dropdownStates.student && (
+                    <div
+                      className="absolute left-0 w-48 bg-white rounded-lg shadow-lg z-10"
+                      onMouseEnter={openDropdown}
+                      onMouseLeave={closeDropdown}
+                    >
+                      <ul className="py-1">
+                        {" "}
+                        <li>
+                          <Link
+                            to="/inst/AllStudents"
+                            className={`flex items-center p-2 rounded-lg group ${
+                              isActive("/admin/AllStudents")
+                                ? "bg-orange-200"
+                                : ""
+                            }`}
+                          >
+                            <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
+                            <span
+                              className={`${
+                                isActive("/inst/AllStudents")
+                                  ? "text-black"
+                                  : "text-black"
+                              } ms-3 hover:text-orange-500`}
+                            >
+                              All Students
+                            </span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/inst/addStudent"
+                            className={`flex items-center p-2 rounded-lg group ${
+                              isActive("/inst/addStudent")
+                                ? "bg-orange-200"
+                                : ""
+                            }`}
+                          >
+                            <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
+                            <span
+                              className={`${
+                                isActive("/inst/addStudent")
+                                  ? "text-black"
+                                  : "text-black"
+                              } ms-3 hover:text-orange-500`}
+                            >
+                              Add Student
+                            </span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </li>
             )}
 
             {/* Student */}
@@ -458,25 +538,7 @@ const Sidebar = () => {
                   </span>
                 </Link>
               </li>
-            ) : (
-              <li>
-                <Link
-                  to="/inst/addStudent"
-                  className={`flex items-center p-2 rounded-lg group ${
-                    isActive("/inst/addStudent") ? "bg-orange-200" : ""
-                  }`}
-                >
-                  <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
-                  <span
-                    className={`${
-                      isActive("/inst/addStudent") ? "text-black" : "text-black"
-                    } ms-3 hover:text-orange-500`}
-                  >
-                    Add Student
-                  </span>
-                </Link>
-              </li>
-            )}
+            ) : ``}
 
             {role == "ADMIN" ? (
               <li>
@@ -638,6 +700,27 @@ const Sidebar = () => {
                 </div>
               </li>
             )}
+
+            
+        {role == "ADMIN" ? (
+                      <li>
+                        <Link
+                          to="/admin/masterTable"
+                          className={`flex items-center p-2 rounded-lg group ${
+                            isActive("/admin/masterTable") ? "bg-orange-200" : ""
+                          }`}
+                        >
+                          <SlNote className="w-5 h-5 text-gray-500 transition duration-75" />
+                          <span
+                            className={`${
+                              isActive("/admin/masterTable") ? "text-black" : "text-black"
+                            } ms-3 hover:text-orange-500`}
+                          >
+                            Master Table
+                          </span>
+                        </Link>
+                      </li>
+                    ) : ``}
 
             <li>
               <Link

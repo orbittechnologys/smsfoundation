@@ -12,6 +12,8 @@ const EditStudent = () => {
   const [rollNo, setRollNo] = useState("");
   const [standard, setStandard] = useState("");
   const [password, setPassword] = useState("");
+  const [email,setEmail] = useState("");
+  const [phone,setPhone] = useState("");
   const [getAllStudents, setGetAllStudents] = useState([]);
 
   const fetchInstructorByUserId = async (userId) => {
@@ -64,7 +66,19 @@ const EditStudent = () => {
     }
   };
 
+  const populateEmailPhone = async(userId) => {
+    try {
+      const res = await axios.get(`${BASE_URL}user/id/${userId}`);
+      console.log(res.data.userDoc);
+      setEmail(res.data.userDoc.email);
+      setPhone(res.data.userDoc.phone);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleStudentSelect = (student) => {
+    populateEmailPhone(student?.user);
     setSelectedStudent(student);
     setFirstName(student?.firstName || "");
     setLastName(student?.lastName || "");
@@ -80,6 +94,8 @@ const EditStudent = () => {
       lastName: lastName,
       rollNo: rollNo,
       standard: standard,
+      email,
+      phone
     };
 
     try {
@@ -251,6 +267,38 @@ const EditStudent = () => {
               placeholder="Standard"
               value={standard}
               onChange={(e) => setStandard(e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="standard"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="Standard"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="standard"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              Phone
+            </label>
+            <input
+              type="number"
+              placeholder="Phone"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
           </div>

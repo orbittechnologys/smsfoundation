@@ -36,6 +36,7 @@ import StudentProfile from "./pages/Student/StudentProfile";
 import AllStudents from "./pages/Admin/AllStudents";
 import SearchableDropdown from "./pages/SearchableDropdown";
 import Schoolp from "./pages/Admin/Schoolp";
+import MasterTable from "./pages/Admin/MasterTable";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -102,6 +103,7 @@ const App = () => {
             <Route path="AddInstructor" element={<AddInstructor />} />
             <Route path="AddTest" element={<AddTest />} />
             <Route path="preview/:testId" element={<PreviewTest />} />
+            <Route path="masterTable" element={<MasterTable/>} />
           </Route>
         </Route>
       </Routes>

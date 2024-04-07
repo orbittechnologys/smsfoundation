@@ -19,4 +19,10 @@ function getPercentage(num, denom) {
   return Math.round(percentage * 100) / 100; // Round to two decimal points
 }
 
-export { BASE_URL, convertSeconds, getPercentage };
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-GB', options);
+}
+
+export { BASE_URL, convertSeconds, getPercentage , formatDate};
