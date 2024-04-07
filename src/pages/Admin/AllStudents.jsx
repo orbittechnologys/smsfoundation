@@ -10,22 +10,23 @@ const AllStudents = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedStudentd, setSelectedStudent] = useState(null);
   const [newPassword, setNewPassword] = useState("");
-  const [confPassword,setConfPassword] = useState("");
-  const [role,setRole] = useState("NONE");
-  const [instructor,setInstructor] = useState(null);
+  const [confPassword, setConfPassword] = useState("");
+  const [role, setRole] = useState("NONE");
+  const [instructor, setInstructor] = useState(null);
 
-  const fetchStudentsBySchool = async  (schoolId) => {
-    if(schoolId){
+  const fetchStudentsBySchool = async (schoolId) => {
+    if (schoolId) {
       try {
-        const res = await axios.get(`${BASE_URL}student/getStudentsBySchool/${schoolId}`);
+        const res = await axios.get(
+          `${BASE_URL}student/getStudentsBySchool/${schoolId}`
+        );
         setAllStudents(res.data.students);
         console.log(res.data);
       } catch (error) {
         console.log(error);
       }
     }
-  }
-
+  };
 
   const [sortConfig, setSortConfig] = useState({
     key: "name",
@@ -45,7 +46,7 @@ const AllStudents = () => {
 
   const getAllStudents = async () => {
     console.log(role);
-    if(sessionStorage.getItem("role") == "ADMIN") {
+    if (sessionStorage.getItem("role") == "ADMIN") {
       try {
         const res = await axios.get(`${BASE_URL}student/getAll`);
         console.log(res.data.students);
@@ -54,16 +55,15 @@ const AllStudents = () => {
         console.log(error);
       }
     }
-    
   };
 
   const fetchInstructor = async () => {
     try {
       const userId = sessionStorage.getItem("user_id");
       setRole(sessionStorage.getItem("role"));
-      if(sessionStorage.getItem("role") == "ADMIN") {
+      if (sessionStorage.getItem("role") == "ADMIN") {
         getAllStudents();
-      }else{
+      } else {
         const res = await axios.get(
           `${BASE_URL}instructor/getByUserId/${userId}`
         );
@@ -140,11 +140,18 @@ const AllStudents = () => {
   const filteredSchools = sortedSchools.filter((rowData) => {
     // Combine all your rowData values into a single string and then check if the search term is included.
     // This allows for a very basic "global" search across all fields.
-    let res = Object.values(rowData).join(" ").toLowerCase().includes(searchTerm.toLowerCase())
-    return res ? res :
-          rowData.school ? 
-                Object.values(rowData?.school).join(" ").toLowerCase().includes(searchTerm.toLowerCase())
-                :false;
+    let res = Object.values(rowData)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    return res
+      ? res
+      : rowData.school
+      ? Object.values(rowData?.school)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      : false;
   });
 
   return (
@@ -152,14 +159,14 @@ const AllStudents = () => {
       <form className="max-w-md mx-auto my-5">
         <label
           htmlFor="default-search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+          className="mb-2 text-sm font-medium text-gray-900 sr-only "
         >
           Search
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg
-              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              className="w-4 h-4 text-gray-500 "
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -178,7 +185,7 @@ const AllStudents = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             type="search"
             id="default-search"
-            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
             placeholder="Search ..."
             required
           />
@@ -373,7 +380,7 @@ const AllStudents = () => {
                     </div>
                     {newPassword != confPassword ? (
                       <div
-                        className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                        className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 "
                         role="alert"
                       >
                         <span className="font-medium">

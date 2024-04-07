@@ -278,7 +278,7 @@ const AddQuestions = () => {
           <div>
             <label
               htmlFor="standard"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Standard
             </label>
@@ -288,7 +288,7 @@ const AddQuestions = () => {
               min={1}
               max={12}
               id="standard"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder=""
               required
             />
@@ -296,13 +296,13 @@ const AddQuestions = () => {
           <div>
             <label
               htmlFor="medium"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Medium
             </label>
             <select
               id="medium"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               onChange={(e) => setMedium(e.target.value)}
             >
               <option selected>Choose a medium</option>
@@ -317,13 +317,13 @@ const AddQuestions = () => {
           <div>
             <label
               htmlFor="syllabus"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Syllabus
             </label>
             <select
               id="syllabus"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               onChange={(e) => {
                 setSyllabus(e.target.value);
               }}
@@ -338,20 +338,24 @@ const AddQuestions = () => {
             <div>
               <label
                 htmlFor="syllabus"
-                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-semibold text-gray-900 "
               >
                 Subjects
               </label>
               <select
                 id="syllabus"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 onChange={(e) => {
                   setSelectedSubject(e.target.value);
                 }}
               >
                 <option selected>Choose a Subject</option>
                 {subjects?.map((subject, index) => {
-                  return <option value={subject?._id}>{subject?.name}</option>;
+                  return (
+                    <option key={index} value={subject?._id}>
+                      {subject?.name}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -361,13 +365,13 @@ const AddQuestions = () => {
             <div>
               <label
                 htmlFor="syllabus"
-                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-semibold text-gray-900 "
               >
                 Chapters
               </label>
               <select
                 id="syllabus"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 onChange={(e) => {
                   setSelectedChapter(e.target.value);
                 }}

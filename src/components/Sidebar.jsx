@@ -92,7 +92,7 @@ const Sidebar = () => {
         data-drawer-toggle="logo-sidebar"
         aria-controls="logo-sidebar"
         type="button"
-        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-gray-200"
       >
         <span className="sr-only">Open sidebar</span>
         <svg
@@ -119,7 +119,7 @@ const Sidebar = () => {
       >
         <button
           onClick={handleCloseSidebar}
-          className="absolute top-3 right-5 text-orange-500 dark:text-gray-400 lg:hidden md:hidden sm:block"
+          className="absolute top-3 right-5 text-orange-500 lg:hidden md:hidden sm:block"
         >
           <IoCloseCircle className="h-8 w-8" />
         </button>
@@ -725,9 +725,9 @@ const Sidebar = () => {
             <li>
               <Link
                 to="/"
-                className="mt-28 flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-orange-200 dark:hover:bg-gray-700 group"
+                className="mt-28 flex items-center p-2 text-gray-900 rounded-lg hover:bg-orange-200  group"
               >
-                <IoExitOutline className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-black" />
+                <IoExitOutline className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " />
                 <span className="flex-1 ms-3 whitespace-nowrap text-black hover:text-orange-500">
                   Logout
                 </span>

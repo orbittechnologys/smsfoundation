@@ -10,7 +10,7 @@ const LearningReport = () => {
   const [sortConfig, setSortConfig] = useState({
     key: "name",
     direction: "ascending",
-    key2:""
+    key2: "",
   });
 
   const tableData = [
@@ -206,32 +206,41 @@ const LearningReport = () => {
   };
 
   const columns = [
-    { label: "Name", accessor: "student",aftab:"firstName", sortable: true },
-    { label: "Roll No", accessor: "student",aftab:"rollNo", sortable: true },
-    { label: "Standard", accessor: "student",aftab:"standard", sortable: true },
-    { label: "Medium", accessor: "student",aftab:"medium", sortable: true },
-    { label: "School", accessor: "school",aftab:"name", sortable: true },
-    { label: "District", accessor: "school",aftab:"district", sortable: true },
-    { label: "Subject", accessor: "subject",aftab:"name", sortable: true },
+    { label: "Name", accessor: "student", aftab: "firstName", sortable: true },
+    { label: "Roll No", accessor: "student", aftab: "rollNo", sortable: true },
+    {
+      label: "Standard",
+      accessor: "student",
+      aftab: "standard",
+      sortable: true,
+    },
+    { label: "Medium", accessor: "student", aftab: "medium", sortable: true },
+    { label: "School", accessor: "school", aftab: "name", sortable: true },
+    {
+      label: "District",
+      accessor: "school",
+      aftab: "district",
+      sortable: true,
+    },
+    { label: "Subject", accessor: "subject", aftab: "name", sortable: true },
     { label: "Time Spent", accessor: "time", sortable: true },
   ];
 
-  const handleSortingChange = (key,key2) => {
+  const handleSortingChange = (key, key2) => {
     let direction = "ascending";
     if (sortConfig.key === key && sortConfig.direction === "ascending") {
       direction = "descending";
     }
-    setSortConfig({ key,key2, direction });
+    setSortConfig({ key, key2, direction });
   };
 
   const sortedSchools = [...learningReport].sort((a, b) => {
-   
-    console.log(sortConfig.key,sortConfig.key2)
+    console.log(sortConfig.key, sortConfig.key2);
 
-    const valueAContainsKey2 = sortConfig.key2 ? true :false;
+    const valueAContainsKey2 = sortConfig.key2 ? true : false;
 
     let valueA = "";
-    let valueB = ""
+    let valueB = "";
 
     // if(sortConfig.key == "school"){ //here we have 2 edge cases : rowData?.school?.name / rowData?.student?.school?.name
     //   let type = typeof a[sortConfig.key]
@@ -239,7 +248,7 @@ const LearningReport = () => {
     //   if(type === undefined && sortConfig.key2 == "name"){ // if we don't have a school object immediately i,e rowData.school we do modification
     //     console.log("I am here")
     //     valueA =
-    //   valueAContainsKey2 && typeof a?.student?.school?.name  === "string" 
+    //   valueAContainsKey2 && typeof a?.student?.school?.name  === "string"
     //   ? a?.student?.school?.name.toLowerCase().trim()
     //   : a?.student?.school?.name ;
     //       console.log(valueA);
@@ -247,10 +256,10 @@ const LearningReport = () => {
     //  valueAContainsKey2 && typeof b?.student?.school?.name  === "string"
     //     ? b?.student?.school?.name.toLowerCase().trim()
     //     : b?.student?.school?.name;
-        
+
     //   }else if(!type && sortConfig.key2 == "district"){
     //     valueA =
-    //   valueAContainsKey2 && typeof a[sortConfig.key][sortConfig.key2]  === "string" 
+    //   valueAContainsKey2 && typeof a[sortConfig.key][sortConfig.key2]  === "string"
     //   ? a[sortConfig.key][sortConfig.key2].toLowerCase().trim()
     //   : a[sortConfig.key];
     //       console.log(valueA);
@@ -260,18 +269,20 @@ const LearningReport = () => {
     //     : b[sortConfig.key];
     //   }
     // }else{
-      valueA =
-      valueAContainsKey2 && typeof a[sortConfig.key][sortConfig.key2]  === "string" 
-      ? a[sortConfig.key][sortConfig.key2].toLowerCase().trim()
-      : a[sortConfig.key];
-         
+    valueA =
+      valueAContainsKey2 &&
+      typeof a[sortConfig.key][sortConfig.key2] === "string"
+        ? a[sortConfig.key][sortConfig.key2].toLowerCase().trim()
+        : a[sortConfig.key];
+
     valueB =
-     valueAContainsKey2 && typeof b[sortConfig.key][sortConfig.key2] === "string"
+      valueAContainsKey2 &&
+      typeof b[sortConfig.key][sortConfig.key2] === "string"
         ? b[sortConfig.key][sortConfig.key2].toLowerCase().trim()
         : b[sortConfig.key];
-    
+
     // }
-    
+
     console.log(valueA);
     console.log(valueB);
 
@@ -287,19 +298,30 @@ const LearningReport = () => {
   const filteredSchools = sortedSchools.filter((rowData) => {
     // Combine all your rowData values into a single string and then check if the search term is included.
     // This allows for a very basic "global" search across all fields.
-    let res = Object.values(rowData).join(" ").toLowerCase().includes(searchTerm.toLowerCase());
-    let res2 = rowData.school ? Object.values(rowData.school).join(" ").toLowerCase().includes(searchTerm.toLowerCase()) : false;
-    let res3 =rowData.student ? Object.values(rowData.student).join(" ").toLowerCase().includes(searchTerm.toLowerCase()) : false;
-    let res4 = rowData.subject ? Object.values(rowData.subject).join(" ").toLowerCase().includes(searchTerm.toLowerCase()) : false;
+    let res = Object.values(rowData)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    let res2 = rowData.school
+      ? Object.values(rowData.school)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      : false;
+    let res3 = rowData.student
+      ? Object.values(rowData.student)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      : false;
+    let res4 = rowData.subject
+      ? Object.values(rowData.subject)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      : false;
 
-
-    
-    return res ? res :
-            res2 ? res2 :
-              res3 ? res3 :
-                res4 ? res4 :
-                  false; 
-
+    return res ? res : res2 ? res2 : res3 ? res3 : res4 ? res4 : false;
   });
 
   return (
@@ -307,14 +329,14 @@ const LearningReport = () => {
       <form className="max-w-md mx-auto my-5">
         <label
           htmlFor="default-search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+          className="mb-2 text-sm font-medium text-gray-900 sr-only "
         >
           Search
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg
-              className="w-4 h-4 text-gray-500 dark:text-gray-400"
+              className="w-4 h-4 text-gray-500 "
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -333,7 +355,7 @@ const LearningReport = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             type="search"
             id="default-search"
-            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
             placeholder="Search ..."
             required
           />
@@ -370,11 +392,11 @@ const LearningReport = () => {
         <table className="custom-table">
           <thead>
             <tr>
-              {columns.map(({ label, accessor, sortable,aftab }) => (
+              {columns.map(({ label, accessor, sortable, aftab }) => (
                 <th
                   key={accessor}
                   onClick={
-                    sortable ? () => handleSortingChange(accessor,aftab) : null
+                    sortable ? () => handleSortingChange(accessor, aftab) : null
                   }
                   className="cursor-pointer"
                 >
