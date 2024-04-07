@@ -9,6 +9,7 @@ const TestReport = () => {
   const [sortConfig, setSortConfig] = useState({
     key: "name",
     direction: "ascending",
+    key2:""
   });
 
   const tableData = [
@@ -218,43 +219,86 @@ const TestReport = () => {
   };
 
   const columns = [
-    { label: "Name", accessor: "firstName", sortable: true },
-    { label: "Roll No", accessor: "student?.rollNo", sortable: true },
-    { label: "Standard", accessor: "student?.standard", sortable: true },
-    { label: "Medium", accessor: "student?.medium", sortable: true },
-    { label: "School", accessor: "school?.name", sortable: true },
+    { label: "Name", accessor: "student",aftab:"firstName", sortable: true },
+    { label: "Roll No", accessor: "student",aftab:"rollNo", sortable: true },
+    { label: "Standard", accessor: "student",aftab:"standard", sortable: true },
+    { label: "Medium", accessor: "student",aftab:"medium", sortable: true },
+    { label: "School", accessor: "school",aftab:"name", sortable: true },
     {
       label: "District",
-      accessor: "student?.school?.district",
+      accessor: "school",
+      aftab:"district",
       sortable: true,
     },
-    { label: "Test", accessor: "test?.name", sortable: true },
+    { label: "Test", accessor: "test",aftab:"name", sortable: true },
     { label: "Scored Marks", accessor: "marks", sortable: true },
-    { label: "Total Marks", accessor: "test?.totalMarks", sortable: true },
+    { label: "Total Marks", accessor: "test",aftab:"totalMarks", sortable: true },
     {
       label: "Percentage",
-      accessor: "marks, rowData?.test?.totalMarks)",
+      accessor: "percentage",
       sortable: true,
     },
   ];
 
-  const handleSortingChange = (key) => {
+  const handleSortingChange = (key,key2) => {
     let direction = "ascending";
     if (sortConfig.key === key && sortConfig.direction === "ascending") {
       direction = "descending";
     }
-    setSortConfig({ key, direction });
+    setSortConfig({ key,key2, direction });
   };
 
   const sortedSchools = [...testReport].sort((a, b) => {
-    const valueA =
-      typeof a[sortConfig.key] === "string"
-        ? a[sortConfig.key].toLowerCase().trim()
-        : a[sortConfig.key];
-    const valueB =
-      typeof b[sortConfig.key] === "string"
-        ? b[sortConfig.key].toLowerCase().trim()
-        : b[sortConfig.key];
+    const valueAContainsKey2 = sortConfig.key2 ? true :false;
+
+    let valueA = "";
+    let valueB = ""
+
+    // if(sortConfig.key == "school"){ //here we have 2 edge cases : rowData?.school?.name / rowData?.student?.school?.name
+    //   let type = typeof a[sortConfig.key]
+    //   console.log(type, sortConfig.key2)
+    //   if(type === undefined && sortConfig.key2 == "name"){ // if we don't have a school object immediately i,e rowData.school we do modification
+    //     console.log("I am here")
+    //     valueA =
+    //   valueAContainsKey2 && typeof a?.student?.school?.name  === "string" 
+    //   ? a?.student?.school?.name.toLowerCase().trim()
+    //   : a?.student?.school?.name ;
+    //       console.log(valueA);
+    // valueB =
+    //  valueAContainsKey2 && typeof b?.student?.school?.name  === "string"
+    //     ? b?.student?.school?.name.toLowerCase().trim()
+    //     : b?.student?.school?.name;
+        
+    //   }else if(!type && sortConfig.key2 == "district"){
+    //     valueA =
+    //   valueAContainsKey2 && typeof a[sortConfig.key][sortConfig.key2]  === "string" 
+    //   ? a[sortConfig.key][sortConfig.key2].toLowerCase().trim()
+    //   : a[sortConfig.key];
+    //       console.log(valueA);
+    // valueB =
+    //  valueAContainsKey2 && typeof b[sortConfig.key][sortConfig.key2] === "string"
+    //     ? b[sortConfig.key][sortConfig.key2].toLowerCase().trim()
+    //     : b[sortConfig.key];
+    //   }
+    // }else{
+      valueA =
+      valueAContainsKey2 && (typeof a[sortConfig.key][sortConfig.key2]  === "string"  ) 
+      ? a[sortConfig.key][sortConfig.key2].toString().toLowerCase().trim()
+      : valueAContainsKey2 && typeof a[sortConfig.key][sortConfig.key2]  === "number" ? 
+        a[sortConfig.key][sortConfig.key2]
+        :a[sortConfig.key];
+         
+    valueB =
+     valueAContainsKey2 && (typeof b[sortConfig.key][sortConfig.key2] === "string" )
+        ? b[sortConfig.key][sortConfig.key2].toString().toLowerCase().trim()
+        : valueAContainsKey2 && typeof b[sortConfig.key][sortConfig.key2]  === "number" ? 
+        b[sortConfig.key][sortConfig.key2]
+        :b[sortConfig.key];
+    
+    // }
+    console.log(sortConfig.key,sortConfig.key2)
+    console.log(valueA);
+    console.log(valueB);
 
     if (valueA < valueB) {
       return sortConfig.direction === "ascending" ? -1 : 1;
@@ -268,7 +312,16 @@ const TestReport = () => {
   const filteredSchools = sortedSchools.filter((rowData) => {
     // Combine all your rowData values into a single string and then check if the search term is included.
     // This allows for a very basic "global" search across all fields.
-    return Object.values(rowData).join(" ").toLowerCase().includes(searchTerm);
+    let res = Object.values(rowData).join(" ").toLowerCase().includes(searchTerm);
+    let res2 =rowData.school ? Object.values(rowData.school).join(" ").toLowerCase().includes(searchTerm) : false;
+    let res3 =rowData.student ? Object.values(rowData.student).join(" ").toLowerCase().includes(searchTerm) :false;
+    let res4 = rowData.test ? Object.values(rowData.test).join(" ").toLowerCase().includes(searchTerm) : false;
+    
+    return res ? res :
+    res2 ? res2 :
+      res3 ? res3 :
+        res4 ? res4 :
+          false;
   });
 
   return (
@@ -381,11 +434,11 @@ const TestReport = () => {
         <table className="custom-table">
           <thead>
             <tr>
-              {columns.map(({ label, accessor, sortable }) => (
+              {columns.map(({ label, accessor, sortable ,aftab}) => (
                 <th
                   key={accessor}
                   onClick={
-                    sortable ? () => handleSortingChange(accessor) : null
+                    sortable ? () => handleSortingChange(accessor, aftab) : null
                   }
                   className="cursor-pointer"
                 >
@@ -439,7 +492,7 @@ const TestReport = () => {
                 <td>{rowData?.marks}</td>
                 <td>{rowData?.test?.totalMarks}</td>
                 <td>
-                  {getPercentage(rowData?.marks, rowData?.test?.totalMarks)}%
+                  {rowData?.percentage}%
                 </td>
               </tr>
             ))}
