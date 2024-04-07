@@ -7,13 +7,13 @@ import { useNavigate } from "react-router";
 const addStudent = () => {
   const [name, setName] = useState("");
   const [lastName, setsetLastName] = useState("");
-  const [middleName,setMiddleName] = useState("");
-  const [gender,setGender] = useState("");
+  const [middleName, setMiddleName] = useState("");
+  const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
-  const [phone,setPhone] = useState("");
+  const [phone, setPhone] = useState("");
   const [rollNo, setRollNo] = useState("");
   const [password, setPassword] = useState("");
-  const [confPassword,setConfPassword] = useState("");
+  const [confPassword, setConfPassword] = useState("");
   const [school, setSchool] = useState("");
   const [medium, setMedium] = useState("");
   const [syllabus, setSyllabus] = useState("");
@@ -24,7 +24,6 @@ const addStudent = () => {
   const [role, setRole] = useState("");
 
   const navigate = useNavigate();
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,7 +62,8 @@ const addStudent = () => {
       const res = await axios.post(`${BASE_URL}student/addStudent`, reqbody);
       console.log(res.data);
       alert("student added sucessfully");
-      const navUrl = role == "INSTRUCTOR" ? "/instructor/AllStudents" : "/admin/AllStudents"
+      const navUrl =
+        role == "INSTRUCTOR" ? "/instructor/AllStudents" : "/admin/AllStudents";
       navigate(navUrl);
     } catch (error) {
       console.log(error);
@@ -82,9 +82,9 @@ const addStudent = () => {
         // value: school._id,
         value: school.medium,
         district: school.district,
-        label: school.name + " "+school.district,
+        label: school.name + " " + school.district,
         syllabus: school.syllabus,
-        id : school._id,
+        id: school._id,
       }));
       setDropSchool(transformedSchools);
     } catch (error) {
@@ -125,14 +125,14 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Email
               </label>
               <input
                 type="email"
                 id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 placeholder="John"
                 required
                 onChange={(e) => setEmail(e.target.value)}
@@ -142,7 +142,7 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="name"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 First Name
               </label>
@@ -157,7 +157,7 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="middlename"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Middle Name
               </label>
@@ -165,7 +165,6 @@ const addStudent = () => {
                 type="text"
                 id="middlename"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                
                 required
                 onChange={(e) => setMiddleName(e.target.value)}
               />
@@ -173,7 +172,7 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="lastname"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Last Name
               </label>
@@ -186,13 +185,11 @@ const addStudent = () => {
               />
             </div>
 
-           
-
             <div>
               <select
                 name=""
                 id=""
-                className="mt-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="mt-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 onChange={(e) => setGender(e.target.value)}
               >
                 <option value="NONE">Gender</option>
@@ -204,7 +201,7 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="rollno"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Roll No
               </label>
@@ -220,7 +217,7 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="phoneno"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Phone No
               </label>
@@ -239,7 +236,7 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Password
               </label>
@@ -255,7 +252,7 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="cnfrmpswrd"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Confirm Password
               </label>
@@ -271,7 +268,7 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="standard"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 Standard
               </label>
@@ -284,26 +281,26 @@ const addStudent = () => {
               />
             </div>
             {role !== "INSTRUCTOR" && (
-                          <div className="">
-                          <label
-                              htmlFor="standard"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              School
-                            </label>
-                          <SearchableDropdown
-                            options={dropSchool}
-                            onChange={setSelectedSchool} // Use setSelectedSchool directly
-                            placeholder="Select School"
-                          />
-                        </div>
+              <div className="">
+                <label
+                  htmlFor="standard"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
+                >
+                  School
+                </label>
+                <SearchableDropdown
+                  options={dropSchool}
+                  onChange={setSelectedSchool} // Use setSelectedSchool directly
+                  placeholder="Select School"
+                />
+              </div>
             )}
 
             {role !== "INSTRUCTOR" && (
               <div>
                 <label
                   htmlFor="syllabus"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Syllabus
                 </label>
@@ -324,7 +321,7 @@ const addStudent = () => {
               <div>
                 <label
                   htmlFor="medium"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-gray-900 "
                 >
                   Medium
                 </label>

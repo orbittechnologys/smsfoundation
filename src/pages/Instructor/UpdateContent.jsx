@@ -129,7 +129,7 @@ const UpdateContent = () => {
           <div>
             <label
               htmlFor="standard"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Standard
             </label>
@@ -139,7 +139,7 @@ const UpdateContent = () => {
               min={1}
               max={12}
               id="standard"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder=""
               required
             />
@@ -147,13 +147,13 @@ const UpdateContent = () => {
           <div>
             <label
               htmlFor="medium"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Medium
             </label>
             <select
               id="medium"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               onChange={(e) => setMedium(e.target.value)}
             >
               <option selected>Choose a medium</option>
@@ -168,13 +168,13 @@ const UpdateContent = () => {
           <div>
             <label
               htmlFor="syllabus"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Syllabus
             </label>
             <select
               id="syllabus"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               onChange={(e) => {
                 setSyllabus(e.target.value);
               }}
@@ -189,13 +189,13 @@ const UpdateContent = () => {
             <div>
               <label
                 htmlFor="syllabus"
-                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-semibold text-gray-900 "
               >
                 Subjects
               </label>
               <select
                 id="syllabus"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 onChange={(e) => {
                   setSelectedSubject(e.target.value);
                 }}
@@ -270,7 +270,7 @@ const UpdateContent = () => {
             <div>
               <label
                 htmlFor="desc"
-                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-semibold text-gray-900 "
               >
                 Chapter Name
               </label>
@@ -278,7 +278,7 @@ const UpdateContent = () => {
                 type="text"
                 id="desc"
                 onChange={(e) => setChapterName(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 placeholder="Enter Chapter name"
                 required
               />
@@ -286,7 +286,7 @@ const UpdateContent = () => {
             <div>
               <label
                 htmlFor="desc"
-                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-semibold text-gray-900 "
               >
                 Chapter Description
               </label>
@@ -294,7 +294,7 @@ const UpdateContent = () => {
                 type="text"
                 id="desc"
                 onChange={(e) => setChapterDesc(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 placeholder="Enter Description"
                 required
               />
@@ -303,7 +303,7 @@ const UpdateContent = () => {
               <div>
                 <label
                   htmlFor="cont"
-                  className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-semibold text-gray-900 "
                 >
                   Upload Content
                 </label>
@@ -312,7 +312,7 @@ const UpdateContent = () => {
                   id="cont"
                   accept="application/pdf"
                   onChange={handleFileChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                   placeholder="Upload Content"
                   required
                 />
@@ -328,7 +328,7 @@ const UpdateContent = () => {
               <div>
                 <label
                   htmlFor="cont"
-                  className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-semibold text-gray-900 "
                 >
                   Upload Audio File
                 </label>
@@ -337,7 +337,7 @@ const UpdateContent = () => {
                   id="cont"
                   accept="audio/*"
                   onChange={handleFileChangeAudio}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                   placeholder="Upload Content"
                   required
                 />
@@ -346,7 +346,7 @@ const UpdateContent = () => {
             <div>
               <label
                 htmlFor="desc"
-                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-semibold text-gray-900 "
               >
                 Video URL
               </label>
@@ -354,7 +354,7 @@ const UpdateContent = () => {
                 type="text"
                 id="desc"
                 onChange={(e) => setVideoUrl(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 placeholder="Enter Description"
                 required
               />

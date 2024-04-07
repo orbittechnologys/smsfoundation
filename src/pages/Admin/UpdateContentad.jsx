@@ -22,14 +22,14 @@ const UpdateContentad = () => {
           <div>
             <label
               htmlFor="standard"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Standard
             </label>
             <input
               type="text"
               id="standard"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder=""
               required
             />
@@ -37,13 +37,13 @@ const UpdateContentad = () => {
           <div>
             <label
               htmlFor="medium"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Medium
             </label>
             <select
               id="medium"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             >
               <option selected>Choose a medium</option>
               <option value="EN">English</option>
@@ -57,14 +57,14 @@ const UpdateContentad = () => {
           <div>
             <label
               htmlFor="subject"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Subject
             </label>
             <input
               type="text"
               id="subject"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder=""
               required
             />
@@ -72,13 +72,13 @@ const UpdateContentad = () => {
           <div>
             <label
               htmlFor="syllabus"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Syllabus
             </label>
             <select
               id="syllabus"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
             >
               <option selected>Choose a Syllabus</option>
               <option value="NC">NCERT</option>
@@ -94,14 +94,14 @@ const UpdateContentad = () => {
           <div>
             <label
               htmlFor="desc"
-              className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-semibold text-gray-900 "
             >
               Description
             </label>
             <input
               type="text"
               id="desc"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="Study material for class 9th"
               required
             />
@@ -110,7 +110,7 @@ const UpdateContentad = () => {
             <div>
               <label
                 htmlFor="cont"
-                className="block mb-2 text-sm font-semibold text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-semibold text-gray-900 "
               >
                 Upload Content
               </label>
@@ -119,7 +119,7 @@ const UpdateContentad = () => {
                 id="cont"
                 accept="application/pdf"
                 onChange={handleFileChange}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 placeholder="Upload Content"
                 required
               />
