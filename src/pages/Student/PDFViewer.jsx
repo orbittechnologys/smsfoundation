@@ -5,7 +5,7 @@ import { Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
 import AudioPlayer from "react-h5-audio-player";
@@ -29,6 +29,9 @@ const PDFViewer = () => {
   const [currPage, setCurrPage] = useState(0);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const pageInput = new URLSearchParams(location.search).get("page");
+  
 
   const fetchPdf = async (chapterUrl) => {
     try {
@@ -63,7 +66,12 @@ const PDFViewer = () => {
         }
       );
       console.log(res.data);
-      setInitPage(res.data.chapterTime?.page);
+      console.log(pageInput);
+      if(pageInput){
+        setInitPage(pageInput - 1);
+      }else{
+        setInitPage(res.data.chapterTime?.page);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -107,77 +115,6 @@ const PDFViewer = () => {
     startAndStop();
   }, []);
 
-  const allowedFiles = ["application/pdf"];
-  const handleFile = (e) => {
-    let selectedFile = e.target.files[0];
-    if (selectedFile) {
-      if (selectedFile && allowedFiles.includes(selectedFile.type)) {
-        let reader = new FileReader();
-        reader.readAsDataURL(selectedFile);
-        reader.onloadend = (e) => {
-          setPdfError("");
-          setPdfFile(e.target.result);
-        };
-      } else {
-        setPdfError("Not a valid pdf: Please select only PDF");
-        setPdfFile("");
-      }
-    } else {
-      console.log("please select a PDF");
-    }
-  };
-
-  const startTimer = () => {
-    setTimerRunning(true);
-    const startTime = Date.now(); // Record the start time
-    setStartTime(startTime); // Set the start time in the state
-    setElapsedTime(0); // Reset elapsed time to 0
-    setTotalTime(0); // Reset total time to 0
-
-    // Update elapsed time at regular intervals
-    const interval = setInterval(() => {
-      const currentTime = Date.now();
-      const elapsed = currentTime - startTime;
-      setElapsedTime(elapsed); // Update elapsed time
-    }, 1000);
-
-    // Clear the interval when the component unmounts or when the timer stops
-    return () => clearInterval(interval);
-  };
-
-  const stopTimer = () => {
-    if (timerRunning) {
-      setTimerRunning(false);
-      const endTime = Date.now();
-      const elapsed = endTime - startTime;
-      setTotalTime(totalTime + elapsed);
-      setElapsedTime(0);
-      sendTotalTime(totalTime + elapsed);
-    }
-  };
-
-  const sendTotalTime = async (time) => {
-    const reqbody = {
-      chapterId: chapterId,
-      studentId: userId,
-      time: time,
-    };
-    console.log(reqbody);
-    try {
-      const res = await axios.post(`${BASE_URL}chapterTime/update`, reqbody);
-      console.log(res.data);
-      const hours = Math.floor(time / (1000 * 60 * 60));
-      const minutes = Math.floor((time % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((time % (1000 * 60)) / 1000);
-      console.log(time);
-      console.log(
-        "Total time:",
-        `${hours} hours, ${minutes} minutes, ${seconds} seconds`
-      );
-    } catch (error) {
-      console.error("Error sending total time:", error);
-    }
-  };
 
   const [time, setTime] = useState(0);
 

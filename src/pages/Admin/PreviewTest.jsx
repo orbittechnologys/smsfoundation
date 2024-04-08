@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BASE_URL } from "../../constants";
 import cn from "classnames";
 
@@ -10,6 +10,8 @@ const PreviewTest = () => {
   const [questions, setQuestions] = useState([]);
   const [test, setTest] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [role,setRole] = useState("NONE");
+  const navigate = useNavigate();
 
   const fetchQuestions = async (testId) => {
     try {
@@ -35,6 +37,7 @@ const PreviewTest = () => {
     if (testId) {
       fetchQuestions(testId);
       fetchTest(testId);
+      setRole(sessionStorage.getItem("role"));
     }
   }, [testId]);
 
@@ -172,8 +175,16 @@ const PreviewTest = () => {
               ></span>
             </div>
 
-            <div>
-              <h1>Page Reference : {questions[currentQuestionIndex]?.pageRef}</h1>
+            <div className="flex flex-row align-middle justify-center">
+              <h1 className="text-lg font-bold m-5">Page Reference : {questions[currentQuestionIndex]?.pageRef}</h1>
+
+              {role == "STUDENT" && (
+                <button 
+                onClick={() => navigate('/pdf/'+test?.chapter+'?page='+questions[currentQuestionIndex]?.pageRef)}
+                className="text-white h-1/3 mt-2 bg-orange-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"  >View PDF</button>
+              )
+              }
+              
             </div>
           </div>
         )}
