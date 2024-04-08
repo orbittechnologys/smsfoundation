@@ -131,6 +131,36 @@ const PreviewTest = () => {
                     }}
                   ></span>
                 </div>
+                {questions[currentQuestionIndex]?.optionE && (
+                  <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
+                  <span className="mr-2">E.</span>
+                  <span
+                    className={cn({
+                      "text-green-400 font-bold":
+                        questions[currentQuestionIndex]?.answer === "E",
+                    })}
+                    dangerouslySetInnerHTML={{
+                      __html: questions[currentQuestionIndex]?.optionE,
+                    }}
+                  ></span>
+                </div>
+                )}
+                
+                  {questions[currentQuestionIndex]?.optionF && (
+                    <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
+                    <span className="mr-2">E.</span>
+                    <span
+                      className={cn({
+                        "text-green-400 font-bold":
+                          questions[currentQuestionIndex]?.answer === "F",
+                      })}
+                      dangerouslySetInnerHTML={{
+                        __html: questions[currentQuestionIndex]?.optionF,
+                      }}
+                    ></span>
+                  </div>
+                  )}
+                
               </div>
             </div>
             <div className="w-full h-full lg:border lg:p-5 lg:rounded-xl">
@@ -140,6 +170,10 @@ const PreviewTest = () => {
                   __html: questions[currentQuestionIndex]?.hint,
                 }}
               ></span>
+            </div>
+
+            <div>
+              <h1>Page Reference : {questions[currentQuestionIndex]?.pageRef}</h1>
             </div>
           </div>
         )}

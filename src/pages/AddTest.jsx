@@ -141,7 +141,8 @@ const AddQuestions = () => {
       answer &&
       test &&
       marks &&
-      hint
+      hint &&
+      pageRef
     ) {
       const reqBody = {
         testId: test?._id,
@@ -150,6 +151,9 @@ const AddQuestions = () => {
         optionB,
         optionC,
         optionD,
+        optionE,
+        optionF,
+        pageRef,
         hint,
         answer,
         marks,
@@ -185,6 +189,13 @@ const AddQuestions = () => {
   const [optionB, setOptionB] = useState(null);
   const [optionC, setOptionC] = useState(null);
   const [optionD, setOptionD] = useState(null);
+  const [optionE,setOptionE] = useState(null);
+  const [optionF,setOptionF] = useState(null);
+
+  const [noOfOptions,setNoOfOptions] = useState(4);
+
+  const [pageRef,setPageRef] = useState(0);
+
   const [hint, setHint] = useState(null);
 
   const [dropMedium,setDropMedium] = useState([]);
@@ -491,6 +502,15 @@ const AddQuestions = () => {
             </div>
           </div>
 
+          <div>
+            <label>No of Options</label>
+            <select onChange={(e) => setNoOfOptions(e.target.value)}>
+              <option value={4}>4</option>
+              <option value={5}>5</option>
+              <option value={6}>6</option>
+            </select>
+          </div>
+
           <div className="grid gap-8 w-full  my-5 lg:mb-5 mb-10 ">
             <label className="font-semibold text-xl" htmlFor="question1">
               Question:
@@ -581,6 +601,53 @@ const AddQuestions = () => {
                 className="ml-4 mb-10 lg:w-5/6"
               />
             </div>
+
+            {noOfOptions <=6 && noOfOptions>=5 && (
+              <div className="flex lg:mb-0 mb-16">
+              <div>
+                <label className="text-xl">E.</label>
+                <input
+                  type="radio"
+                  name="option"
+                  onChange={(e) => setAnswer("E")}
+                />
+              </div>
+              <ReactQuill
+                theme="snow"
+                modules={modules}
+                formats={formats}
+                value={optionE}
+                onChange={(e) => setOptionE(e)}
+                className="ml-4 mb-10 lg:w-5/6"
+              />
+            </div>
+            )
+
+            }
+            
+            {noOfOptions == 6 && (
+              <div className="flex lg:mb-0 mb-16">
+              <div>
+                <label className="text-xl">F.</label>
+                <input
+                  type="radio"
+                  name="option"
+                  onChange={(e) => setAnswer("F")}
+                />
+              </div>
+              <ReactQuill
+                theme="snow"
+                modules={modules}
+                formats={formats}
+                value={optionF}
+                onChange={(e) => setOptionF(e)}
+                className="ml-4 mb-10 lg:w-5/6"
+              />
+            </div>
+            )
+
+            } 
+
           </div>
 
           <div className="flex mx-10 my-5">
@@ -595,7 +662,19 @@ const AddQuestions = () => {
                 className="ml-4 my-5 lg:w-5/6"
               />
             </div>
+
+            <div>
+              <label className="text-xl">Page Reference</label>
+              <input
+                type="number"
+                placeholder="Enter Page Number "
+                onChange={(e) => setPageRef(Number(e.target.value))}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block"
+                required
+              />
+            </div>
           </div>
+          
 
           <div className="mt-10">
             <button
