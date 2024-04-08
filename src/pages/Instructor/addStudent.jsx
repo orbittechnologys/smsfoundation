@@ -66,8 +66,10 @@ const addStudent = () => {
         role == "INSTRUCTOR" ? "/instructor/AllStudents" : "/admin/AllStudents";
       navigate(navUrl);
     } catch (error) {
-      console.log(error);
-      alert("student could not be added");
+      
+      let errMsg = error?.response?.data?.msg 
+      errMsg = errMsg ? errMsg : 'Student could not be Added'
+      alert(errMsg);
     }
   };
   const handleMedium = (e) => {
@@ -264,6 +266,17 @@ const addStudent = () => {
                 onChange={(e) => setConfPassword(e.target.value)}
               />
             </div>
+
+            {password != confPassword ? (
+            <div
+              className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 "
+              role="alert"
+            >
+              <span className="font-medium">Passwords Don't match</span>
+            </div>
+          ) : (
+            ``
+          )}
 
             <div>
               <label
