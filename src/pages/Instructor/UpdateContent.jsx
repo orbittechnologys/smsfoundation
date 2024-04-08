@@ -4,6 +4,7 @@ import { FaFilePdf } from "react-icons/fa";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
 import uploadToAzureStorage from "../../Hooks/uploadToAzureStorage";
+import SearchableDropdown from "../SearchableDropdown";
 
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
@@ -26,6 +27,9 @@ const UpdateContent = () => {
   const [vidoeUrl, setVideoUrl] = useState(null);
 
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState(null);
+
+  const [dropMedium,setDropMedium] = useState([]);
+  const [dropSyllabus,setDropSyllabus] = useState([]);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -69,8 +73,8 @@ const UpdateContent = () => {
   const getSubjects = () => {
     console.log(syllabus, medium, standard);
     fetchSubjectsApiCall({
-      syllabus,
-      medium,
+      syllabus: syllabus.value,
+      medium: medium.value,
       standard,
     });
   };
@@ -122,6 +126,38 @@ const UpdateContent = () => {
     }
   };
 
+  const fetchData = async () => {
+    try {
+      const res2 = await axios.get(`${BASE_URL}syllabus/getAll`);
+      
+      const transformedSyllabus = res2.data.syllabus.map((syllabus) => ({
+        // value: school._id,
+        value: syllabus.name,
+        label: syllabus.name, 
+        id : syllabus._id,
+      }));
+      
+      setDropSyllabus(transformedSyllabus);
+
+      const res3 = await axios.get(`${BASE_URL}medium/getAll`);
+      
+      const transformedMediums = res3.data.mediums.map((medium) => ({
+        // value: school._id,
+        value: medium.name,
+        label: medium.name, 
+        id : medium._id,
+      }));
+
+      setDropMedium(transformedMediums);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=> {
+    fetchData();
+  },[])
+
   return (
     <>
       <div className="grid lg:grid-cols-2 sm:grid-cols-2 gap-5 lg:mt-5 mt-10">
@@ -151,17 +187,11 @@ const UpdateContent = () => {
             >
               Medium
             </label>
-            <select
-              id="medium"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              onChange={(e) => setMedium(e.target.value)}
-            >
-              <option selected>Choose a medium</option>
-              <option value="ENGLISH">English</option>
-              <option value="KANNADA">Kannada</option>
-              <option value="MALYALAM">Malyalam</option>
-              <option value="TELUGU">Telugu</option>
-            </select>
+            <SearchableDropdown
+              options={dropMedium}
+              placeholder="Search Medium"
+              onChange={setMedium}
+            />
           </div>
         </div>
         <div className="border shadow-md p-5 rounded-xl grid gap-5">
@@ -172,18 +202,11 @@ const UpdateContent = () => {
             >
               Syllabus
             </label>
-            <select
-              id="syllabus"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              onChange={(e) => {
-                setSyllabus(e.target.value);
-              }}
-            >
-              <option selected>Choose a Syllabus</option>
-              <option value="NCERT">NCERT</option>
-              <option value="CBSE">CBSE</option>
-              <option value="ICSE">ICSE</option>
-            </select>
+            <SearchableDropdown
+              options={dropSyllabus}
+              placeholder="Search Syllabus"
+              onChange={setSyllabus}
+            />
           </div>
           {subjects && (
             <div>

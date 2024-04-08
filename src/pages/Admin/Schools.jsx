@@ -31,6 +31,7 @@ const Schools = () => {
     { label: "Principal Name", accessor: "principalName", sortable: true },
     { label: "Address", accessor: "address", sortable: true },
     { label: "District", accessor: "district", sortable: true },
+    {label:"State",accessor:"state",sortable:true},
     { label: "Pincode", accessor: "pincode", sortable: true },
     { label: "Syllabus", accessor: "syllabus", sortable: true },
     { label: "Medium", accessor: "medium", sortable: true },
@@ -161,6 +162,7 @@ const Schools = () => {
                 <td>{rowData.principalName}</td>
                 <td>{rowData.address}</td>
                 <td>{rowData.district}</td>
+                <td>{rowData?.state}</td>
                 <td>{rowData.pincode}</td>
                 <td>{rowData.syllabus}</td>
                 <td>{rowData.medium}</td>

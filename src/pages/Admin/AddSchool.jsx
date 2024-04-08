@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import axios from "axios";
+import SearchableDropdown from "../SearchableDropdown";
 
 const AddSchool = () => {
   const [schoolName, setSchoolName] = useState("");
@@ -11,6 +12,16 @@ const AddSchool = () => {
   const [Internet, setInternet] = useState("");
   const [syllabus, setSyllabus] = useState("");
   const [medium, setMedium] = useState("");
+  const [state,setState] = useState("");
+  const [projectName,setProjectName] = useState("");
+  const [partnerName,setPartnerName] = useState("");
+
+
+  const [dropMedium,setDropMedium] = useState([]);
+  const [dropSyllabus,setDropSyllabus] = useState([]);
+
+  const [selectedMedium,setSelectedMedium] = useState(null);
+  const [selectedSyllabus,setSelectedSyllabus] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,28 +33,36 @@ const AddSchool = () => {
       district,
       pincode,
       Internet,
-      syllabus,
-      medium
+      selectedSyllabus,
+      selectedMedium
     );
 
-    const reqbody = {
-      name: schoolName,
-      address: address,
-      principalName: principalName,
-      district: district,
-      pincode: parseInt(pincode),
-      Internet: Internet,
-      syllabus: syllabus,
-      medium: medium,
-    };
-    try {
-      const res = await axios.post(`${BASE_URL}school/addSchool`, reqbody);
-      console.log(res.data);
-      alert("school added sucessfully");
-    } catch (error) {
-      console.log(error);
-      alert("school could not be added");
+    if(!selectedMedium || !selectedSyllabus){
+      alert('Please fill all the details');
+    }else{
+      const reqbody = {
+        name: schoolName,
+        address: address,
+        principalName: principalName,
+        district: district,
+        state,
+        projectName,
+        partnerName,
+        pincode: parseInt(pincode),
+        internet: Internet,
+        syllabus: selectedSyllabus.value,
+        medium: selectedMedium.value,
+      };
+      try {
+        const res = await axios.post(`${BASE_URL}school/addSchool`, reqbody);
+        console.log(res.data);
+        alert("school added sucessfully");
+      } catch (error) {
+        console.log(error);
+        alert("school could not be added");
+      }
     }
+
   };
 
   const handleMedium = (e) => {
@@ -57,6 +76,38 @@ const AddSchool = () => {
   const handleInternet = (e) => {
     setInternet(e.target.value);
   };
+
+  const fetchData = async () => {
+    try {
+      const res2 = await axios.get(`${BASE_URL}syllabus/getAll`);
+      
+      const transformedSyllabus = res2.data.syllabus.map((syllabus) => ({
+        // value: school._id,
+        value: syllabus.name,
+        label: syllabus.name, 
+        id : syllabus._id,
+      }));
+      
+      setDropSyllabus(transformedSyllabus);
+
+      const res3 = await axios.get(`${BASE_URL}medium/getAll`);
+      
+      const transformedMediums = res3.data.mediums.map((medium) => ({
+        // value: school._id,
+        value: medium.name,
+        label: medium.name, 
+        id : medium._id,
+      }));
+
+      setDropMedium(transformedMediums);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=> {
+    fetchData();
+  },[])
 
   return (
     <>
@@ -155,7 +206,7 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="state"
               required
-              // onChange={(e) => setDistrict(e.target.value)}
+              onChange={(e) => setState(e.target.value.toUpperCase())}
             />
           </div>
           <div>
@@ -171,7 +222,7 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="project_name"
               required
-              // onChange={(e) => setDistrict(e.target.value)}
+              onChange={(e) => setProjectName(e.target.value)}
             />
           </div>
           <div>
@@ -187,7 +238,7 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="partner name"
               required
-              // onChange={(e) => setDistrict(e.target.value)}
+              onChange={(e) => setPartnerName(e.target.value)}
             />
           </div>
           <div className="">
@@ -197,7 +248,7 @@ const AddSchool = () => {
                 <input
                   id="yes"
                   type="radio"
-                  value="Yes"
+                  value={true}
                   name="Internet"
                   className="w-4 h-4 text-orange-500 bg-gray-100 border-gray-300 focus:ring-orange-500 "
                   onChange={handleInternet}
@@ -213,7 +264,7 @@ const AddSchool = () => {
                 <input
                   id="no"
                   type="radio"
-                  value="No"
+                  value={false}
                   name="Internet"
                   className="w-4 h-4 text-orange-500 bg-gray-100 border-gray-300 focus:ring-orange-500 "
                   onChange={handleInternet}
@@ -228,39 +279,23 @@ const AddSchool = () => {
             </div>
           </div>
           <div>
-            <p className="text-xl font-semibold my-5">Medium</p>
+            <p className="text-xl font-semibold my-5">Medium Syllabus</p>
             <div className="flex gap-5">
               <div>
-                <select
-                  id="language"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                  onChange={handleMedium}
-                  value={medium}
-                >
-                  <option selected value="">
-                    Choose a Language
-                  </option>
-                  <option value="ENGLISH">English</option>
-                  <option value="KANNADA">Kannada</option>
-                  <option value="TELUGU">Telugu</option>
-                  <option value="MARATHI">Marathi</option>
-                </select>
+                <SearchableDropdown
+                    options={dropMedium}
+                    placeholder={"Search Medium"}
+                    onChange={setSelectedMedium}
+                />
               </div>
               <div>
-                <select
-                  id="board"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                  onChange={handleSyllabus}
-                  value={syllabus}
-                >
-                  <option selected value="">
-                    Choose a Board
-                  </option>
-                  <option value="NCERT">NCERT</option>
-                  <option value="CBSE">CBSE</option>
-                  <option value="ICSE">ICSE</option>
-                  <option value="NIOS">NIOS</option>
-                </select>
+              <div>
+                <SearchableDropdown
+                    options={dropSyllabus}
+                    placeholder={"Search Syllabus"}
+                    onChange={setSelectedSyllabus}
+                />
+              </div>
               </div>
             </div>
           </div>
@@ -270,7 +305,7 @@ const AddSchool = () => {
             type="submit"
             className="text-white bg-orange-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center  "
           >
-            Add
+            Add School
           </button>
         </div>
       </form>
