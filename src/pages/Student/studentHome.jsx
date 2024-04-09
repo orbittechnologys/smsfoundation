@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import flask from "../../assets/chemistry.png";
 import { GrDocumentPdf } from "react-icons/gr";
 import axios from "axios";
-import { BASE_URL } from "../../constants";
+import { BASE_URL, convertSeconds } from "../../constants";
 import useAuth from "../../Hooks/useAuth";
 import { useNavigate } from "react-router";
 import Slogan from "../../assets/slogan.png";
 import Img2 from "../../assets/img2.png";
 import Hexbg from "../../assets/hexbg.png";
+import { PiPlayPauseLight } from "react-icons/pi";
 
 const StudentHome = () => {
   const [subjects, setSubjects] = useState([]);
@@ -15,11 +16,29 @@ const StudentHome = () => {
   const [selectedSubject, setSelectedSubject] = useState("NO");
   const [chapter, setChapters] = useState([]);
   const [query,setQuery] = useState("");
+  const [chapterActivity, setChapterActivity] = useState([]);
+  const [testActivity,setTestActivity] = useState([]);
 
 
   const { auth } = useAuth();
   console.log(auth);
   const navigate = useNavigate();
+
+
+  const fetchActivity = async (studentId) => {
+    try {
+      const res = await axios.get(`${BASE_URL}studentTest/activity/${studentId}`);
+      console.log(res.data);
+      setTestActivity(res.data);
+
+      const res2 = await axios.get(`${BASE_URL}chapterTime/activity/${studentId}`);
+      console.log(res2.data);
+      setChapterActivity(res2.data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const fetchStudent = async (user_id) => {
     console.log(user_id);
@@ -34,6 +53,7 @@ const StudentHome = () => {
         res.data.studentDoc.syllabus,
         res.data.studentDoc.medium
       );
+      fetchActivity(res.data.studentDoc?._id);
     } catch (error) {
       console.log(error);
     }
@@ -214,13 +234,109 @@ const StudentHome = () => {
             </div>
           ))}
         </section>
+        <section className="py-8 px-5">
+          <h1 className="font-semibold text-xl m-5">Your Activity</h1>
+
+          <section className="m-2 p-4">
+            <h1 className="font-semibold ml-5 underline text-lg my-3">Continue Reading</h1>
+          <div className="grid lg:grid-cols-4 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
+                   {chapterActivity?.map((chapActivity,index) => {
+                    return(
+                      <div key={index} className="grid place-items-center">
+                <div
+                  style={{
+                    backgroundImage: `url(${Hexbg})`,
+                  }}
+                  className="cont-boxx grid border border-gray-200 shadow-lg place-items-center bg-white p-4 rounded-xl text-center w-fit"
+                >
+                  {/* <div className="flex justify-start items-start w-full">
+                    <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
+                      {chapActivity?.chapter?.subject?.name}
+                    </span>
+                  </div> */}
+                  <img src={flask} alt="flask" className="h-10" />
+                  <p className="font-semibold mt-5">{chapActivity?.chapter?.name}</p>
+                  <p className="text-gray-600">{chapActivity?.chapter?.desc}</p>
+                  <div className="ongoing mt-10">
+                    <span className="p-3 rounded-full bg-gray-300 text-orange-500">
+                      {convertSeconds(chapActivity?.time)}
+                    </span>
+                    <div className="grid place-items-center ">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          navigate(`/pdf/${chapActivity?.chapter?._id}`)
+                        }
+                        className="mt-5 flex justify-center items-center text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+                      >
+                        <PiPlayPauseLight className="mr-2 text-xl" /> Resume
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                    )
+                   })}
+          </div>
+          </section>
+
+          <section className="m-2 p-4">
+            <h1 className="font-semibold ml-5 underline text-lg my-3">Tests Taken</h1>
+          <div className="grid lg:grid-cols-4 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
+                    {testActivity?.map((testAct,index) => {
+                      return(
+                        <div key={index} className="grid ">
+                <div
+                  style={{
+                    backgroundImage: `url(${Hexbg})`,
+                    height: "300px",
+                    width: "350px",
+                  }}
+                  className=" grid border place-items-center border-gray-200 shadow-lg  bg-white p-4 rounded-xl text-center w-fit"
+                >
+                  {/* <div className="flex justify-start items-start w-full">
+                    <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
+                      Science
+                    </span>
+                  </div> */}
+                  <img src={flask} alt="flask" className="h-10" />
+                  <p className="font-semibold mt-5">
+                    {testAct?.test?.name}
+                  </p>
+                  <p className="text-gray-600">{testAct?.test?.desc}</p>
+                  <div className="ongoing mt-10">
+                    <span className="p-3 rounded-full bg-gray-300 text-orange-500">
+                      {testAct?.marks} / {testAct?.test?.totalMarks}
+                    </span>
+                    <div className="grid place-items-center ">
+                      <button
+                        type="button"
+                        onClick={() => navigate(`/mcq/${testAct?.test?._id}`)}
+                        className="mt-5 flex justify-center items-center text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+                      >
+                        <PiPlayPauseLight className="mr-2 text-xl" /> Retake
+                        Test
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                      )
+                    })
+
+                    }
+          </div>
+          </section>
+          
+        </section>
+
         <div className="flex justify-center items-center my-5 static">
           <img src={Img2} alt="" />
           <img src={Slogan} alt="" />
         </div>
         <footer className="bg-[#140342]">
           <div className="grid place-items-center py-5">
-            <p className="text-white">Copyright © 2024 | All Rights Reserved</p>
+            <p className="text-white">Copyright Sehgal Foundation © 2024 | All Rights Reserved</p>
           </div>
         </footer>
       </div>
