@@ -34,6 +34,8 @@ import AllStudents from "./pages/Admin/AllStudents";
 import SearchableDropdown from "./pages/SearchableDropdown";
 import Schoolp from "./pages/Admin/Schoolp";
 import MasterTable from "./pages/Admin/MasterTable";
+import InstructorProfile from "./pages/Instructor/InstructorProfile";
+import AdminProfile from "./pages/Admin/AdminProfile";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -81,6 +83,7 @@ const App = () => {
             <Route path="LearningReport" element={<LearningReport />} />
             <Route path="TestReport" element={<TestReport />} />
             <Route path="editStudent" element={<EditStudent />} />
+            <Route path="instructorProfile/:userId" element={<InstructorProfile/>} />
             {/* <Route path="UpdateContent" element={<UpdateContent />} /> */}
           </Route>
         </Route>
@@ -101,6 +104,7 @@ const App = () => {
             <Route path="AddTest" element={<AddTest />} />
             <Route path="preview/:testId" element={<PreviewTest />} />
             <Route path="masterTable" element={<MasterTable/>} />
+            <Route path="adminProfile/:userId" element={<AdminProfile/>} />
           </Route>
         </Route>
       </Routes>

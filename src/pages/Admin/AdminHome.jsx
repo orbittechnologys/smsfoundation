@@ -26,6 +26,13 @@ const AdminHome = () => {
     totalInstructor: 1,
     totalStudents: 1,
   });
+  const [districts,setDistricts] = useState([]);
+  const [selectedDistrict,setSelectedDistrict] = useState(null);
+
+  const [barChartData,setBarChartData] = useState([
+    {"_id":"male",count:0}, {"_id":"female",count:0}
+  ])
+
   const data = {
     labels: ["Registered Last Week", "Registered This Week"],
     datasets: [
@@ -133,9 +140,36 @@ const AdminHome = () => {
     }
   };
 
+  const fetchDistricts = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}school/getDistricts`);
+      console.log(res.data);
+      setDistricts(res.data.districts);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const fetchBarChartData = async (district) => {
+    try {
+      const res = await axios.get(`${BASE_URL}student/genderRatio/${district}`);
+      console.log(res.data);
+      setBarChartData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=> {
+    if(selectedDistrict!="NONE"){
+      fetchBarChartData(selectedDistrict);
+    }
+  },[selectedDistrict])
+
   useEffect(() => {
     fetchUser();
     fetchTotal();
+    fetchDistricts();
   }, []);
 
   return (
@@ -179,18 +213,20 @@ const AdminHome = () => {
           <div className="shadow-xl rounded-2xl p-5 barr-div">
             <div className="grid lg:grid-cols-2 sm:grid-cols-2 place-items-center">
               <div>
-                <p className="text-xl font-semibold">Student Progress</p>
+                <p className="text-xl font-semibold">Gender Ratio</p>
               </div>
               <div>
                 <select
                   id="small"
                   className="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
+                  onChange={(e)=> setSelectedDistrict(e.target.value)}
                 >
-                  <option selected>Choose a country</option>
-                  <option value="US">United States</option>
-                  <option value="CA">Canada</option>
-                  <option value="FR">France</option>
-                  <option value="DE">Germany</option>
+                  <option value="NONE" selected>Choose a District</option>
+                  {districts?.map((district,index)=> {
+                    return (
+                      <option key={index} value={district}>{district}</option>
+                    )
+                  })}
                 </select>
               </div>
             </div>
@@ -217,12 +253,12 @@ const AdminHome = () => {
             >
               <ResponsiveContainer>
                 <BarChart
-                  data={dataArray}
+                  data={barChartData}
                   margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
                 >
-                  <XAxis dataKey="name" />
+                  <XAxis dataKey="_id" />
                   <YAxis />
-                  <Bar dataKey="student" fill="#F2665166" />
+                  <Bar dataKey="count" fill="#F2665166" />
                   <RechartsTooltip />
                 </BarChart>
               </ResponsiveContainer>

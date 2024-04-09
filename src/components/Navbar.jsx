@@ -78,13 +78,32 @@ const Navbar = () => {
             </button>
             {dropdownOpen && (
               <div className="z-50 absolute right-0 mt-2 w-48 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
-                <div
-                  onClick={() => navigate(`/studentProfile/${user?._id}`)}
+                {role == "ADMIN" ? (
+                  <div
+                  onClick={() => {navigate(`/admin/adminProfile/${user?._id}`); toggleDropdown()}}
                   className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
                 >
                   <CgProfile className="text-blue-500" />
                   Profile
                 </div>
+                ): role == "INSTRUCTOR" ? (
+                  <div
+                  onClick={() => {navigate(`/inst/instructorProfile/${user?._id}`); toggleDropdown();}}
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                >
+                  <CgProfile className="text-blue-500" />
+                  Profile
+                </div>
+                ):(
+                  <div
+                  onClick={() => {navigate(`/studentProfile/${user?._id}`); toggleDropdown(); }}
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                >
+                  <CgProfile className="text-blue-500" />
+                  Profile
+                </div>
+                )}
+                
 
                 <a
                   href="/"

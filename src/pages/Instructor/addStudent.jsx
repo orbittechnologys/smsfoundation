@@ -66,7 +66,7 @@ const addStudent = () => {
         role == "INSTRUCTOR" ? "/instructor/AllStudents" : "/admin/AllStudents";
       navigate(navUrl);
     } catch (error) {
-      
+      console.log(error);      
       let errMsg = error?.response?.data?.msg 
       errMsg = errMsg ? errMsg : 'Student could not be Added'
       alert(errMsg);
