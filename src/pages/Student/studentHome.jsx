@@ -234,6 +234,7 @@ const StudentHome = () => {
             </div>
           ))}
         </section>
+        
         <section className="py-8 px-5">
           <h1 className="font-semibold text-xl m-5">Your Activity</h1>
 
