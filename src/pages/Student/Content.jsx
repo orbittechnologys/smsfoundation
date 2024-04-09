@@ -34,7 +34,7 @@ const Content = () => {
       </div>
       <div className="flex justify-center items-center my-5 w-full">
         <div className="grid lg:grid-cols-2 sm:grid-cols-1 place-items-center w-1/2 gap-5">
-          {chapter.videoUrl ? (
+          {chapter?.videoUrl ? (
             <div
             className="flex flex-col justify-center items-center border p-5 rounded-xl cursor-pointer shadow-md shadow-orange-200"
             onClick={() => window.open(chapter?.videoUrl, "_blank")}
