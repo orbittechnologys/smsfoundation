@@ -34,13 +34,17 @@ const Content = () => {
       </div>
       <div className="flex justify-center items-center my-5 w-full">
         <div className="grid lg:grid-cols-2 sm:grid-cols-1 place-items-center w-1/2 gap-5">
-          <div
+          {chapter.videoUrl ? (
+            <div
             className="flex flex-col justify-center items-center border p-5 rounded-xl cursor-pointer shadow-md shadow-orange-200"
             onClick={() => window.open(chapter?.videoUrl, "_blank")}
           >
             <p className="text-xl font-semibold text-gray-400">Watch a Video</p>
             <img src={VideoFilespng} alt="" className="lg:h-64 sm:h-36" />
           </div>
+          ): ``
+          }
+          
           <div
             className="flex flex-col justify-center items-center border p-5 rounded-xl cursor-pointer shadow-md shadow-orange-200"
             onClick={() => navigate(`/pdf/${chapter?._id}`)}
