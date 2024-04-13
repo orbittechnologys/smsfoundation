@@ -464,14 +464,14 @@ const TestReport = () => {
               Filter
             </button>
           ) : (
-            ``
-          )}
-
-              <SearchableDropdown
+            <SearchableDropdown
                   options={dropSchool}
                   onChange={setSelectedSchool} // Use setSelectedSchool directly
                   placeholder="Select School"
                 />
+          )}
+
+              
           <button
             onClick={() => triggerCsvDownload(role)}
             className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"

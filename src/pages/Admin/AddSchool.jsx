@@ -279,7 +279,7 @@ const AddSchool = () => {
             </div>
           </div>
           <div>
-            <p className="text-xl font-semibold my-5">Medium Syllabus</p>
+            <p className="text-xl font-semibold my-5">Medium Board</p>
             <div className="flex gap-5">
               <div>
                 <SearchableDropdown
@@ -292,7 +292,7 @@ const AddSchool = () => {
               <div>
                 <SearchableDropdown
                     options={dropSyllabus}
-                    placeholder={"Search Syllabus"}
+                    placeholder={"Search Board"}
                     onChange={setSelectedSyllabus}
                 />
               </div>

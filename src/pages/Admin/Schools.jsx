@@ -33,7 +33,7 @@ const Schools = () => {
     { label: "District", accessor: "district", sortable: true },
     {label:"State",accessor:"state",sortable:true},
     { label: "Pincode", accessor: "pincode", sortable: true },
-    { label: "Syllabus", accessor: "syllabus", sortable: true },
+    { label: "Board", accessor: "syllabus", sortable: true },
     { label: "Medium", accessor: "medium", sortable: true },
     { label: "Internet", accessor: "internet", sortable: true },
   ];
@@ -73,6 +73,41 @@ const Schools = () => {
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
   });
+
+  const handleCSVdownload = async () => {
+  console.log(' i am here')
+    try {
+      const res = await axios.get(
+        `${BASE_URL}school/getSchoolsCSV`,
+        {
+          responseType: "blob",
+        }
+      );
+      const blob = res.data;
+      const downloadUrl = window.URL.createObjectURL(blob);
+      // Create a temporary anchor element and trigger a download
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      const date = new Date();
+  
+      link.setAttribute(
+        "download",
+        `AllSchools${date.getDate()}-${
+          date.getMonth() + 1
+        }-${date.getHours()}:${date.getMinutes()}.csv`
+      ); // or dynamically set the filename based on content-disposition header
+      document.body.appendChild(link); // Append to the document
+      link.click(); // Programmatically click the link to trigger the download
+  
+      // Clean up: remove the link and revoke the object URL
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.log(error);
+    }
+
+
+  }
 
   return (
     <>
@@ -117,10 +152,16 @@ const Schools = () => {
           <p className="text-orange-500 text-2xl font-semibold">All Schools</p>
         </div>
         <div>
+          <button 
+          type="button"
+          onClick={() => handleCSVdownload()}
+          className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2 ">
+            Download CSV
+          </button>
           <Link to="/admin/AddSchool">
             <button
               type="button"
-              className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+              className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2 "
             >
               Add School
             </button>

@@ -65,10 +65,9 @@ const Allinstructor = () => {
   const columns = [
     { label: "Name", accessor: "firstName", sortable: true },
     { label: "Email", accessor: "email", sortable: true },
-    { label: "Medium", accessor: "school?.medium", sortable: true },
-    { label: "School", accessor: "school?.name", sortable: true },
-    { label: "District", accessor: "school?.district", sortable: true },
-    { label: "Address", accessor: "school?.address", sortable: true },
+    { label: "Medium", accessor: "medium", sortable: true },
+    { label: "Phone", accessor: "phone", sortable: true },
+    { label: "Qualification", accessor: "qualification", sortable: true },
     { label: "Actions", accessor: "actions", sortable: true },
   ];
 
@@ -205,10 +204,9 @@ const Allinstructor = () => {
 
                 <td>{rowData.email}</td>
 
-                <td>{rowData?.school?.medium}</td>
-                <td>{rowData?.school?.name}</td>
-                <td>{rowData?.school?.district}</td>
-                <td>{rowData?.school?.address}</td>
+                <td>{rowData?.medium}</td>
+                <td>{rowData?.phone}</td>
+                <td>{rowData?.qualification}</td>
                 <td>
                   <div
                     onClick={() => {
@@ -274,7 +272,7 @@ const Allinstructor = () => {
                     </p>
                     <p>
                       <span className="text-lg font-bold text-orange-500">
-                        Class :
+                        Medium :
                       </span>{" "}
                       {selectedInstructorId?.medium}
                     </p>

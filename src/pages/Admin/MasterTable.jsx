@@ -44,7 +44,7 @@ const MasterTable = () => {
 
     const columnsSubject = [
       { label: "Name", accessor: "name", sortable: true },
-      { label: "Syllabus", accessor: "syllabus", sortable: true },
+      { label: "Board", accessor: "syllabus", sortable: true },
       { label: "Medium", accessor: "medium", sortable: true },
       { label: "Standard", accessor: "standard", sortable: true },
       { label: "Chapters", accessor: "noOfChapter", sortable: true },
@@ -182,7 +182,7 @@ const MasterTable = () => {
                 href="#link1"
                 role="tablist"
               >
-                Syllabus
+                Board
               </a>
             </li>
             <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
@@ -234,7 +234,7 @@ const MasterTable = () => {
 
                   <button
                   onClick={() => setShowSyllabus(true)}
-                  className='bg-orange-600 px-4 py-4 rounded-lg text-white font-semibold text-sm'>Add Syllabus</button>
+                  className='bg-orange-600 px-4 py-4 rounded-lg text-white font-semibold text-sm'>Add Board</button>
                   
                   <Table data={syllabus} columns={columnsSyllabus} label={"SYLLABUS"}/>
                 </div>
@@ -267,7 +267,7 @@ const MasterTable = () => {
             <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
               <div className="px-4 py-6">
                 <div className="flex items-start justify-between">
-                  <div className="text-lg font-semibold">Add Syllabus</div>
+                  <div className="text-lg font-semibold">Add Board</div>
                   <div
                     className="cursor-pointer"
                     onClick={() => setShowSyllabus(false)}
@@ -297,12 +297,12 @@ const MasterTable = () => {
                         htmlFor="rest_password"
                         className="block mb-2 text-sm font-medium text-gray-900 "
                       >
-                        Enter Syllabus
+                        Enter Board
                       </label>
                       <div className="relative">
                         <input
                           type="text"
-                          placeholder="Enter Syllabus"
+                          placeholder="Enter Board"
                           value={formSyllabus}
                           onChange={(e) => setFormSyllabus(e.target.value.toUpperCase())}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
@@ -336,7 +336,7 @@ const MasterTable = () => {
                         type="submit"
                       >
                         {" "}
-                        Add Syllabus
+                        Add Board
                       </button>
                     </div>
                   </form>
@@ -469,11 +469,11 @@ const MasterTable = () => {
                         htmlFor="rest_password"
                         className="block mb-2 text-sm font-medium text-gray-900 "
                       >
-                        Enter Syllabus
+                        Enter Board
                       </label>
                       <SearchableDropdown
                           options={dropSyllabus}
-                          placeholder="Select Syllabus"
+                          placeholder="Select Board"
                           onChange={setSelectedSyllabus}
                       />
                     </div>

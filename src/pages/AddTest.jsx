@@ -360,11 +360,11 @@ const AddQuestions = () => {
               htmlFor="syllabus"
               className="block mb-2 text-sm font-semibold text-gray-900 "
             >
-              Syllabus
+              Board
             </label>
             <SearchableDropdown
               options={dropSyllabus}
-              placeholder="Search Syllabus"
+              placeholder="Search Board"
               onChange={setSyllabus}
             />
           </div>

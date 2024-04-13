@@ -119,7 +119,7 @@ const AllStudents = () => {
     { label: "Medium", accessor: "medium", sortable: true },
     { label: "Roll No", accessor: "rollNo", sortable: true },
     { label: "Standard", accessor: "standard", sortable: true },
-    { label: "Syllabus", accessor: "syllabus", sortable: true },
+    { label: "Board", accessor: "syllabus", sortable: true },
     { label: "School", accessor: "school?.name", sortable: true },
     { label: "District", accessor: "school?.district", sortable: true },
     { label: "Actions", accessor: "Actions", sortable: true },
