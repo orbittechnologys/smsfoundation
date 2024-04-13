@@ -4,6 +4,7 @@ import { BASE_URL } from "../../constants";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import SearchableDropdown from "../SearchableDropdown";
 import { useNavigate } from "react-router";
+import SearchableMultiDropdown from "../SearchableMultiDropdown";
 
 const AddInstructor = () => {
   const [name, setName] = useState("");
@@ -23,6 +24,11 @@ const AddInstructor = () => {
   const [dropSchool, setDropSchool] = useState([]);
   // console.log(selectedSchool);
 
+  const handleSchoolChange = (selectedOptions) => {
+    // selectedOptions will be an array of { value, label } objects
+    setSelectedSchool(selectedOptions || []); // Handle null by setting to empty array
+  };
+
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,9 +44,9 @@ const AddInstructor = () => {
       password: password,
       gender: gender,
       // school: selectedSchool,
-      school: selectedSchool.id, // Access value property of selectedSchool
+      school: selectedSchool.map(school => school.id),// Access value property of selectedSchool
 
-      medium: selectedSchool.value,
+      medium: Array.isArray(selectedSchool) ? selectedSchool[0].value : `ENGLISH`,
     };
 
     console.log(reqbody);
@@ -262,9 +268,15 @@ const AddInstructor = () => {
             ``
           )}
           <div className="">
-            <SearchableDropdown
+          <label
+              htmlFor="schoolMul"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              School
+            </label>
+            <SearchableMultiDropdown
               options={dropSchool}
-              onChange={setSelectedSchool} // Use setSelectedSchool directly
+              onChange={handleSchoolChange} // 
               placeholder="Select School"
             />
           </div>
@@ -302,12 +314,12 @@ const AddInstructor = () => {
             </select> */}
           </div>
           <div>
-            <label
+            {/* <label
               htmlFor="medium"
               className="block mb-2 text-sm font-medium text-gray-900 "
             >
               Medium
-            </label>
+            </label> */}
             {/* <select
               id="medium"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -320,10 +332,10 @@ const AddInstructor = () => {
               <option value="MALYALAM">Malyalam</option>
               <option value="TELUGU">Telugu</option>
             </select> */}
-            <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-              {/* {selectedSchool ? <p>{selectedSchool?.medium}</p> : ``} */}
+            {/* <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+              
               {selectedSchool ? <p>{selectedSchool?.value}</p> : ``}
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex justify-start items-center">
