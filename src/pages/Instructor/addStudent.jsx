@@ -50,11 +50,9 @@ const addStudent = () => {
       standard: standard,
       // school: selectedSchool?._id,
       password: password,
-      school: role === "INSTRUCTOR" ? instructor?._id : selectedSchool?.id,
-      syllabus:
-        role === "INSTRUCTOR" ? instructor?.syllabus : selectedSchool?.syllabus,
-      medium:
-        role === "INSTRUCTOR" ? instructor?.medium : selectedSchool?.value,
+      school:  selectedSchool?.id,
+      syllabus:selectedSchool?.syllabus,
+      medium:selectedSchool?.value,
     };
     console.log(reqbody);
 
@@ -63,7 +61,7 @@ const addStudent = () => {
       console.log(res.data);
       alert("student added sucessfully");
       const navUrl =
-        role == "INSTRUCTOR" ? "/instructor/AllStudents" : "/admin/AllStudents";
+        role == "INSTRUCTOR" ? "/inst/AllStudents" : "/admin/AllStudents";
       navigate(navUrl);
     } catch (error) {
       console.log(error);      
@@ -77,6 +75,7 @@ const addStudent = () => {
   };
 
   const fetchSchool = async () => {
+
     try {
       const res = await axios.get(`${BASE_URL}school/getAllSchools`);
       console.log(res.data.schools);
@@ -102,6 +101,15 @@ const addStudent = () => {
         `${BASE_URL}instructor/getByUserId/${userId}`
       );
       console.log(res.data.instructorDoc.school);
+      const transformedSchools = res.data.instructorDoc.school.map((school) => ({
+        // value: school._id,
+        value: school.medium,
+        district: school.district,
+        label: school.name + " " + school.district,
+        syllabus: school.syllabus,
+        id: school._id,
+      }));
+      setDropSchool(transformedSchools);
       setInstructor(res.data.instructorDoc.school);
     } catch (error) {
       console.log(error);
@@ -109,8 +117,12 @@ const addStudent = () => {
   };
 
   useEffect(() => {
-    fetchSchool();
-    fetchInstructor();
+    const role = sessionStorage.getItem("role");
+    if(role == "ADMIN"){
+      fetchSchool();
+    }else {
+      fetchInstructor();
+    }
   }, []);
 
   return (
@@ -293,7 +305,7 @@ const addStudent = () => {
                 onChange={(e) => setStandard(e.target.value)}
               />
             </div>
-            {role !== "INSTRUCTOR" && (
+           
               <div className="">
                 <label
                   htmlFor="standard"
@@ -307,9 +319,9 @@ const addStudent = () => {
                   placeholder="Select School"
                 />
               </div>
-            )}
+          
 
-            {role !== "INSTRUCTOR" && (
+            
               <div>
                 <label
                   htmlFor="syllabus"
@@ -317,20 +329,14 @@ const addStudent = () => {
                 >
                   Syllabus
                 </label>
-                {/* <input
-  type="text"
-  id="syllabus"
-  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-  required
-  onChange={(e) => setSyllabus(e.target.value)}
-/> */}
+
                 <div className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                   {selectedSchool ? <p>{selectedSchool?.syllabus}</p> : ``}
                 </div>
               </div>
-            )}
+            
 
-            {role !== "INSTRUCTOR" && (
+            
               <div>
                 <label
                   htmlFor="medium"
@@ -342,7 +348,7 @@ const addStudent = () => {
                   {selectedSchool ? <p>{selectedSchool?.value}</p> : ``}
                 </div>
               </div>
-            )}
+         
           </div>
           <div>
             <button

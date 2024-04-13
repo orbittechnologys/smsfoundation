@@ -57,6 +57,20 @@ const AllStudents = () => {
     }
   };
 
+  const fetchStudentsByInstructor = async (instructorId) => {
+    try {
+      if(instructorId){
+        const res = await axios.get(
+          `${BASE_URL}instructor/fetchStudents/${instructorId}`
+        );
+        setAllStudents(res.data.students);
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const fetchInstructor = async () => {
     try {
       const userId = sessionStorage.getItem("user_id");
@@ -69,7 +83,8 @@ const AllStudents = () => {
         );
         console.log(res.data.instructorDoc.school);
         setInstructor(res.data.instructorDoc.school);
-        fetchStudentsBySchool(res.data.instructorDoc.school._id);
+        // fetchStudentsBySchool(res.data.instructorDoc.school._id);
+        fetchStudentsByInstructor(res.data.instructorDoc?._id);
       }
     } catch (error) {
       console.log(error);

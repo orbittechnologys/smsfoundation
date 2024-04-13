@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BASE_URL, getPercentage } from "../../constants";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
+import SearchableDropdown from "../SearchableDropdown";
 
 const TestReport = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,17 +61,35 @@ const TestReport = () => {
   const [fillterSchool, setFillterSchool] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState("NO");
   const [role, setRole] = useState("ADMIN");
+  const [dropSchool,setDropSchool] = useState([]);
+
+
   const fetchSchoolTestReport = async () => {
     try {
       const res = await axios.get(
         `${BASE_URL}instructor/getByUserId/${sessionStorage.getItem("user_id")}`
       );
       console.log(res.data);
-      fetchTestReportbySchoolId(res.data.instructorDoc?.school?._id);
+      const transformedSchools = res.data.instructorDoc.school.map((school) => ({
+        // value: school._id,
+        value: school.medium,
+        district: school.district,
+        label: school.name + " " + school.district,
+        syllabus: school.syllabus,
+        id: school._id,
+      }));
+      setDropSchool(transformedSchools);
+      // fetchTestReportbySchoolId(res.data.instructorDoc?.school?._id);
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(()=> {
+    if(selectedSchool.id){
+      fetchTestReportbySchoolId(selectedSchool.id);
+    }
+  },[selectedSchool])
 
   const fetchTestReportbySchoolId = async (schoolId) => {
     if (schoolId) {
@@ -188,7 +207,7 @@ const TestReport = () => {
       } else {
         console.log(school);
         const res = await axios.get(
-          `${BASE_URL}studentTest/testReportCSVForSchool/${school}`,
+          `${BASE_URL}studentTest/testReportCSVForSchool/${selectedSchool.id}`,
           {
             responseType: "blob",
           }
@@ -447,6 +466,12 @@ const TestReport = () => {
           ) : (
             ``
           )}
+
+              <SearchableDropdown
+                  options={dropSchool}
+                  onChange={setSelectedSchool} // Use setSelectedSchool directly
+                  placeholder="Select School"
+                />
           <button
             onClick={() => triggerCsvDownload(role)}
             className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"

@@ -3,6 +3,7 @@ import "./Table.css";
 import axios from "axios";
 import { BASE_URL, convertSeconds } from "../../constants";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
+import SearchableDropdown from "../SearchableDropdown";
 
 const LearningReport = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -45,6 +46,7 @@ const LearningReport = () => {
   const [fillterSchool, setFillterSchool] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState("NO");
   const [role, setRole] = useState("ADMIN");
+  const [dropSchool,setDropSchool] = useState([]);
 
   const fetchSchoolLearningReport = async () => {
     console.log("Fetching learning report");
@@ -54,10 +56,17 @@ const LearningReport = () => {
       );
       console.log(res.data);
       setSchool(res.data.instructorDoc?.school);
-      // const res2 = await axios.get(`${BASE_URL}subjectTime/getLearningReportForSchool/${res.data.instructorDoc?.school?._id}`);
-      // console.log(res2.data);
-      // setLearningReport(res2.data.subjectReport);
-      fetchTestReportbySchoolId(res.data.instructorDoc?.school?._id);
+      const transformedSchools = res.data.instructorDoc.school.map((school) => ({
+        // value: school._id,
+        value: school.medium,
+        district: school.district,
+        label: school.name + " " + school.district,
+        syllabus: school.syllabus,
+        id: school._id,
+      }));
+      setDropSchool(transformedSchools);
+
+      // fetchTestReportbySchoolId(res.data.instructorDoc?.school?._id);
     } catch (error) {
       console.log(error);
     }
@@ -132,6 +141,12 @@ const LearningReport = () => {
     }
   };
 
+  useEffect(()=> {
+    if(selectedSchool.id){
+      fetchTestReportbySchoolId(selectedSchool.id);
+    }
+  },[selectedSchool])
+
   useEffect(() => {
     if (
       selectedDistrict != "NO" &&
@@ -175,7 +190,7 @@ const LearningReport = () => {
         window.URL.revokeObjectURL(downloadUrl);
       } else {
         const res = await axios.get(
-          `${BASE_URL}subjectTime/learningReportCSVForSchool/${school?._id}`,
+          `${BASE_URL}subjectTime/learningReportCSVForSchool/${selectedSchool.id}`,
           {
             responseType: "blob",
           }
@@ -380,6 +395,11 @@ const LearningReport = () => {
           ) : (
             ``
           )}
+          <SearchableDropdown
+                  options={dropSchool}
+                  onChange={setSelectedSchool} // Use setSelectedSchool directly
+                  placeholder="Select School"
+                />
           <button
             className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
             onClick={() => triggerCsvDownload(role)}
