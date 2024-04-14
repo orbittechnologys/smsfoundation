@@ -321,6 +321,27 @@ const Sidebar = () => {
                             </span>
                           </Link>
                         </li>
+                        <li>
+                          <Link
+                            to="/admin/uploadStudent"
+                            className={`flex items-center p-2 rounded-lg group ${
+                              isActive("/admin/uploadStudent")
+                                ? "bg-orange-200"
+                                : ""
+                            }`}
+                          >
+                            <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
+                            <span
+                              className={`${
+                                isActive("/admin/uploadStudent")
+                                  ? "text-black"
+                                  : "text-black"
+                              } ms-3 hover:text-orange-500`}
+                            >
+                              Upload Students
+                            </span>
+                          </Link>
+                        </li>
                       </ul>
                     </div>
                   )}

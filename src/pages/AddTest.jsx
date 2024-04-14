@@ -183,6 +183,7 @@ const AddQuestions = () => {
   const [test, setTest] = useState(null);
   const [testName, setTestName] = useState(null);
   const [testDesc, setTestDesc] = useState(null);
+  const [selectedTest,setSelectedTest] = useState(null);
 
   const [answer, setAnswer] = useState(null);
   const [optionA, setOptionA] = useState(null);

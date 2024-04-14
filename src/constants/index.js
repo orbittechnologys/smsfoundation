@@ -1,5 +1,6 @@
 // const BASE_URL = "http://52.172.149.201:4000/api/";
 const BASE_URL = "http://20.192.28.44:4000/api/";
+const csvUrl = import.meta.env.VITE_APP_CSV_LINK;
 
 function convertSeconds(seconds) {
   var hours = Math.floor(seconds / 3600);
@@ -25,4 +26,4 @@ function formatDate(dateString) {
   return date.toLocaleDateString('en-GB', options);
 }
 
-export { BASE_URL, convertSeconds, getPercentage , formatDate};
+export { BASE_URL, convertSeconds, getPercentage , formatDate, csvUrl};

@@ -169,6 +169,41 @@ const AllStudents = () => {
       : false;
   });
 
+  const handleCSVdownload = async () => {
+    
+    try {
+      const res = await axios.get(
+        `${BASE_URL}student/getStudentsCSV`,
+        {
+          responseType: "blob",
+        }
+      );
+      const blob = res.data;
+      const downloadUrl = window.URL.createObjectURL(blob);
+      // Create a temporary anchor element and trigger a download
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      const date = new Date();
+  
+      link.setAttribute(
+        "download",
+        `AllStudents${date.getDate()}-${
+          date.getMonth() + 1
+        }-${date.getHours()}:${date.getMinutes()}.csv`
+      ); // or dynamically set the filename based on content-disposition header
+      document.body.appendChild(link); // Append to the document
+      link.click(); // Programmatically click the link to trigger the download
+  
+      // Clean up: remove the link and revoke the object URL
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.log(error);
+    }
+
+
+  }
+
   return (
     <>
       <form className="max-w-md mx-auto my-5">
@@ -211,6 +246,12 @@ const AllStudents = () => {
         <div className="sm:mb-5">
           <p className="text-orange-500 text-2xl font-semibold">All Students</p>
         </div>
+        <button 
+          type="button"
+          onClick={() => handleCSVdownload()}
+          className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2 ">
+            Download CSV
+          </button>
       </div>
       <div className="table-container">
         <table className="custom-table">

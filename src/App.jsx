@@ -36,6 +36,7 @@ import Schoolp from "./pages/Admin/Schoolp";
 import MasterTable from "./pages/Admin/MasterTable";
 import InstructorProfile from "./pages/Instructor/InstructorProfile";
 import AdminProfile from "./pages/Admin/AdminProfile";
+import UploadStudent from "./pages/Admin/UploadStudent.jsx";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -95,6 +96,7 @@ const App = () => {
             <Route path="Schoolp" element={<Schoolp />} />
             <Route path="Allinstructor" element={<Allinstructor />} />
             <Route path="AllStudents" element={<AllStudents />} />
+            <Route path="uploadStudent" element={<UploadStudent/>} />
             <Route path="AddSchool" element={<AddSchool />} />
             <Route path="LearningReport" element={<LearningReport />} />
             <Route path="addStudent" element={<AddStudent />} />
