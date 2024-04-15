@@ -5,14 +5,17 @@ import Expimg from "../../assets/export 1.png";
 import Uploadimg from "../../assets/file-upload 1.png";
 import Vresult from "../../assets/result 1.png";
 import Cariculamv from "../../assets/curriculum-vitae 1.png";
+import syncLogo from '../../assets/database-management.png';
 import axios from "axios";
-import { BASE_URL } from "../../constants";
+import { BASE_URL, SYNC_URL } from "../../constants";
 import { useNavigate } from "react-router";
+import LoadingOverlay from "react-loading-overlay";
 
 const InstHome = () => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
   const [school, setSchool] = useState(null);
+  const [loading,setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -92,9 +95,27 @@ const InstHome = () => {
     }
   };
 
+  const syncDataApi = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.post(`${SYNC_URL}syncData`);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setLoading(false);
+    }
+  }
+  
+
   return (
     <>
-      <div className="flex justify-between items-center my-5">
+    <LoadingOverlay
+      active={loading}
+      spinner
+      text="Syncing data"
+    >
+    <div className="flex justify-between items-center my-5">
         <div>
           <h1 className="lg:text-3xl md:text-2xl text-xl font-semibold">
             <span className="text-orange-400">Welcome</span>{" "}
@@ -151,9 +172,22 @@ const InstHome = () => {
               </p>
               {/* <p className="text-gray-500">Instruction goes here</p> */}
             </div>
+            <div
+              className=" grid place-items-center shadow-xl rounded-2xl p-5 border"
+              onClick={() => syncDataApi()}
+            >
+              <img src={syncLogo} alt="" className="lg:h-32 md:h-24 h-14" />
+              <p className="lg:text-xl text-base lg:font-bold sm:font-semibold">
+                Sync Data
+              </p>
+              {/* <p className="text-gray-500">Instruction goes here</p> */}
+            </div>
           </div>
         </div>
       </div>
+
+    </LoadingOverlay>
+     
     </>
   );
 };
