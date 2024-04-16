@@ -1,7 +1,7 @@
 // const BASE_URL = "http://52.172.149.201:4000/api/";
-const BASE_URL = "http://localhost:4000/api/";
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL;
 // const BASE_URL = "http://20.192.28.44:4000/api/";
-const SYNC_URL = "http://localhost:4001/";
+const SYNC_URL = import.meta.env.VITE_APP_SYNC_URL;
 const csvUrl = import.meta.env.VITE_APP_CSV_LINK;
 
 function convertSeconds(seconds) {
