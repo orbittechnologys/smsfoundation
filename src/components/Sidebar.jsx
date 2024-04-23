@@ -23,6 +23,8 @@ const Sidebar = () => {
   const navigate = useNavigate();
   console.log(auth);
 
+  const [margin,setMargin] = useState(false);
+
   useEffect(() => {
     const storedData = sessionStorage.getItem("user_id");
     console.log(storedData);
@@ -155,6 +157,25 @@ const Sidebar = () => {
               </li>
             ) : (
               ``
+            )}
+             {role === "INSTRUCTOR" && (
+              <li>
+                <Link
+                  to="/inst/InstHome"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/inst/InstHome") ? "bg-orange-200" : ""
+                  }`}
+                >
+                  <IoMdHome className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/inst/InstHome") ? "text-black" : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    Home
+                  </span>
+                </Link>
+              </li>
             )}
 
             {/* schools */}
@@ -349,8 +370,8 @@ const Sidebar = () => {
               </li>
             ) : (
               <li
-                onMouseEnter={() => toggleDropdown("student")}
-                onMouseLeave={closeDropdowns}
+                onMouseEnter={() => {toggleDropdown("student"); setMargin(true);}}
+                onMouseLeave={() => {closeDropdowns(); setMargin(false)}}
               >
                 <div className="relative">
                   <div
@@ -519,27 +540,9 @@ const Sidebar = () => {
             ) : (
               ``
             )}
-            {/*instructor  */}
+            {/*instructor Home */}
 
-            {role === "INSTRUCTOR" && (
-              <li>
-                <Link
-                  to="/inst/InstHome"
-                  className={`flex items-center p-2 rounded-lg group ${
-                    isActive("/inst/InstHome") ? "bg-orange-200" : ""
-                  }`}
-                >
-                  <IoMdHome className="w-5 h-5 text-gray-500 transition duration-75" />
-                  <span
-                    className={`${
-                      isActive("/inst/InstHome") ? "text-black" : "text-black"
-                    } ms-3 hover:text-orange-500`}
-                  >
-                    Home
-                  </span>
-                </Link>
-              </li>
-            )}
+           
 
             {role == "ADMIN" ? (
               <li>
@@ -664,7 +667,11 @@ const Sidebar = () => {
                 </div>
               </li>
             ) : (
-              <li onMouseEnter={openDropdown} onMouseLeave={closeDropdown}>
+              <li style={
+                margin ? {
+                marginTop:"7em"
+              } : {}} onMouseEnter={openDropdown}
+              onMouseLeave={closeDropdown}>
                 <div className="relative">
                   <div
                     className={`flex items-center p-2 rounded-lg group cursor-pointer ${

@@ -48,10 +48,9 @@ const StudentHome = () => {
       );
       setStudentData(res.data);
       console.log(res.data);
-      fetchSubject(
+      fetchSubjectV2(
+        res.data.studentDoc.school,
         res.data.studentDoc.standard,
-        res.data.studentDoc.syllabus,
-        res.data.studentDoc.medium
       );
       fetchActivity(res.data.studentDoc?._id);
     } catch (error) {
@@ -74,13 +73,36 @@ const StudentHome = () => {
     console.log(reqbody);
 
     try {
-      const res = await axios.post(`${BASE_URL}/subject/getSubjects`, reqbody);
+      const res = await axios.post(`${BASE_URL}subject/getSubjects`, reqbody);
       console.log(res.data);
       setSubjects(res.data.subjects);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const fetchSubjectV2 = async (schoolId,standard) => {
+
+    try {
+
+      const res2 = await axios.get(`${BASE_URL}school/id/${schoolId}`);
+      console.log(res2.data);
+
+      const reqbody = {
+        standard,
+        syllabus: res2.data.school.syllabus,
+        medium: res2.data.school.medium,
+      };
+      console.log(reqbody);
+
+      const res = await axios.post(`${BASE_URL}subject/getSubjects`, reqbody);
+      console.log(res.data);
+      setSubjects(res.data.subjects);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   const handleSearch = async () => {
     if(query?.length > 0){
@@ -282,7 +304,7 @@ const StudentHome = () => {
           </section>
 
           <section className="m-2 p-4">
-            <h1 className="font-semibold ml-5 underline text-lg my-3">Tests Taken</h1>
+            <h1 className="font-semibold ml-5 underline text-lg my-3">Tests Given</h1>
           <div className="grid lg:grid-cols-4 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
                     {testActivity?.map((testAct,index) => {
                       return(

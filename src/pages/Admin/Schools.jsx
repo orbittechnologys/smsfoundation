@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 const Schools = () => {
@@ -29,6 +29,7 @@ const Schools = () => {
   const columns = [
     { label: "School Name", accessor: "name", sortable: true },
     { label: "Principal Name", accessor: "principalName", sortable: true },
+    { label: "Principal Contact", accessor: "principalContact", sortable: true },
     { label: "Address", accessor: "address", sortable: true },
     { label: "District", accessor: "district", sortable: true },
     {label:"State",accessor:"state",sortable:true},
@@ -108,6 +109,8 @@ const Schools = () => {
 
 
   }
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -192,6 +195,9 @@ const Schools = () => {
                   </div>
                 </th>
               ))}
+              <th>
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -201,6 +207,7 @@ const Schools = () => {
               <tr key={index}>
                 <td>{rowData.name}</td>
                 <td>{rowData.principalName}</td>
+                <td>{rowData.principalContact}</td>
                 <td>{rowData.address}</td>
                 <td>{rowData.district}</td>
                 <td>{rowData?.state}</td>
@@ -216,6 +223,13 @@ const Schools = () => {
                   >
                     {rowData.internet ? "Yes" : "No"}
                   </span>
+                </td>
+                <td>
+                  <button 
+                  onClick={()=> navigate(`/admin/editschool/${rowData?._id}`)}
+                  className="rounded-2xl px-5 py-1 bg-green-300">
+                      Edit 
+                  </button>
                 </td>
               </tr>
             ))}

@@ -39,6 +39,22 @@ const EditStudent = () => {
     }
   };
 
+  const fetchStudentsByInstructor = async (instructorId) => {
+    try {
+      if(instructorId){
+        const res = await axios.get(
+          `${BASE_URL}instructor/fetchStudents/${instructorId}`
+        );
+        setGetAllStudents(res.data.students);
+        setStudents(res.data.students);
+        console.log(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
   useEffect(() => {
     const userId = sessionStorage.getItem("user_id");
     fetchInstructorByUserId(userId);
@@ -46,7 +62,7 @@ const EditStudent = () => {
 
   useEffect(() => {
     if (instructor) {
-      getStudentsBySchool();
+      fetchStudentsByInstructor(instructor._id);
     }
   }, [instructor]);
 

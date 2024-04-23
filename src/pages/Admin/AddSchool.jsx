@@ -7,6 +7,7 @@ const AddSchool = () => {
   const [schoolName, setSchoolName] = useState("");
   const [address, setAddress] = useState("");
   const [principalName, setPrincipalName] = useState("");
+  const [principalContact,setPrincipalContact] = useState("");
   const [district, setDistrict] = useState("");
   const [pincode, setPincode] = useState(Number);
   const [Internet, setInternet] = useState("");
@@ -44,6 +45,7 @@ const AddSchool = () => {
         name: schoolName,
         address: address,
         principalName: principalName,
+        principalContact,
         district: district,
         state,
         projectName,
@@ -143,6 +145,23 @@ const AddSchool = () => {
               placeholder="Principal Name"
               required
               onChange={(e) => setPrincipalName(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="principal_name"
+              className="block mb-2 text-sm font-medium text-gray-900 "
+            >
+              Principal Contact
+            </label>
+            <input
+              type="number"
+              id="principal_contact"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              placeholder="Principal Contact"
+              required
+              onChange={(e) => setPrincipalContact(e.target.value)}
             />
           </div>
           <div>

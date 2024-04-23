@@ -15,7 +15,7 @@ const Navbar = () => {
   const [role, setRole] = useState("");
   const navigate = useNavigate();
 
-  const fetchStudent = async () => {
+  const fetchUser = async () => {
     const userId = sessionStorage.getItem("user_id");
     setRole(sessionStorage.getItem("role"));
     console.log(userId);
@@ -29,7 +29,7 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    fetchStudent();
+    fetchUser();
   }, []);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -48,11 +48,21 @@ const Navbar = () => {
         } w-full`}
       >
         <div className="flex justify-center items-center lg:py-0 py-3">
-          {role !== "ADMIN" && role !== "INSTRUCTOR" && (
+          
             <Link to="/">
-              <img src={sfLogo} alt="logo" className="lg:h-10 h-5" />
+              <img src={sfLogo} alt="logo" className="lg:h-10 h-5 mr-8" />
             </Link>
-          )}
+
+            <h1 className="lg:text-3xl md:text-2xl text-xl  font-semibold">
+              <span className="text-orange-400">Welcome </span>
+
+              { user && (
+                <span>
+                  {user?.username.charAt(0).toUpperCase() +
+                    user?.username.slice(1)}
+                </span>
+              )}
+            </h1>
         </div>
         <div className="flex justify-center items-center gap-5">
           {/* <div className="flex justify-center items-center gap-5">

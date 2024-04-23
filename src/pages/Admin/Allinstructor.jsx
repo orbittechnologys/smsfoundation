@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
+import { TbPasswordUser } from "react-icons/tb";
+import { CiEdit } from "react-icons/ci";
+import { useNavigate } from "react-router";
 
 const Allinstructor = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,6 +16,8 @@ const Allinstructor = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfPassword, setShowConfPassword] = useState(false);
   const [confPassword, setConfPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -256,17 +261,27 @@ const Allinstructor = () => {
                 <td>{rowData?.school?.district}</td>
                 <td>{rowData?.school?.state}</td>
                 <td>{rowData?.school?.pincode}</td>
-                <td>
+                <td className="flex justify-between">
                   <div
                     onClick={() => {
                       setSelectedInstructorId(rowData);
                       setShowModal(true);
                     }}
-                    className="cursor-pointer flex items-center justify-center"
+                    className="cursor-pointer"
                   >
-                    <button className="px-4 py-2 bg-green-600 rounded-lg text-white font-semibold">
-                      Reset Password
-                    </button>
+                   <TbPasswordUser
+                   size={30}
+                   />
+                  </div>
+                  <div
+                    onClick={() => {
+                      navigate(`/admin/editInstructor/${rowData?._id}`)
+                    }}
+                    className="cursor-pointer"
+                  >
+                   <CiEdit
+                   size={30}
+                   />
                   </div>
                 </td>
               </tr>

@@ -177,7 +177,7 @@ const AdminHome = () => {
       <div className="">
         <div className="flex justify-between items-center my-5">
           <div>
-            <h1 className="lg:text-3xl md:text-2xl text-xl  font-semibold">
+            {/* <h1 className="lg:text-3xl md:text-2xl text-xl  font-semibold">
               <span className="text-orange-400">Welcome </span>
 
               {role === "ADMIN" && user && (
@@ -186,7 +186,7 @@ const AdminHome = () => {
                     user?.username.slice(1)}
                 </span>
               )}
-            </h1>
+            </h1> */}
           </div>
           <div>
             <div className="flex justify-center items-center my-5 static">
@@ -291,7 +291,7 @@ const AdminHome = () => {
             </div>
           </div>
         </div>
-        <div className="flex justify-center items-center w-full">
+        {/* <div className="flex justify-center items-center w-full">
           <Link to="/admin/AddSchool">
             <button
               type="button"
@@ -309,14 +309,8 @@ const AdminHome = () => {
             </button>
           </Link>
 
-          {/* <button
-            type="button"
-            className="flex bg-gray-100 justify-center items-center mt-5 text-orange-500 font-semibold hover:text-white border  hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2"
-          >
-            <TbFileImport className="mr-2" />
-            Import Report
-          </button> */}
-        </div>
+          
+        </div> */}
       </div>
     </>
   );

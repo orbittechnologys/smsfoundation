@@ -328,7 +328,7 @@ const AddQuestions = () => {
               htmlFor="standard"
               className="block mb-2 text-sm font-semibold text-gray-900 "
             >
-              Standard
+              Class
             </label>
             <input
               type="number"

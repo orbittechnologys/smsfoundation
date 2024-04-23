@@ -37,6 +37,8 @@ import MasterTable from "./pages/Admin/MasterTable";
 import InstructorProfile from "./pages/Instructor/InstructorProfile";
 import AdminProfile from "./pages/Admin/AdminProfile";
 import UploadStudent from "./pages/Admin/UploadStudent.jsx";
+import EditSchool from "./pages/Admin/EditSchool.jsx";
+import EditInstructor from "./pages/Admin/EditInstructor.jsx";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -107,6 +109,8 @@ const App = () => {
             <Route path="preview/:testId" element={<PreviewTest />} />
             <Route path="masterTable" element={<MasterTable/>} />
             <Route path="adminProfile/:userId" element={<AdminProfile/>} />
+            <Route path="editSchool/:schoolId" element={<EditSchool/>}/>
+            <Route path="editInstructor/:instructorId" element={<EditInstructor/>}/>
           </Route>
         </Route>
       </Routes>

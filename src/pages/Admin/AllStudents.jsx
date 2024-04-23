@@ -116,6 +116,7 @@ const AllStudents = () => {
 
   const columns = [
     { label: "Name", accessor: "firstName", sortable: true },
+    {label:"Email",accessor:"user?.email",sortable:true},
     { label: "Medium", accessor: "medium", sortable: true },
     { label: "Roll No", accessor: "rollNo", sortable: true },
     { label: "Standard", accessor: "standard", sortable: true },
@@ -294,6 +295,9 @@ const AllStudents = () => {
               <tr key={index}>
                 <td>
                   {rowData.firstName} {rowData.lastName}
+                </td>
+                <td>
+                  {rowData?.user?.email}
                 </td>
                 <td>{rowData.medium}</td>
                 <td>{rowData.rollNo}</td>

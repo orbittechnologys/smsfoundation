@@ -25,7 +25,7 @@ const InstHome = () => {
         `${BASE_URL}instructor/getByUserId/${userId}`
       );
       console.log(res.data);
-      setSchool(res.data.instructorDoc?.school?._id);
+      setSchool(Array.isArray(res.data.instructorDoc?.school) ? res.data.instructorDoc?.school[0]?._id : "");
     } catch (error) {
       console.log(error);
     }
@@ -117,7 +117,7 @@ const InstHome = () => {
     >
     <div className="flex justify-between items-center my-5">
         <div>
-          <h1 className="lg:text-3xl md:text-2xl text-xl font-semibold">
+          {/* <h1 className="lg:text-3xl md:text-2xl text-xl font-semibold">
             <span className="text-orange-400">Welcome</span>{" "}
             <span>
               {role === "INSTRUCTOR" && user && (
@@ -127,7 +127,7 @@ const InstHome = () => {
                 </span>
               )}
             </span>
-          </h1>
+          </h1> */}
         </div>
         <div>
           <div className="flex justify-center items-center my-5 static">
