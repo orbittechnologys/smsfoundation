@@ -6,7 +6,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Login from "./pages/Login";
-import StudentHome from "./pages/Student/studentHome.jsx";
+import StudentHome from "./pages/Student/StudentHome.jsx";
 import MyCourse from "./pages/Student/MyCourse";
 import AddStudent from "./pages/Instructor/addStudent";
 import LearningReport from "./pages/Instructor/LearningReport";
