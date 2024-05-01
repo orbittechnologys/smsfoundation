@@ -44,9 +44,11 @@ const AddInstructor = () => {
       password: password,
       gender: gender,
       // school: selectedSchool,
-      school: selectedSchool.map(school => school.id),// Access value property of selectedSchool
+      school: selectedSchool.map((school) => school.id), // Access value property of selectedSchool
 
-      medium: Array.isArray(selectedSchool) ? selectedSchool[0].value : `ENGLISH`,
+      medium: Array.isArray(selectedSchool)
+        ? selectedSchool[0].value
+        : `ENGLISH`,
     };
 
     console.log(reqbody);
@@ -107,12 +109,12 @@ const AddInstructor = () => {
   return (
     <>
       <div className="my-5">
-        <p className="font-semibold text-2xl">Add Instructor</p>
+        <p className="font-semibold text-2xl text-orange-500">Add Instructor</p>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="grid gap-5">
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-5">
             <div>
               <label
                 htmlFor="name"
@@ -268,7 +270,7 @@ const AddInstructor = () => {
             ``
           )}
           <div className="">
-          <label
+            <label
               htmlFor="schoolMul"
               className="block mb-2 text-sm font-medium text-gray-900 "
             >
@@ -276,7 +278,7 @@ const AddInstructor = () => {
             </label>
             <SearchableMultiDropdown
               options={dropSchool}
-              onChange={handleSchoolChange} // 
+              onChange={handleSchoolChange} //
               placeholder="Select School"
             />
           </div>

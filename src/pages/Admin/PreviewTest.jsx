@@ -10,7 +10,7 @@ const PreviewTest = () => {
   const [questions, setQuestions] = useState([]);
   const [test, setTest] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [role,setRole] = useState("NONE");
+  const [role, setRole] = useState("NONE");
   const navigate = useNavigate();
 
   const fetchQuestions = async (testId) => {
@@ -54,7 +54,7 @@ const PreviewTest = () => {
   };
 
   return (
-    <div className="mx-auto">
+    <div className="mx-auto px-10">
       <div className="breadcrumb my-5">
         <span className="text-orange-500">{currentQuestionIndex + 1}</span>/
         <span>{questions.length}</span>
@@ -68,7 +68,7 @@ const PreviewTest = () => {
       </div> */}
       <div className="w-full">
         {questions.length > 0 && (
-          <div className="grid lg:grid-cols-2 md:grid-cols-1 gap-5 place-items-start">
+          <div className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-5 place-items-start">
             {/* <hr className="my-4" /> */}
             {/* <h1 className="mb-2">
             Marks: {questions[currentQuestionIndex]?.marks}
@@ -82,7 +82,7 @@ const PreviewTest = () => {
                   }}
                 ></div>
               </div>
-              <div className="mb-2 grid grid-cols-2 place-items-center gap-5">
+              <div className="mb-2 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 place-items-center gap-5">
                 <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
                   <span className="mr-2">A.</span>
                   <span
@@ -136,21 +136,21 @@ const PreviewTest = () => {
                 </div>
                 {questions[currentQuestionIndex]?.optionE && (
                   <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
-                  <span className="mr-2">E.</span>
-                  <span
-                    className={cn({
-                      "text-green-400 font-bold":
-                        questions[currentQuestionIndex]?.answer === "E",
-                    })}
-                    dangerouslySetInnerHTML={{
-                      __html: questions[currentQuestionIndex]?.optionE,
-                    }}
-                  ></span>
-                </div>
+                    <span className="mr-2">E.</span>
+                    <span
+                      className={cn({
+                        "text-green-400 font-bold":
+                          questions[currentQuestionIndex]?.answer === "E",
+                      })}
+                      dangerouslySetInnerHTML={{
+                        __html: questions[currentQuestionIndex]?.optionE,
+                      }}
+                    ></span>
+                  </div>
                 )}
-                
-                  {questions[currentQuestionIndex]?.optionF && (
-                    <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
+
+                {questions[currentQuestionIndex]?.optionF && (
+                  <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
                     <span className="mr-2">E.</span>
                     <span
                       className={cn({
@@ -162,8 +162,7 @@ const PreviewTest = () => {
                       }}
                     ></span>
                   </div>
-                  )}
-                
+                )}
               </div>
             </div>
             <div className="w-full h-full lg:border lg:p-5 lg:rounded-xl">
@@ -175,41 +174,52 @@ const PreviewTest = () => {
               ></span>
             </div>
 
-            <div className="flex flex-row align-middle justify-center">
-              <h1 className="text-lg font-bold m-5">Page Reference : {questions[currentQuestionIndex]?.pageRef}</h1>
+            <div className="flex justify-center items-center flex-wrap">
+              <h1 className="text-lg font-bold m-5">
+                Page Reference : {questions[currentQuestionIndex]?.pageRef}
+              </h1>
 
               {role == "STUDENT" && (
-                <button 
-                onClick={() => navigate('/pdf/'+test?.chapter+'?page='+questions[currentQuestionIndex]?.pageRef)}
-                className="text-white h-1/3 mt-2 bg-orange-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"  >View PDF</button>
-              )
-              }
-              
+                <button
+                  onClick={() =>
+                    navigate(
+                      "/pdf/" +
+                        test?.chapter +
+                        "?page=" +
+                        questions[currentQuestionIndex]?.pageRef
+                    )
+                  }
+                  className="text-white h-1/3 mt-2 bg-orange-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm  sm:w-auto px-5 py-2.5 text-center w-fit"
+                >
+                  View PDF
+                </button>
+              )}
             </div>
           </div>
         )}
       </div>
-
-      <div className="flex justify-between items-center my-5 w-fit gap-5">
-        <button
-          onClick={handlePreviousQuestion}
-          disabled={currentQuestionIndex === 0}
-          className={cn("bg-orange-500 rounded-2xl text-white px-4 py-1 ", {
-            "opacity-50 cursor-not-allowed": currentQuestionIndex === 0,
-          })}
-        >
-          Previous
-        </button>
-        <button
-          onClick={handleNextQuestion}
-          disabled={currentQuestionIndex === questions.length - 1}
-          className={cn("bg-orange-500 rounded-2xl text-white px-4 py-1 ", {
-            "opacity-50 cursor-not-allowed":
-              currentQuestionIndex === questions.length - 1,
-          })}
-        >
-          Next
-        </button>
+      <div className="w-full grid lg:place-items-start md:place-items-start place-items-center">
+        <div className="flex justify-between items-center my-5 lg:w-fit md:w-fit w-56 gap-5">
+          <button
+            onClick={handlePreviousQuestion}
+            disabled={currentQuestionIndex === 0}
+            className={cn("bg-orange-500 rounded-2xl text-white px-4 py-1 ", {
+              "opacity-50 cursor-not-allowed": currentQuestionIndex === 0,
+            })}
+          >
+            Previous
+          </button>
+          <button
+            onClick={handleNextQuestion}
+            disabled={currentQuestionIndex === questions.length - 1}
+            className={cn("bg-orange-500 rounded-2xl text-white px-4 py-1 ", {
+              "opacity-50 cursor-not-allowed":
+                currentQuestionIndex === questions.length - 1,
+            })}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

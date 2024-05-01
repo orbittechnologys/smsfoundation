@@ -61,8 +61,7 @@ const TestReport = () => {
   const [fillterSchool, setFillterSchool] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState("NO");
   const [role, setRole] = useState("ADMIN");
-  const [dropSchool,setDropSchool] = useState([]);
-
+  const [dropSchool, setDropSchool] = useState([]);
 
   const fetchSchoolTestReport = async () => {
     try {
@@ -70,14 +69,16 @@ const TestReport = () => {
         `${BASE_URL}instructor/getByUserId/${sessionStorage.getItem("user_id")}`
       );
       console.log(res.data);
-      const transformedSchools = res.data.instructorDoc.school.map((school) => ({
-        // value: school._id,
-        value: school.medium,
-        district: school.district,
-        label: school.name + " " + school.district,
-        syllabus: school.syllabus,
-        id: school._id,
-      }));
+      const transformedSchools = res.data.instructorDoc.school.map(
+        (school) => ({
+          // value: school._id,
+          value: school.medium,
+          district: school.district,
+          label: school.name + " " + school.district,
+          syllabus: school.syllabus,
+          id: school._id,
+        })
+      );
       setDropSchool(transformedSchools);
       // fetchTestReportbySchoolId(res.data.instructorDoc?.school?._id);
     } catch (error) {
@@ -85,11 +86,11 @@ const TestReport = () => {
     }
   };
 
-  useEffect(()=> {
-    if(selectedSchool.id){
+  useEffect(() => {
+    if (selectedSchool.id) {
       fetchTestReportbySchoolId(selectedSchool.id);
     }
-  },[selectedSchool])
+  }, [selectedSchool]);
 
   const fetchTestReportbySchoolId = async (schoolId) => {
     if (schoolId) {
@@ -406,14 +407,14 @@ const TestReport = () => {
         </div>
       </form>
 
-      <div className="flex flex-wrap justify-between items-center my-5">
+      <div className="flex flex-wrap lg:justify-between md:justify-between justify-center items-center my-5">
         <div>
           <p className="text-orange-500 text-2xl font-semibold">
             Student progress
           </p>
           <p className="text-lg font-semibold">Test Report</p>
         </div>
-        <div className="flex flex-row justify-evenly lg:w-fit md:w-fit w-full">
+        <div className="flex flex-row justify-evenly items-center lg:mt-0 md:mt-0 mt-5 lg:w-fit md:w-fit w-full">
           {/* <form className="max-w-md mx-auto">
             <label
               htmlFor="default-search"
@@ -460,16 +461,15 @@ const TestReport = () => {
             <></>
           ) : (
             <SearchableDropdown
-                  options={dropSchool}
-                  onChange={setSelectedSchool} // Use setSelectedSchool directly
-                  placeholder="Select School"
-                />
+              options={dropSchool}
+              onChange={setSelectedSchool} // Use setSelectedSchool directly
+              placeholder="Select School"
+            />
           )}
 
-              
           <button
             onClick={() => triggerCsvDownload(role)}
-            className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
+            className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded whitespace-nowrap"
           >
             Download CSV
           </button>

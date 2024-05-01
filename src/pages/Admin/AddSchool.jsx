@@ -7,22 +7,21 @@ const AddSchool = () => {
   const [schoolName, setSchoolName] = useState("");
   const [address, setAddress] = useState("");
   const [principalName, setPrincipalName] = useState("");
-  const [principalContact,setPrincipalContact] = useState("");
+  const [principalContact, setPrincipalContact] = useState("");
   const [district, setDistrict] = useState("");
   const [pincode, setPincode] = useState(Number);
   const [Internet, setInternet] = useState("");
   const [syllabus, setSyllabus] = useState("");
   const [medium, setMedium] = useState("");
-  const [state,setState] = useState("");
-  const [projectName,setProjectName] = useState("");
-  const [partnerName,setPartnerName] = useState("");
+  const [state, setState] = useState("");
+  const [projectName, setProjectName] = useState("");
+  const [partnerName, setPartnerName] = useState("");
 
+  const [dropMedium, setDropMedium] = useState([]);
+  const [dropSyllabus, setDropSyllabus] = useState([]);
 
-  const [dropMedium,setDropMedium] = useState([]);
-  const [dropSyllabus,setDropSyllabus] = useState([]);
-
-  const [selectedMedium,setSelectedMedium] = useState(null);
-  const [selectedSyllabus,setSelectedSyllabus] = useState(null);
+  const [selectedMedium, setSelectedMedium] = useState(null);
+  const [selectedSyllabus, setSelectedSyllabus] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,9 +37,9 @@ const AddSchool = () => {
       selectedMedium
     );
 
-    if(!selectedMedium || !selectedSyllabus){
-      alert('Please fill all the details');
-    }else{
+    if (!selectedMedium || !selectedSyllabus) {
+      alert("Please fill all the details");
+    } else {
       const reqbody = {
         name: schoolName,
         address: address,
@@ -64,7 +63,6 @@ const AddSchool = () => {
         alert("school could not be added");
       }
     }
-
   };
 
   const handleMedium = (e) => {
@@ -82,37 +80,40 @@ const AddSchool = () => {
   const fetchData = async () => {
     try {
       const res2 = await axios.get(`${BASE_URL}syllabus/getAll`);
-      
+
       const transformedSyllabus = res2.data.syllabus.map((syllabus) => ({
         // value: school._id,
         value: syllabus.name,
-        label: syllabus.name, 
-        id : syllabus._id,
+        label: syllabus.name,
+        id: syllabus._id,
       }));
-      
+
       setDropSyllabus(transformedSyllabus);
 
       const res3 = await axios.get(`${BASE_URL}medium/getAll`);
-      
+
       const transformedMediums = res3.data.mediums.map((medium) => ({
         // value: school._id,
         value: medium.name,
-        label: medium.name, 
-        id : medium._id,
+        label: medium.name,
+        id: medium._id,
       }));
 
       setDropMedium(transformedMediums);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchData();
-  },[])
+  }, []);
 
   return (
     <>
+      <div className="my-5">
+        <h1 className="text-lg text-orange-500 font-semibold">Add School</h1>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="grid gap-6 mb-6 md:grid-cols-2 mt-5">
           <div>
@@ -297,24 +298,24 @@ const AddSchool = () => {
               </div>
             </div>
           </div>
-          <div>
+          <div className="md:col-span-2">
             <p className="text-xl font-semibold my-5">Medium Board</p>
             <div className="flex gap-5">
               <div>
                 <SearchableDropdown
-                    options={dropMedium}
-                    placeholder={"Search Medium"}
-                    onChange={setSelectedMedium}
+                  options={dropMedium}
+                  placeholder={"Search Medium"}
+                  onChange={setSelectedMedium}
                 />
               </div>
               <div>
-              <div>
-                <SearchableDropdown
+                <div>
+                  <SearchableDropdown
                     options={dropSyllabus}
                     placeholder={"Search Board"}
                     onChange={setSelectedSyllabus}
-                />
-              </div>
+                  />
+                </div>
               </div>
             </div>
           </div>

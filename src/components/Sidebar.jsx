@@ -23,7 +23,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
   console.log(auth);
 
-  const [margin,setMargin] = useState(false);
+  const [margin, setMargin] = useState(false);
 
   useEffect(() => {
     const storedData = sessionStorage.getItem("user_id");
@@ -86,6 +86,26 @@ const Sidebar = () => {
     });
   };
 
+  //
+  const [isStudentDropdownOpen, setIsStudentDropdownOpen] = useState(false);
+  const [isProgressDropdownOpen, setIsProgressDropdownOpen] = useState(false);
+
+  const closeStudentDropdown = () => {
+    setIsStudentDropdownOpen(false);
+  };
+
+  const openStudentDropdown = () => {
+    setIsStudentDropdownOpen(true);
+  };
+
+  const closeProgressDropdown = () => {
+    setIsProgressDropdownOpen(false);
+  };
+
+  const openProgressDropdown = () => {
+    setIsProgressDropdownOpen(true);
+  };
+  //
   return (
     <>
       <button
@@ -158,7 +178,7 @@ const Sidebar = () => {
             ) : (
               ``
             )}
-             {role === "INSTRUCTOR" && (
+            {role === "INSTRUCTOR" && (
               <li>
                 <Link
                   to="/inst/InstHome"
@@ -370,8 +390,14 @@ const Sidebar = () => {
               </li>
             ) : (
               <li
-                onMouseEnter={() => {toggleDropdown("student"); setMargin(true);}}
-                onMouseLeave={() => {closeDropdowns(); setMargin(false)}}
+                onMouseEnter={() => {
+                  toggleDropdown("student");
+                  setMargin(true);
+                }}
+                onMouseLeave={() => {
+                  closeDropdowns();
+                  setMargin(false);
+                }}
               >
                 <div className="relative">
                   <div
@@ -398,8 +424,8 @@ const Sidebar = () => {
                   {dropdownStates.student && (
                     <div
                       className="absolute left-0 w-48 bg-white rounded-lg shadow-lg z-10"
-                      onMouseEnter={openDropdown}
-                      onMouseLeave={closeDropdown}
+                      onMouseEnter={openStudentDropdown}
+                      onMouseLeave={closeStudentDropdown}
                     >
                       <ul className="py-1">
                         {" "}
@@ -542,8 +568,6 @@ const Sidebar = () => {
             )}
             {/*instructor Home */}
 
-           
-
             {role == "ADMIN" ? (
               <li>
                 <Link
@@ -562,7 +586,9 @@ const Sidebar = () => {
                   </span>
                 </Link>
               </li>
-            ) : ``}
+            ) : (
+              ``
+            )}
 
             {role == "ADMIN" ? (
               <li>
@@ -667,11 +693,17 @@ const Sidebar = () => {
                 </div>
               </li>
             ) : (
-              <li style={
-                margin ? {
-                marginTop:"7em"
-              } : {}} onMouseEnter={openDropdown}
-              onMouseLeave={closeDropdown}>
+              <li
+                style={
+                  margin
+                    ? {
+                        marginTop: "7em",
+                      }
+                    : {}
+                }
+                onMouseEnter={openDropdown}
+                onMouseLeave={closeDropdown}
+              >
                 <div className="relative">
                   <div
                     className={`flex items-center p-2 rounded-lg group cursor-pointer ${
@@ -696,8 +728,8 @@ const Sidebar = () => {
                   {isDropdownOpen && (
                     <div
                       className="absolute left-0 w-48 bg-white rounded-lg shadow-lg z-10"
-                      onMouseEnter={openDropdown}
-                      onMouseLeave={closeDropdown}
+                      onMouseEnter={openProgressDropdown}
+                      onMouseLeave={closeProgressDropdown}
                     >
                       <ul className="py-1">
                         <li>
@@ -729,26 +761,29 @@ const Sidebar = () => {
               </li>
             )}
 
-            
-        {role == "ADMIN" ? (
-                      <li>
-                        <Link
-                          to="/admin/masterTable"
-                          className={`flex items-center p-2 rounded-lg group ${
-                            isActive("/admin/masterTable") ? "bg-orange-200" : ""
-                          }`}
-                        >
-                          <SlNote className="w-5 h-5 text-gray-500 transition duration-75" />
-                          <span
-                            className={`${
-                              isActive("/admin/masterTable") ? "text-black" : "text-black"
-                            } ms-3 hover:text-orange-500`}
-                          >
-                            Master Table
-                          </span>
-                        </Link>
-                      </li>
-                    ) : ``}
+            {role == "ADMIN" ? (
+              <li>
+                <Link
+                  to="/admin/masterTable"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/admin/masterTable") ? "bg-orange-200" : ""
+                  }`}
+                >
+                  <SlNote className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/admin/masterTable")
+                        ? "text-black"
+                        : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    Master Table
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              ``
+            )}
 
             <li>
               <Link

@@ -29,10 +29,14 @@ const Schools = () => {
   const columns = [
     { label: "School Name", accessor: "name", sortable: true },
     { label: "Principal Name", accessor: "principalName", sortable: true },
-    { label: "Principal Contact", accessor: "principalContact", sortable: true },
+    {
+      label: "Principal Contact",
+      accessor: "principalContact",
+      sortable: true,
+    },
     { label: "Address", accessor: "address", sortable: true },
     { label: "District", accessor: "district", sortable: true },
-    {label:"State",accessor:"state",sortable:true},
+    { label: "State", accessor: "state", sortable: true },
     { label: "Pincode", accessor: "pincode", sortable: true },
     { label: "Board", accessor: "syllabus", sortable: true },
     { label: "Medium", accessor: "medium", sortable: true },
@@ -76,21 +80,18 @@ const Schools = () => {
   });
 
   const handleCSVdownload = async () => {
-  console.log(' i am here')
+    console.log(" i am here");
     try {
-      const res = await axios.get(
-        `${BASE_URL}school/getSchoolsCSV`,
-        {
-          responseType: "blob",
-        }
-      );
+      const res = await axios.get(`${BASE_URL}school/getSchoolsCSV`, {
+        responseType: "blob",
+      });
       const blob = res.data;
       const downloadUrl = window.URL.createObjectURL(blob);
       // Create a temporary anchor element and trigger a download
       const link = document.createElement("a");
       link.href = downloadUrl;
       const date = new Date();
-  
+
       link.setAttribute(
         "download",
         `AllSchools${date.getDate()}-${
@@ -99,16 +100,14 @@ const Schools = () => {
       ); // or dynamically set the filename based on content-disposition header
       document.body.appendChild(link); // Append to the document
       link.click(); // Programmatically click the link to trigger the download
-  
+
       // Clean up: remove the link and revoke the object URL
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
       console.log(error);
     }
-
-
-  }
+  };
 
   const navigate = useNavigate();
 
@@ -150,15 +149,16 @@ const Schools = () => {
         </div>
       </form>
 
-      <div className="flex justify-between flex-wrap items-center my-5">
-        <div className="sm:mb-5">
+      <div className="flex lg:justify-between md:justify-between justify-center   flex-wrap items-center my-5">
+        <div className="mb-2 lg:mb-0 md:mb-0">
           <p className="text-orange-500 text-2xl font-semibold">All Schools</p>
         </div>
         <div>
-          <button 
-          type="button"
-          onClick={() => handleCSVdownload()}
-          className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2 ">
+          <button
+            type="button"
+            onClick={() => handleCSVdownload()}
+            className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2 "
+          >
             Download CSV
           </button>
           <Link to="/admin/AddSchool">
@@ -195,9 +195,7 @@ const Schools = () => {
                   </div>
                 </th>
               ))}
-              <th>
-                Actions
-              </th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -225,10 +223,13 @@ const Schools = () => {
                   </span>
                 </td>
                 <td>
-                  <button 
-                  onClick={()=> navigate(`/admin/editschool/${rowData?._id}`)}
-                  className="rounded-2xl px-5 py-1 bg-green-300">
-                      Edit 
+                  <button
+                    onClick={() =>
+                      navigate(`/admin/editschool/${rowData?._id}`)
+                    }
+                    className="rounded-2xl px-5 py-1 bg-green-300"
+                  >
+                    Edit
                   </button>
                 </td>
               </tr>

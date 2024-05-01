@@ -165,7 +165,7 @@ const Mcq = () => {
                 }}
               ></div>
             </div>
-            <div className="mt-5 grid grid-cols-2 gap-5">
+            <div className="mt-5 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-5 ">
               <div
                 className={cn({
                   "border border-gray-500 p-5 rounded-xl":
@@ -239,52 +239,47 @@ const Mcq = () => {
                 </div>
               </div>
 
-{questions[questionNumber - 1]?.optionE && (
-  <div
-                className={cn({
-                  "border border-gray-500 p-5 rounded-xl":
-                    answers[questionNumber - 1]?.option != "E",
-                  "border-2 border-green-800 p-5 rounded-xl text-green-600":
-                    answers[questionNumber - 1]?.option == "E",
-                })}
-                onClick={() => handleOptionClick(questionNumber - 1, "E")}
-              >
-                <div className="flex justify-start items-center">
-                  <span className="mr-2 font-semibold">E.</span>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: questions[questionNumber - 1]?.optionE,
-                    }}
-                  ></div>
+              {questions[questionNumber - 1]?.optionE && (
+                <div
+                  className={cn({
+                    "border border-gray-500 p-5 rounded-xl":
+                      answers[questionNumber - 1]?.option != "E",
+                    "border-2 border-green-800 p-5 rounded-xl text-green-600":
+                      answers[questionNumber - 1]?.option == "E",
+                  })}
+                  onClick={() => handleOptionClick(questionNumber - 1, "E")}
+                >
+                  <div className="flex justify-start items-center">
+                    <span className="mr-2 font-semibold">E.</span>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: questions[questionNumber - 1]?.optionE,
+                      }}
+                    ></div>
+                  </div>
                 </div>
-              </div>
-)
+              )}
 
-}
-
-{questions[questionNumber - 1]?.optionF && (
-  <div
-                className={cn({
-                  "border border-gray-500 p-5 rounded-xl":
-                    answers[questionNumber - 1]?.option != "F",
-                  "border-2 border-green-800 p-5 rounded-xl text-green-600":
-                    answers[questionNumber - 1]?.option == "F",
-                })}
-                onClick={() => handleOptionClick(questionNumber - 1, "F")}
-              >
-                <div className="flex justify-start items-center">
-                  <span className="mr-2 font-semibold">F.</span>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: questions[questionNumber - 1]?.optionF,
-                    }}
-                  ></div>
+              {questions[questionNumber - 1]?.optionF && (
+                <div
+                  className={cn({
+                    "border border-gray-500 p-5 rounded-xl":
+                      answers[questionNumber - 1]?.option != "F",
+                    "border-2 border-green-800 p-5 rounded-xl text-green-600":
+                      answers[questionNumber - 1]?.option == "F",
+                  })}
+                  onClick={() => handleOptionClick(questionNumber - 1, "F")}
+                >
+                  <div className="flex justify-start items-center">
+                    <span className="mr-2 font-semibold">F.</span>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: questions[questionNumber - 1]?.optionF,
+                      }}
+                    ></div>
+                  </div>
                 </div>
-              </div>
-)
-
-}
-              
+              )}
             </div>
           </div>
         ) : (

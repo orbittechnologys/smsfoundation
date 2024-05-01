@@ -41,28 +41,27 @@ const Navbar = () => {
   return (
     <>
       <div
-        className={`flex justify-between flex-wrap items-center px-10 lg:py-5 ${
+        className={`flex lg:pb-5 md:pb-5 pb-5  lg:justify-between  justify-center flex-wrap lg:flex-nowrap  items-center px-10 lg:py-5 ${
           role === "ADMIN" || role === "INSTRUCTOR"
-            ? "bg-white lg:border-b lg:border-gray-400"
+            ? "bg-white lg:border-b md:border-b lg:border-gray-400 md:border-gray-400"
             : "bg-gray-100"
         } w-full`}
       >
         <div className="flex justify-center items-center lg:py-0 py-3">
-          
-            <Link to="/">
-              <img src={sfLogo} alt="logo" className="lg:h-10 h-5 mr-8" />
-            </Link>
+          <Link to="/" className="hidden lg:block md:block">
+            <img src={sfLogo} alt="logo" className="lg:h-10 h-5 mr-8" />
+          </Link>
 
-            <h1 className="lg:text-3xl md:text-2xl text-xl  font-semibold">
-              <span className="text-orange-400">Welcome </span>
+          <h1 className="lg:text-3xl md:text-xl text-lg  font-semibold">
+            <span className="text-orange-400">Welcome </span>
 
-              { user && (
-                <span>
-                  {user?.username.charAt(0).toUpperCase() +
-                    user?.username.slice(1)}
-                </span>
-              )}
-            </h1>
+            {user && (
+              <span>
+                {user?.username.charAt(0).toUpperCase() +
+                  user?.username.slice(1)}
+              </span>
+            )}
+          </h1>
         </div>
         <div className="flex justify-center items-center gap-5">
           {/* <div className="flex justify-center items-center gap-5">
@@ -90,30 +89,38 @@ const Navbar = () => {
               <div className="z-50 absolute right-0 mt-2 w-48 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
                 {role == "ADMIN" ? (
                   <div
-                  onClick={() => {navigate(`/admin/adminProfile/${user?._id}`); toggleDropdown()}}
-                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
-                >
-                  <CgProfile className="text-blue-500" />
-                  Profile
-                </div>
-                ): role == "INSTRUCTOR" ? (
+                    onClick={() => {
+                      navigate(`/admin/adminProfile/${user?._id}`);
+                      toggleDropdown();
+                    }}
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                  >
+                    <CgProfile className="text-blue-500" />
+                    Profile
+                  </div>
+                ) : role == "INSTRUCTOR" ? (
                   <div
-                  onClick={() => {navigate(`/inst/instructorProfile/${user?._id}`); toggleDropdown();}}
-                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
-                >
-                  <CgProfile className="text-blue-500" />
-                  Profile
-                </div>
-                ):(
+                    onClick={() => {
+                      navigate(`/inst/instructorProfile/${user?._id}`);
+                      toggleDropdown();
+                    }}
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                  >
+                    <CgProfile className="text-blue-500" />
+                    Profile
+                  </div>
+                ) : (
                   <div
-                  onClick={() => {navigate(`/studentProfile/${user?._id}`); toggleDropdown(); }}
-                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
-                >
-                  <CgProfile className="text-blue-500" />
-                  Profile
-                </div>
+                    onClick={() => {
+                      navigate(`/studentProfile/${user?._id}`);
+                      toggleDropdown();
+                    }}
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                  >
+                    <CgProfile className="text-blue-500" />
+                    Profile
+                  </div>
                 )}
-                
 
                 <a
                   href="/"

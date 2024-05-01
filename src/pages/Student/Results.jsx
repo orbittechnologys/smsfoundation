@@ -91,7 +91,7 @@ const Results = () => {
       return (
         <div className="">
           <span className="text-black">Performance Feedback: </span>
-          {feedback}
+          <span>{feedback}</span>
         </div>
       );
     }
@@ -99,8 +99,8 @@ const Results = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen w-full bg-[#F1EDDF]">
-      <div className="max-w-md mx-auto bg-white shadow-md p-8 rounded-md">
+    <div className="flex flex-col justify-center items-center h-screen  bg-[#F1EDDF]">
+      <div className=" mx-auto bg-white shadow-md p-8 rounded-md lg:w-96 md:w-96 w-80">
         <h1 className="text-3xl font-semibold mb-4 text-center text-orange-500">
           Results
         </h1>
@@ -155,14 +155,14 @@ const Results = () => {
           <button
             type="button"
             onClick={() => navigate("/preview/" + testId)}
-            className="text-white bg-orange-500 hover:bg-blue-800 font-semibold focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none "
+            className="text-white bg-orange-500 hover:bg-blue-800 font-semibold focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none whitespace-nowrap "
           >
             Review Test
           </button>
           <button
             type="button"
             onClick={() => navigate("/mcq/" + testId)}
-            className="text-white bg-orange-500 hover:bg-blue-800 font-semibold focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none "
+            className="text-white bg-orange-500 hover:bg-blue-800 font-semibold focus:ring-4 focus:ring-blue-300  rounded-lg text-sm px-5 py-2.5 me-2 mb-2  focus:outline-none whitespace-nowrap"
           >
             Retake Test
           </button>

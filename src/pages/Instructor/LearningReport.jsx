@@ -46,7 +46,7 @@ const LearningReport = () => {
   const [fillterSchool, setFillterSchool] = useState([]);
   const [selectedSchool, setSelectedSchool] = useState("NO");
   const [role, setRole] = useState("ADMIN");
-  const [dropSchool,setDropSchool] = useState([]);
+  const [dropSchool, setDropSchool] = useState([]);
 
   const fetchSchoolLearningReport = async () => {
     console.log("Fetching learning report");
@@ -56,14 +56,16 @@ const LearningReport = () => {
       );
       console.log(res.data);
       setSchool(res.data.instructorDoc?.school);
-      const transformedSchools = res.data.instructorDoc.school.map((school) => ({
-        // value: school._id,
-        value: school.medium,
-        district: school.district,
-        label: school.name + " " + school.district,
-        syllabus: school.syllabus,
-        id: school._id,
-      }));
+      const transformedSchools = res.data.instructorDoc.school.map(
+        (school) => ({
+          // value: school._id,
+          value: school.medium,
+          district: school.district,
+          label: school.name + " " + school.district,
+          syllabus: school.syllabus,
+          id: school._id,
+        })
+      );
       setDropSchool(transformedSchools);
 
       // fetchTestReportbySchoolId(res.data.instructorDoc?.school?._id);
@@ -141,11 +143,11 @@ const LearningReport = () => {
     }
   };
 
-  useEffect(()=> {
-    if(selectedSchool.id){
+  useEffect(() => {
+    if (selectedSchool.id) {
       fetchTestReportbySchoolId(selectedSchool.id);
     }
-  },[selectedSchool])
+  }, [selectedSchool]);
 
   useEffect(() => {
     if (
@@ -384,17 +386,17 @@ const LearningReport = () => {
           </p>
           <p className="text-lg font-semibold">Learning Report</p>
         </div>
-        <div className="flex flex-row justify-evenly lg:w-fit md:w-fit w-full lg:my-0 sm:my-5">
+        <div className="flex flex-row justify-evenly items-center lg:w-fit md:w-fit w-full lg:my-0 sm:my-5">
           {role != "INSTRUCTOR" ? (
             <></>
           ) : (
             <SearchableDropdown
-            options={dropSchool}
-            onChange={setSelectedSchool} // Use setSelectedSchool directly
-            placeholder="Select School"
-          />
+              options={dropSchool}
+              onChange={setSelectedSchool} // Use setSelectedSchool directly
+              placeholder="Select School"
+            />
           )}
-         
+
           <button
             className="m-2 border border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white  font-bold py-1 px-4 rounded"
             onClick={() => triggerCsvDownload(role)}
@@ -460,7 +462,9 @@ const LearningReport = () => {
                   <td>{rowData?.student?.school?.district}</td>
                 )}
                 <td>{rowData?.subject?.name}</td>
-                <td>{convertSeconds(rowData?.time)}</td>
+                <td className="whitespace-nowrap">
+                  {convertSeconds(rowData?.time)}
+                </td>
               </tr>
             ))}
           </tbody>

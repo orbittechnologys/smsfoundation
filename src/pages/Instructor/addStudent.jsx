@@ -50,9 +50,9 @@ const addStudent = () => {
       standard: standard,
       // school: selectedSchool?._id,
       password: password,
-      school:  selectedSchool?.id,
-      syllabus:selectedSchool?.syllabus,
-      medium:selectedSchool?.value,
+      school: selectedSchool?.id,
+      syllabus: selectedSchool?.syllabus,
+      medium: selectedSchool?.value,
     };
     console.log(reqbody);
 
@@ -64,9 +64,9 @@ const addStudent = () => {
         role == "INSTRUCTOR" ? "/inst/AllStudents" : "/admin/AllStudents";
       navigate(navUrl);
     } catch (error) {
-      console.log(error);      
-      let errMsg = error?.response?.data?.msg 
-      errMsg = errMsg ? errMsg : 'Student could not be Added'
+      console.log(error);
+      let errMsg = error?.response?.data?.msg;
+      errMsg = errMsg ? errMsg : "Student could not be Added";
       alert(errMsg);
     }
   };
@@ -75,7 +75,6 @@ const addStudent = () => {
   };
 
   const fetchSchool = async () => {
-
     try {
       const res = await axios.get(`${BASE_URL}school/getAllSchools`);
       console.log(res.data.schools);
@@ -101,14 +100,16 @@ const addStudent = () => {
         `${BASE_URL}instructor/getByUserId/${userId}`
       );
       console.log(res.data.instructorDoc.school);
-      const transformedSchools = res.data.instructorDoc.school.map((school) => ({
-        // value: school._id,
-        value: school.medium,
-        district: school.district,
-        label: school.name + " " + school.district,
-        syllabus: school.syllabus,
-        id: school._id,
-      }));
+      const transformedSchools = res.data.instructorDoc.school.map(
+        (school) => ({
+          // value: school._id,
+          value: school.medium,
+          district: school.district,
+          label: school.name + " " + school.district,
+          syllabus: school.syllabus,
+          id: school._id,
+        })
+      );
       setDropSchool(transformedSchools);
       setInstructor(res.data.instructorDoc.school);
     } catch (error) {
@@ -118,9 +119,9 @@ const addStudent = () => {
 
   useEffect(() => {
     const role = sessionStorage.getItem("role");
-    if(role == "ADMIN"){
+    if (role == "ADMIN") {
       fetchSchool();
-    }else {
+    } else {
       fetchInstructor();
     }
   }, []);
@@ -129,13 +130,13 @@ const addStudent = () => {
     <>
       <div className="flex justify-start items-center">
         <div className="flex mx-5 my-5 ">
-          <p className="font-bold text-lg">Add Student</p>
+          <p className="font-bold text-lg text-orange-500">Add Student</p>
         </div>
       </div>
 
       <div>
         <form className="1" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
             <div>
               <label
                 htmlFor="email"
@@ -246,7 +247,7 @@ const addStudent = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4 mt-2">
+          <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-2">
             <div>
               <label
                 htmlFor="password"
@@ -280,15 +281,15 @@ const addStudent = () => {
             </div>
 
             {password != confPassword ? (
-            <div
-              className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 "
-              role="alert"
-            >
-              <span className="font-medium">Passwords Don't match</span>
-            </div>
-          ) : (
-            ``
-          )}
+              <div
+                className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 "
+                role="alert"
+              >
+                <span className="font-medium">Passwords Don't match</span>
+              </div>
+            ) : (
+              ``
+            )}
 
             <div>
               <label
@@ -305,50 +306,45 @@ const addStudent = () => {
                 onChange={(e) => setStandard(e.target.value)}
               />
             </div>
-           
-              <div className="">
-                <label
-                  htmlFor="standard"
-                  className="block mb-2 text-sm font-medium text-gray-900 "
-                >
-                  School
-                </label>
-                <SearchableDropdown
-                  options={dropSchool}
-                  onChange={setSelectedSchool} // Use setSelectedSchool directly
-                  placeholder="Select School"
-                />
-              </div>
-          
 
-            
-              <div>
-                <label
-                  htmlFor="syllabus"
-                  className="block mb-2 text-sm font-medium text-gray-900 "
-                >
-                  Board
-                </label>
+            <div className="">
+              <label
+                htmlFor="standard"
+                className="block mb-2 text-sm font-medium text-gray-900 "
+              >
+                School
+              </label>
+              <SearchableDropdown
+                options={dropSchool}
+                onChange={setSelectedSchool} // Use setSelectedSchool directly
+                placeholder="Select School"
+              />
+            </div>
 
-                <div className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
-                  {selectedSchool ? <p>{selectedSchool?.syllabus}</p> : ``}
-                </div>
-              </div>
-            
+            <div>
+              <label
+                htmlFor="syllabus"
+                className="block mb-2 text-sm font-medium text-gray-900 "
+              >
+                Board
+              </label>
 
-            
-              <div>
-                <label
-                  htmlFor="medium"
-                  className="block mb-2 text-sm font-medium text-gray-900 "
-                >
-                  Medium
-                </label>
-                <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                  {selectedSchool ? <p>{selectedSchool?.value}</p> : ``}
-                </div>
+              <div className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                {selectedSchool ? <p>{selectedSchool?.syllabus}</p> : ``}
               </div>
-         
+            </div>
+
+            <div>
+              <label
+                htmlFor="medium"
+                className="block mb-2 text-sm font-medium text-gray-900 "
+              >
+                Medium
+              </label>
+              <div className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                {selectedSchool ? <p>{selectedSchool?.value}</p> : ``}
+              </div>
+            </div>
           </div>
           <div>
             <button

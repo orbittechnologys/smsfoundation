@@ -26,12 +26,13 @@ const AdminHome = () => {
     totalInstructor: 1,
     totalStudents: 1,
   });
-  const [districts,setDistricts] = useState([]);
-  const [selectedDistrict,setSelectedDistrict] = useState(null);
+  const [districts, setDistricts] = useState([]);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
 
-  const [barChartData,setBarChartData] = useState([
-    {"_id":"male",count:0}, {"_id":"female",count:0}
-  ])
+  const [barChartData, setBarChartData] = useState([
+    { _id: "male", count: 0 },
+    { _id: "female", count: 0 },
+  ]);
 
   const data = {
     labels: ["Registered Last Week", "Registered This Week"],
@@ -148,7 +149,7 @@ const AdminHome = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const fetchBarChartData = async (district) => {
     try {
@@ -158,13 +159,13 @@ const AdminHome = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  useEffect(()=> {
-    if(selectedDistrict!="NONE"){
+  useEffect(() => {
+    if (selectedDistrict != "NONE") {
       fetchBarChartData(selectedDistrict);
     }
-  },[selectedDistrict])
+  }, [selectedDistrict]);
 
   useEffect(() => {
     fetchUser();
@@ -175,8 +176,8 @@ const AdminHome = () => {
   return (
     <>
       <div className="">
-        <div className="flex justify-between items-center my-5">
-          <div>
+        <div className="flex justify-center lg:justify-between md:justify-between items-center my-5">
+          <div className="hidden lg:block md:block">
             {/* <h1 className="lg:text-3xl md:text-2xl text-xl  font-semibold">
               <span className="text-orange-400">Welcome </span>
 
@@ -219,13 +220,17 @@ const AdminHome = () => {
                 <select
                   id="small"
                   className="block w-full p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 "
-                  onChange={(e)=> setSelectedDistrict(e.target.value)}
+                  onChange={(e) => setSelectedDistrict(e.target.value)}
                 >
-                  <option value="NONE" selected>Choose a District</option>
-                  {districts?.map((district,index)=> {
+                  <option value="NONE" selected>
+                    Choose a District
+                  </option>
+                  {districts?.map((district, index) => {
                     return (
-                      <option key={index} value={district}>{district}</option>
-                    )
+                      <option key={index} value={district}>
+                        {district}
+                      </option>
+                    );
                   })}
                 </select>
               </div>

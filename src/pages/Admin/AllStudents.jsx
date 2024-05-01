@@ -59,7 +59,7 @@ const AllStudents = () => {
 
   const fetchStudentsByInstructor = async (instructorId) => {
     try {
-      if(instructorId){
+      if (instructorId) {
         const res = await axios.get(
           `${BASE_URL}instructor/fetchStudents/${instructorId}`
         );
@@ -69,7 +69,7 @@ const AllStudents = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const fetchInstructor = async () => {
     try {
@@ -116,7 +116,7 @@ const AllStudents = () => {
 
   const columns = [
     { label: "Name", accessor: "firstName", sortable: true },
-    {label:"Email",accessor:"user?.email",sortable:true},
+    { label: "Email", accessor: "user?.email", sortable: true },
     { label: "Medium", accessor: "medium", sortable: true },
     { label: "Roll No", accessor: "rollNo", sortable: true },
     { label: "Standard", accessor: "standard", sortable: true },
@@ -171,21 +171,17 @@ const AllStudents = () => {
   });
 
   const handleCSVdownload = async () => {
-    
     try {
-      const res = await axios.get(
-        `${BASE_URL}student/getStudentsCSV`,
-        {
-          responseType: "blob",
-        }
-      );
+      const res = await axios.get(`${BASE_URL}student/getStudentsCSV`, {
+        responseType: "blob",
+      });
       const blob = res.data;
       const downloadUrl = window.URL.createObjectURL(blob);
       // Create a temporary anchor element and trigger a download
       const link = document.createElement("a");
       link.href = downloadUrl;
       const date = new Date();
-  
+
       link.setAttribute(
         "download",
         `AllStudents${date.getDate()}-${
@@ -194,16 +190,14 @@ const AllStudents = () => {
       ); // or dynamically set the filename based on content-disposition header
       document.body.appendChild(link); // Append to the document
       link.click(); // Programmatically click the link to trigger the download
-  
+
       // Clean up: remove the link and revoke the object URL
       document.body.removeChild(link);
       window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
       console.log(error);
     }
-
-
-  }
+  };
 
   return (
     <>
@@ -244,15 +238,16 @@ const AllStudents = () => {
       </form>
 
       <div className="flex justify-between flex-wrap items-center my-5">
-        <div className="sm:mb-5">
+        <div className="">
           <p className="text-orange-500 text-2xl font-semibold">All Students</p>
         </div>
-        <button 
+        <button
           type="button"
           onClick={() => handleCSVdownload()}
-          className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2 ">
-            Download CSV
-          </button>
+          className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2 "
+        >
+          Download CSV
+        </button>
       </div>
       <div className="table-container">
         <table className="custom-table">
@@ -296,9 +291,7 @@ const AllStudents = () => {
                 <td>
                   {rowData.firstName} {rowData.lastName}
                 </td>
-                <td>
-                  {rowData?.user?.email}
-                </td>
+                <td>{rowData?.user?.email}</td>
                 <td>{rowData.medium}</td>
                 <td>{rowData.rollNo}</td>
                 <td>{rowData.standard}</td>
@@ -315,7 +308,7 @@ const AllStudents = () => {
                     className="cursor-pointer flex items-center justify-center"
                   >
                     {/* <PiPasswordDuotone className="mr-2" /> */}
-                    <button className="px-4 py-2 bg-green-600 rounded-lg text-white font-semibold">
+                    <button className="px-4 py-2 bg-green-600 rounded-lg text-white font-semibold whitespace-nowrap text-sm">
                       Reset Password
                     </button>
                   </div>
