@@ -6,7 +6,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Login from "./pages/Login";
-import StudentHome from "./pages/Student/StudentHome.jsx";
+import StudentHome from "./pages/Student/studentHome.jsx";
 import MyCourse from "./pages/Student/MyCourse";
 import AddStudent from "./pages/Instructor/addStudent";
 import LearningReport from "./pages/Instructor/LearningReport";
@@ -86,7 +86,10 @@ const App = () => {
             <Route path="LearningReport" element={<LearningReport />} />
             <Route path="TestReport" element={<TestReport />} />
             <Route path="editStudent" element={<EditStudent />} />
-            <Route path="instructorProfile/:userId" element={<InstructorProfile/>} />
+            <Route
+              path="instructorProfile/:userId"
+              element={<InstructorProfile />}
+            />
             {/* <Route path="UpdateContent" element={<UpdateContent />} /> */}
           </Route>
         </Route>
@@ -98,7 +101,7 @@ const App = () => {
             <Route path="Schoolp" element={<Schoolp />} />
             <Route path="Allinstructor" element={<Allinstructor />} />
             <Route path="AllStudents" element={<AllStudents />} />
-            <Route path="uploadStudent" element={<UploadStudent/>} />
+            <Route path="uploadStudent" element={<UploadStudent />} />
             <Route path="AddSchool" element={<AddSchool />} />
             <Route path="LearningReport" element={<LearningReport />} />
             <Route path="addStudent" element={<AddStudent />} />
@@ -107,10 +110,13 @@ const App = () => {
             <Route path="AddInstructor" element={<AddInstructor />} />
             <Route path="AddTest" element={<AddTest />} />
             <Route path="preview/:testId" element={<PreviewTest />} />
-            <Route path="masterTable" element={<MasterTable/>} />
-            <Route path="adminProfile/:userId" element={<AdminProfile/>} />
-            <Route path="editSchool/:schoolId" element={<EditSchool/>}/>
-            <Route path="editInstructor/:instructorId" element={<EditInstructor/>}/>
+            <Route path="masterTable" element={<MasterTable />} />
+            <Route path="adminProfile/:userId" element={<AdminProfile />} />
+            <Route path="editSchool/:schoolId" element={<EditSchool />} />
+            <Route
+              path="editInstructor/:instructorId"
+              element={<EditInstructor />}
+            />
           </Route>
         </Route>
       </Routes>

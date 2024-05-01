@@ -1,0 +1,10 @@
+{
+  "appId": "com.example.app",
+  "appName": "sehgal-foundation",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "url": "https://smsfoundation.neodeals.in",
+    "cleartext": true
+  }
+}
