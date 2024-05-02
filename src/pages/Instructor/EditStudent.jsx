@@ -12,9 +12,10 @@ const EditStudent = () => {
   const [rollNo, setRollNo] = useState("");
   const [standard, setStandard] = useState("");
   const [password, setPassword] = useState("");
-  const [email,setEmail] = useState("");
-  const [phone,setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [getAllStudents, setGetAllStudents] = useState([]);
+  const [uniqueIds, setUniqueIds] = useState({});
 
   const fetchInstructorByUserId = async (userId) => {
     try {
@@ -41,7 +42,7 @@ const EditStudent = () => {
 
   const fetchStudentsByInstructor = async (instructorId) => {
     try {
-      if(instructorId){
+      if (instructorId) {
         const res = await axios.get(
           `${BASE_URL}instructor/fetchStudents/${instructorId}`
         );
@@ -52,8 +53,7 @@ const EditStudent = () => {
     } catch (error) {
       console.log(error);
     }
-  }
-
+  };
 
   useEffect(() => {
     const userId = sessionStorage.getItem("user_id");
@@ -66,6 +66,22 @@ const EditStudent = () => {
     }
   }, [instructor]);
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const res = await axios.get(`${BASE_URL}student/getStudentQuerySchool`, {
+  //       headers: {
+  //         query: query,
+  //         school: instructor?.school?._id,
+  //       },
+  //     });
+  //     console.log(res.data);
+  //     setStudents(res.data.students);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -75,14 +91,24 @@ const EditStudent = () => {
           school: instructor?.school?._id,
         },
       });
-      console.log(res.data);
       setStudents(res.data.students);
+
+      // Update unique IDs for searched students
+      const generatedIds = {};
+      res.data.students.forEach((student) => {
+        const uniqueId = generateUniqueId(student);
+        console.log("Student ID:", student._id);
+        console.log("Unique ID:", uniqueId);
+        generatedIds[student._id] = uniqueId;
+      });
+      console.log("Generated IDs:", generatedIds);
+      setUniqueIds(generatedIds);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const populateEmailPhone = async(userId) => {
+  const populateEmailPhone = async (userId) => {
     try {
       const res = await axios.get(`${BASE_URL}user/id/${userId}`);
       console.log(res.data.userDoc);
@@ -91,7 +117,7 @@ const EditStudent = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleStudentSelect = (student) => {
     populateEmailPhone(student?.user);
@@ -111,7 +137,7 @@ const EditStudent = () => {
       rollNo: rollNo,
       standard: standard,
       email,
-      phone
+      phone,
     };
 
     try {
@@ -140,6 +166,35 @@ const EditStudent = () => {
       console.log(error);
     }
   };
+
+  const generateUniqueId = (student) => {
+    console.log("Student:", student);
+    if (student && student.firstName && student.lastName) {
+      const firstNameInitial = student.firstName.charAt(0);
+      const lastNameInitials = student.lastName
+        .split(" ")
+        .map((word) => word.charAt(0))
+        .join("");
+
+      const randomNumber = Math.floor(Math.random() * 900) + 100;
+
+      return `${firstNameInitial}${lastNameInitials}-${randomNumber}`;
+    }
+
+    // Return a default value if required properties are not available
+    return "N/A";
+  };
+
+  useEffect(() => {
+    if (students.length > 0) {
+      const generatedIds = {};
+      students.forEach((student) => {
+        const uniqueId = generateUniqueId(student);
+        generatedIds[student._id] = uniqueId;
+      });
+      setUniqueIds(generatedIds);
+    }
+  }, [students]);
 
   return (
     <div className="mx-auto">
@@ -197,6 +252,9 @@ const EditStudent = () => {
               <th className="py-3 px-4 text-sm text-gray-600 font-medium border">
                 Standard
               </th>
+              <th className="py-3 px-4 text-sm text-gray-600 font-medium border">
+                Unique Id
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -214,6 +272,9 @@ const EditStudent = () => {
                 </td>
                 <td className="py-3 px-4 text-sm text-gray-900 font-normal border">
                   {student.standard}
+                </td>
+                <td className="py-3 px-4 text-sm text-gray-900 font-normal border">
+                  {uniqueIds[student._id]}
                 </td>
               </tr>
             ))}

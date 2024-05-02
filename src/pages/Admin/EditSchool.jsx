@@ -278,6 +278,23 @@ const EditSchool = () => {
             onChange={(e) => setPartnerName(e.target.value)}
           />
         </div>
+        <div>
+          <label
+            htmlFor="school_status"
+            className="block mb-2 text-sm font-medium text-gray-900 "
+          >
+            School Status
+          </label>
+          <select
+            id="school_status"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          >
+            <option selected>Choose a status</option>
+            <option value="AC">ACTIVE</option>
+            <option value="INAC">INACTIVE</option>
+            <option value="HO">HANDED OVER</option>
+          </select>
+        </div>
         {/* <div className="">
         <p className="text-xl font-semibold my-5 ">Internet Access</p>
         <div className="flex flex-wrap">

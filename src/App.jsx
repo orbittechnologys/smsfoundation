@@ -6,7 +6,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import Login from "./pages/Login";
-import StudentHome from "./pages/Student/StudentHome";
+import StudentHome from "./pages/Student/studentHome";
 import MyCourse from "./pages/Student/MyCourse";
 import AddStudent from "./pages/Instructor/addStudent";
 import LearningReport from "./pages/Instructor/LearningReport";
@@ -39,6 +39,7 @@ import AdminProfile from "./pages/Admin/AdminProfile";
 import UploadStudent from "./pages/Admin/UploadStudent.jsx";
 import EditSchool from "./pages/Admin/EditSchool.jsx";
 import EditInstructor from "./pages/Admin/EditInstructor.jsx";
+import EditStudentt from "./pages/Admin/EditStudentt.jsx";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -101,6 +102,7 @@ const App = () => {
             <Route path="Schoolp" element={<Schoolp />} />
             <Route path="Allinstructor" element={<Allinstructor />} />
             <Route path="AllStudents" element={<AllStudents />} />
+            <Route path="EditStudent/:studentId" element={<EditStudentt />} />
             <Route path="uploadStudent" element={<UploadStudent />} />
             <Route path="AddSchool" element={<AddSchool />} />
             <Route path="LearningReport" element={<LearningReport />} />

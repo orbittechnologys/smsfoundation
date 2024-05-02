@@ -28,8 +28,8 @@ const UpdateContent = () => {
 
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState(null);
 
-  const [dropMedium,setDropMedium] = useState([]);
-  const [dropSyllabus,setDropSyllabus] = useState([]);
+  const [dropMedium, setDropMedium] = useState([]);
+  const [dropSyllabus, setDropSyllabus] = useState([]);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -129,34 +129,34 @@ const UpdateContent = () => {
   const fetchData = async () => {
     try {
       const res2 = await axios.get(`${BASE_URL}syllabus/getAll`);
-      
+
       const transformedSyllabus = res2.data.syllabus.map((syllabus) => ({
         // value: school._id,
         value: syllabus.name,
-        label: syllabus.name, 
-        id : syllabus._id,
+        label: syllabus.name,
+        id: syllabus._id,
       }));
-      
+
       setDropSyllabus(transformedSyllabus);
 
       const res3 = await axios.get(`${BASE_URL}medium/getAll`);
-      
+
       const transformedMediums = res3.data.mediums.map((medium) => ({
         // value: school._id,
         value: medium.name,
-        label: medium.name, 
-        id : medium._id,
+        label: medium.name,
+        id: medium._id,
       }));
 
       setDropMedium(transformedMediums);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchData();
-  },[])
+  }, []);
 
   return (
     <>
@@ -167,7 +167,7 @@ const UpdateContent = () => {
               htmlFor="standard"
               className="block mb-2 text-sm font-semibold text-gray-900 "
             >
-              Standard
+              Class
             </label>
             <input
               type="number"
@@ -237,58 +237,9 @@ const UpdateContent = () => {
         </div>
       </div>
 
-      {Array.isArray(chapters) && chapters.length > 0 && (
-        <div className="my-5 mx-auto bg-white shadow-md p-8 rounded-md">
-          <h1 className="lg:text-2xl md:text-2xl sm:text-xl lg:text-left text-center my-5 font-semibold lg:py-5 py-5 border-b ">
-            Chapters found: {chapters?.length}
-          </h1>
-          {chapters.map((chapter, index) => (
-            <div key={index} className="my-4">
-              <h1 className="lg:text-xl md:text-lg sm:text-base font-semibold mb-2">
-                {chapter?.name}
-              </h1>
-              <p className="text-gray-600 mb-2 lg:text-lg md:text-base sm:text-xs">
-                {chapter?.desc}
-              </p>
-              <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-fit gap-3">
-                <a
-                  href={chapter?.chapterUrl}
-                  target="_blank"
-                  className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs flex justify-center items-center whitespace-nowrap"
-                >
-                  View PDF
-                </a>
-                {chapter?.audioUrl ? (
-                  <a
-                    href={chapter?.audioUrl}
-                    target="_blank"
-                    className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
-                  >
-                    View Audio
-                  </a>
-                ) : (
-                  ``
-                )}
-                {chapter?.videoUrl ? (
-                  <a
-                    href={chapter?.videoUrl}
-                    target="_blank"
-                    className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
-                  >
-                    View Video
-                  </a>
-                ) : (
-                  ``
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
       {selectedSubject && (
-        <div>
-          <h1>Add a new Chapter</h1>
+        <div className="my-5 border-t border-b">
+          <h1 className="text-xl font-semibold ">Add a new Chapter</h1>
           <div className="mt-5 lg:grid grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 shadow-lg p-5 border rounded-xl">
             <div>
               <label
@@ -398,6 +349,55 @@ const UpdateContent = () => {
               Upload
             </button>
           </div>
+        </div>
+      )}
+
+      {Array.isArray(chapters) && chapters.length > 0 && (
+        <div className="my-5 mx-auto bg-white shadow-md p-8 rounded-md border">
+          <h1 className="lg:text-2xl md:text-2xl sm:text-xl lg:text-left text-center my-5 font-semibold lg:py-5 py-5 border-b ">
+            Chapters found: {chapters?.length}
+          </h1>
+          {chapters.map((chapter, index) => (
+            <div key={index} className="my-4">
+              <h1 className="lg:text-xl md:text-lg sm:text-base font-semibold mb-2">
+                {chapter?.name}
+              </h1>
+              <p className="text-gray-600 mb-2 lg:text-lg md:text-base sm:text-xs">
+                {chapter?.desc}
+              </p>
+              <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-fit gap-3">
+                <a
+                  href={chapter?.chapterUrl}
+                  target="_blank"
+                  className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs flex justify-center items-center whitespace-nowrap"
+                >
+                  View PDF
+                </a>
+                {chapter?.audioUrl ? (
+                  <a
+                    href={chapter?.audioUrl}
+                    target="_blank"
+                    className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
+                  >
+                    View Audio
+                  </a>
+                ) : (
+                  ``
+                )}
+                {chapter?.videoUrl ? (
+                  <a
+                    href={chapter?.videoUrl}
+                    target="_blank"
+                    className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
+                  >
+                    View Video
+                  </a>
+                ) : (
+                  ``
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </>
