@@ -40,6 +40,7 @@ import UploadStudent from "./pages/Admin/UploadStudent.jsx";
 import EditSchool from "./pages/Admin/EditSchool.jsx";
 import EditInstructor from "./pages/Admin/EditInstructor.jsx";
 import EditStudentt from "./pages/Admin/EditStudentt.jsx";
+import NewMyCourses from "./pages/Student/NewMyCourses.jsx";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -75,6 +76,7 @@ const App = () => {
 
           <Route path="/pdf/:chapterId" element={<PDFViewer />} />
           <Route path="/mycourse" element={<MyCourse />} />
+          <Route path="/mycourses" element={<NewMyCourses/>}/>
           <Route path="/mcq/:testId" element={<Mcq />} />
           <Route path="/results/:testId" element={<Results />} />
           <Route path="/preview/:testId" element={<PreviewTest />} />

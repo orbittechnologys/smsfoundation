@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 import Hexbg from "../../assets/hexbg.png";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
-const MyCourse = () => {
+const MyAcitivity = () => {
   const [filter, setFilter] = useState("ongoing");
   const navigate = useNavigate();
 
@@ -115,7 +115,7 @@ const MyCourse = () => {
             <IoIosArrowRoundBack className="mr-2 text-3xl" />
           </button>
 
-          <p className="lg:text-2xl sm:text-xl font-semibold">My Course</p>
+          <p className="lg:text-2xl sm:text-xl font-semibold">My Activity</p>
         </div>
         <div className="flex cursor-pointer lg:justify-end md:justify-end lg:items-center md:items-center justify-center items-center lg:w-fit md:w-fit w-full lg:my-0 my-5">
           <p
@@ -227,4 +227,4 @@ const MyCourse = () => {
   );
 };
 
-export default MyCourse;
+export default MyAcitivity;

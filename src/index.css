@@ -6,6 +6,10 @@
   background-color: blue;
 } */
 
+body{
+  font-family: 'Poppins';
+}
+
 .search-maindiv {
   width: auto;
 }
@@ -70,8 +74,7 @@
     height: 280px;
   }
   .inputbutton-div {
-    width: 340px;
-    /* background-color: aqua; */
+    width: "34em";
   }
   .select-div {
     /* background-color: black; */

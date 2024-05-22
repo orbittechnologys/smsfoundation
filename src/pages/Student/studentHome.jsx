@@ -9,6 +9,26 @@ import Slogan from "../../assets/slogan.png";
 import Img2 from "../../assets/img2.png";
 import Hexbg from "../../assets/hexbg.png";
 import { PiPlayPauseLight } from "react-icons/pi";
+import { Bar } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  defaults,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const StudentHome = () => {
   const [subjects, setSubjects] = useState([]);
@@ -39,6 +59,54 @@ const StudentHome = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+  defaults.font.size = 18;
+  defaults.font.weight = "bolder";
+  defaults.font.family = "Helvetica";
+  defaults.font.lineHeight = 0.6;
+
+  const data = {
+    labels: chapterActivity.map((chapActivity) => {
+      const name = chapActivity?.chapter?.name || "";
+      return name.length > 15 ? name.slice(0, 5) + "..." : name;
+    }),
+    datasets: [
+      {
+        label: "Time Spent (seconds)",
+        data: chapterActivity.map((chapActivity) => chapActivity?.time),
+        backgroundColor: "rgba(242, 102, 81, 1)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 0.1,
+        barThickness: 60,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
+  const data1 = {
+    labels: testActivity.map((testAct) => {
+      const name = testAct?.test?.name || "";
+      return name.length > 15 ? name.slice(0, 5) + "..." : name;
+    }),
+    datasets: [
+      {
+        label: "Marks Percentage",
+        data: testActivity.map(
+          (testAct) => (testAct?.marks / testAct?.test?.totalMarks) * 100
+        ),
+        backgroundColor: "rgba(19, 3, 66, 1)",
+        borderColor: "rgba(19, 3, 66, 1)",
+        borderWidth: 0.1,
+        barThickness: 60,
+      },
+    ],
   };
 
   const fetchStudent = async (user_id) => {
@@ -128,35 +196,52 @@ const StudentHome = () => {
         <section className="bg-[#140342] py-8 h-2/4">
           <div className="flex justify-center items-center w-full h-full">
             <div className="text-center">
-              <h1 className="lg:text-3xl md:text-2xl text-base  text-white font-bold mb-4">
+              <h1 
+                className="lg:text-6xl md:text-4xl text-base/loose text-white font-semibold mb-4">
                 Empowering students to shape their <br /> futures with knowledge
                 as their guide.
               </h1>
               <button
                 type="button"
-                onClick={() => navigate("/mycourse")}
-                className="mt-5 text-white hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-              >
+                onClick={() => navigate("/mycourses")}
+                className="mt-5 text-white bg-orange-600 hover:text-white border border-orange-500 hover:bg-orange-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-full text-lg px-20 py-5 text-center me-2 mb-2">
                 My Courses
+                <svg
+                  className="inline-block ml-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  width="16"
+                  height="16">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
               </button>
             </div>
           </div>
         </section>
 
-        <div className="search-maindiv absolute top-1/2 left-1/2 w-fit transform -translate-x-1/2 -translate-y-1/2  mx-auto p-6 rounded-2xl shadow-md bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400">
+        <div className="search-maindiv absolute top-1/2 left-1/2 w-fit transform -translate-x-1/2 -translate-y-1/2  mx-auto p-2 rounded-2xl shadow-md bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400">
           <div className="flex justify-center items-center px-10">
             <div className="space-y-10 w-auto search-div">
-              <div className="flex justify-center items-center  p-3 space-x-6 bg-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-500 inputbutton-div">
+              <div style={{
+                height:"4.5em",
+                width:"38em"
+              }} className="flex justify-center items-center space-x-6 bg-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-500 inputbutton-div">
                 <div
-                  className="search-inputt flex justify-center items-center p-4 w-72 space-x-4 rounded-full"
-                  id="search-inputt"
-                >
+                  className="  search-inputt  flex justify-center items-center p-4 w-72 space-x-4 rounded-full"
+                  id="search-inputt">
                   <input
-                    className=" outline-none border-none "
+                    className="w-9/12 outline-none border-none "
                     type="text"
                     onChange={(e) => setQuery(e.target.value)}
                     value={query}
-                    placeholder="Search by Chapter Name"
+                    placeholder="Chapter Name"
                   />
                 </div>
                 <div className="flex py-3 px-4 rounded-lg text-gray-500 font-semibold cursor-pointer select-div">
@@ -165,8 +250,7 @@ const StudentHome = () => {
                     onChange={(e) => {
                       setSelectedSubject(e.target.value);
                       console.log(e.target.value);
-                    }}
-                  >
+                    }}>
                     <option value="NO">Select Subject</option>
                     {subjects?.map((subject, index) => {
                       return (
@@ -177,18 +261,18 @@ const StudentHome = () => {
                     })}
                   </select>
                 </div>
-                <div className="bg-gray-800 py-3 px-5 text-white font-semibold rounded-full hover:shadow-lg transition duration-3000 cursor-pointer ">
+                <div style={{
+                  marginRight:"10px"
+                }} className="bg-gray-800 py-2  px-2 text-white font-semibold rounded-full hover:shadow-lg transition duration-3000 cursor-pointer ">
                   <button
                     className="flex justify-center items-center gap-2"
-                    onClick={() => handleSearch()}
-                  >
+                    onClick={() => handleSearch()}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-6 w-6 opacity-30"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
+                      stroke="currentColor">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -211,12 +295,10 @@ const StudentHome = () => {
             <div
               key={index}
               style={{ width: "350px", height: "300px" }}
-              className="grid border border-gray-300 rounded-lg shadow-2xl"
-            >
+              className="grid border border-gray-300 rounded-lg shadow-2xl">
               <div
                 style={{ backgroundImage: `url(${Hexbg})` }}
-                className="grid place-items-center bg-white p-4 rounded-xl text-center"
-              >
+                className="grid place-items-center bg-white p-4 rounded-xl text-center">
                 <div className="flex justify-start items-start w-full">
                   <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
                     {card.subject.name}
@@ -231,16 +313,14 @@ const StudentHome = () => {
                     onClick={() => navigate(`/Content/${card?._id}`)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex justify-center items-center mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center"
-                  >
+                    className="flex justify-center items-center mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center">
                     <GrDocumentPdf className="mr-2" />
                     View
                   </button>
                   {card?.test ? (
                     <button
                       className="flex justify-center items-center mt-5 text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center"
-                      onClick={() => navigate("/mcq/" + card?.test)}
-                    >
+                      onClick={() => navigate("/mcq/" + card?.test)}>
                       Take Test
                     </button>
                   ) : (
@@ -253,104 +333,21 @@ const StudentHome = () => {
         </section>
 
         <section className="">
-          <h1 className="font-semibold text-xl m-5">Your Activity</h1>
+          <h1 className="font-bold text-4xl xl:ml-40">Activity</h1>
 
           <section className="">
-            <h1 className="font-semibold ml-5 underline text-lg my-3">
-              Continue Reading
-            </h1>
-            <div className=" py-8 px-5 grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
-              {chapterActivity?.map((chapActivity, index) => {
-                return (
-                  <div key={index} className="grid place-items-center ">
-                    <div
-                      style={{
-                        backgroundImage: `url(${Hexbg})`,
-                      }}
-                      className="cont-boxx grid border border-gray-200 shadow-lg place-items-center bg-white p-4 rounded-xl text-center w-fit"
-                    >
-                      {/* <div className="flex justify-start items-start w-full">
-                    <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
-                      {chapActivity?.chapter?.subject?.name}
-                    </span>
-                  </div> */}
-                      <img src={flask} alt="flask" className="h-10" />
-                      <p className="font-semibold mt-5">
-                        {chapActivity?.chapter?.name}
-                      </p>
-                      <p className="text-gray-600">
-                        {chapActivity?.chapter?.desc}
-                      </p>
-                      <div className="ongoing mt-10">
-                        <span className="p-3 rounded-full bg-gray-300 text-orange-500">
-                          {convertSeconds(chapActivity?.time)}
-                        </span>
-                        <div className="grid place-items-center ">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              navigate(`/pdf/${chapActivity?.chapter?._id}`)
-                            }
-                            className="mt-5 flex justify-center items-center text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-                          >
-                            <PiPlayPauseLight className="mr-2 text-xl" /> Resume
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
-
-          <section className="">
-            <h1 className="font-semibold ml-5 underline text-lg my-3">
-              Tests Given
-            </h1>
-            <div className=" py-8 px-5 grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
-              {testActivity?.map((testAct, index) => {
-                return (
-                  <div key={index} className="grid ">
-                    <div
-                      style={{
-                        backgroundImage: `url(${Hexbg})`,
-                        height: "300px",
-                        width: "350px",
-                      }}
-                      className=" grid border place-items-center border-gray-200 shadow-lg  bg-white p-4 rounded-xl text-center w-fit"
-                    >
-                      {/* <div className="flex justify-start items-start w-full">
-                    <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
-                      Science
-                    </span>
-                  </div> */}
-                      <img src={flask} alt="flask" className="h-10" />
-                      <p className="font-semibold mt-5">
-                        {testAct?.test?.name}
-                      </p>
-                      <p className="text-gray-600">{testAct?.test?.desc}</p>
-                      <div className="ongoing mt-10">
-                        <span className="p-3 rounded-full bg-gray-300 text-orange-500">
-                          {testAct?.marks} / {testAct?.test?.totalMarks}
-                        </span>
-                        <div className="grid place-items-center ">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              navigate(`/mcq/${testAct?.test?._id}`)
-                            }
-                            className="mt-5 flex justify-center items-center text-orange-500 hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-                          >
-                            <PiPlayPauseLight className="mr-2 text-xl" /> Retake
-                            Test
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            <div class="flex flex-wrap justify-evenly gap-4">
+              <div class="w-full md:w-1/2 lg:w-1/3 p-4 rounded-lg shadow-md relative">
+                <button
+                  className="absolute top-4 right-4 text-[#F26651]"
+                  onClick={() => navigate(`/mycourse`)}>
+                  View more
+                </button>
+                <Bar data={data} options={options} />
+              </div>
+              <div class="w-full md:w-1/2 lg:w-1/3 p-4 rounded-lg shadow-md">
+                <Bar data={data1} options={options} />
+              </div>
             </div>
           </section>
         </section>
