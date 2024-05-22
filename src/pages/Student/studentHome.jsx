@@ -68,7 +68,7 @@ const StudentHome = () => {
   const data = {
     labels: chapterActivity.map((chapActivity) => {
       const name = chapActivity?.chapter?.name || "";
-      return name.length > 15 ? name.slice(0, 5) + "..." : name;
+      return name.length > 10 ? name.slice(0, 8) + "..." : name;
     }),
     datasets: [
       {
@@ -93,7 +93,7 @@ const StudentHome = () => {
   const data1 = {
     labels: testActivity.map((testAct) => {
       const name = testAct?.test?.name || "";
-      return name.length > 15 ? name.slice(0, 5) + "..." : name;
+      return name.length > 10 ? name.slice(0, 8) + "..." : name;
     }),
     datasets: [
       {
@@ -295,7 +295,9 @@ const StudentHome = () => {
             <div
               key={index}
               style={{ width: "350px", height: "300px" }}
-              className="grid border border-gray-300 rounded-lg shadow-2xl">
+              className="grid bordergit border-gray-300 rounded-lg shadow-lg hover:scale-110 hover:shadow-2xl hover:shadow-orange-200 transition duration-300 ease-in-out"
+
+              >
               <div
                 style={{ backgroundImage: `url(${Hexbg})` }}
                 className="grid place-items-center bg-white p-4 rounded-xl text-center">
