@@ -83,7 +83,7 @@ const PDFViewer = () => {
       console.log(res.data);
 
       setChapter(res.data);
-      fetchPdf(res.data.filePath ? res.data.filePath : res.data.chapterUrl);
+      fetchPdf(res.data.filePath ? import.meta.env.FILE_PATH + res.data.filePath : res.data.chapterUrl);
       if (res.data.audioUrl) {
         fetchAudio(res.data.audioUrl);
       }
