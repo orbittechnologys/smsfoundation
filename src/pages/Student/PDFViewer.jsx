@@ -248,7 +248,7 @@ const PDFViewer = () => {
             height: "800px",
             width: "100%",
             overflowY: "auto",
-            marginBottom: "10px",
+            marginBottom: "10px", 
           }}
         >
           {pdfFile && (
