@@ -7,7 +7,7 @@ import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { useLocation, useNavigate, useParams } from "react-router";
 import axios from "axios";
-import { BASE_URL } from "../../constants";
+import { BASE_URL, SYNC_URL } from "../../constants";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
@@ -83,7 +83,7 @@ const PDFViewer = () => {
       console.log(res.data);
 
       setChapter(res.data);
-      fetchPdf(res.data.filePath ? import.meta.env.VITE_APP_FILE_PATH + res.data.filePath : res.data.chapterUrl);
+      fetchPdf(res.data.filePath ? SYNC_URL+"files/"+res.data.filePath : res.data.chapterUrl);
       if (res.data.audioUrl) {
         fetchAudio(res.data.audioUrl);
       }
