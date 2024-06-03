@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import axios from "axios";
 import SearchableDropdown from "../SearchableDropdown";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const AddSchool = () => {
   const [schoolName, setSchoolName] = useState("");
@@ -23,22 +26,13 @@ const AddSchool = () => {
   const [selectedMedium, setSelectedMedium] = useState(null);
   const [selectedSyllabus, setSelectedSyllabus] = useState(null);
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(
-      schoolName,
-      address,
-      principalName,
-      district,
-      pincode,
-      Internet,
-      selectedSyllabus,
-      selectedMedium
-    );
-
     if (!selectedMedium || !selectedSyllabus) {
-      alert("Please fill all the details");
+      toast.error("Please fill all the details");
     } else {
       const reqbody = {
         name: schoolName,
@@ -57,10 +51,13 @@ const AddSchool = () => {
       try {
         const res = await axios.post(`${BASE_URL}school/addSchool`, reqbody);
         console.log(res.data);
-        alert("school added sucessfully");
+        toast.success("School added successfully");
+        setTimeout(() => {
+          navigate('/Schools');
+        }, 2000);
       } catch (error) {
         console.log(error);
-        alert("school could not be added");
+        toast.error("School could not be added");
       }
     }
   };
@@ -82,7 +79,6 @@ const AddSchool = () => {
       const res2 = await axios.get(`${BASE_URL}syllabus/getAll`);
 
       const transformedSyllabus = res2.data.syllabus.map((syllabus) => ({
-        // value: school._id,
         value: syllabus.name,
         label: syllabus.name,
         id: syllabus._id,
@@ -93,7 +89,6 @@ const AddSchool = () => {
       const res3 = await axios.get(`${BASE_URL}medium/getAll`);
 
       const transformedMediums = res3.data.mediums.map((medium) => ({
-        // value: school._id,
         value: medium.name,
         label: medium.name,
         id: medium._id,
@@ -329,6 +324,7 @@ const AddSchool = () => {
           </button>
         </div>
       </form>
+      <ToastContainer />
     </>
   );
 };

@@ -242,7 +242,7 @@ const TestReport = () => {
     { label: "Name", accessor: "student", aftab: "firstName", sortable: true },
     { label: "Roll No", accessor: "student", aftab: "rollNo", sortable: true },
     {
-      label: "Standard",
+      label: "Class",
       accessor: "student",
       aftab: "standard",
       sortable: true,

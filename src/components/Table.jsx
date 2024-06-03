@@ -1,55 +1,30 @@
-/* eslint-disable react/prop-types */
-import {useState} from 'react';
-import { FaCaretUp, FaCaretDown } from "react-icons/fa";
-import { formatDate } from '../constants';
+import { useState, useEffect } from "react";
 
-const Table = ({data, columns , label}) => {
-  
+const Table = ({ data, columns, label }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [dropdownFilters, setDropdownFilters] = useState({});
+  const [filteredData, setFilteredData] = useState(data);
 
-    const [searchTerm,setSearchTerm] = useState("");
+  useEffect(() => {
+    // Initialize dropdown filters with unique values for each column
+    const initialFilters = columns.reduce((acc, column) => {
+      const uniqueValues = [...new Set(data.map(item => item[column.accessor]))];
+      return { ...acc, [column.accessor]: uniqueValues };
+    }, {});
+    setDropdownFilters(initialFilters);
+  }, [data, columns]);
 
-    const [sortConfig, setSortConfig] = useState({
-      key: "name",
-      direction: "ascending",
+  const handleFilterChange = (key, value) => {
+    const filtered = data.filter(item => {
+      if (!value) return true;
+      return item[key] === value;
     });
-
-    const handleSortingChange = (key) => {
-      let direction = "ascending";
-      if (sortConfig.key === key && sortConfig.direction === "ascending") {
-        direction = "descending";
-      }
-      setSortConfig({ key, direction });
-    };
-
-    const sortedData = [...data].sort((a, b) => {
-      const valueA =
-        typeof a[sortConfig.key] === "string"
-          ? a[sortConfig.key].toLowerCase().trim()
-          : a[sortConfig.key];
-      const valueB =
-        typeof b[sortConfig.key] === "string"
-          ? b[sortConfig.key].toLowerCase().trim()
-          : b[sortConfig.key];
-  
-      if (valueA < valueB) {
-        return sortConfig.direction === "ascending" ? -1 : 1;
-      }
-      if (valueA > valueB) {
-        return sortConfig.direction === "ascending" ? 1 : -1;
-      }
-      return 0;
-    });
-
-    const filteredData = sortedData.filter((rowData) => {
-      // Combine all your rowData values into a single string and then check if the search term is included.
-      // This allows for a very basic "global" search across all fields.
-      return Object.values(rowData).join(" ").toLowerCase().includes(searchTerm.toLowerCase());
-    });
+    setFilteredData(filtered);
+  };
 
   return (
     <>
-
-<form className="max-w-md  my-5">
+      <form className="max-w-md my-5">
         <label
           htmlFor="default-search"
           className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -89,76 +64,46 @@ const Table = ({data, columns , label}) => {
         <table className="custom-table">
           <thead>
             <tr>
-              {columns?.map(({ label, accessor, sortable }) => (
-                <th
-                  key={accessor}
-                  onClick={
-                    sortable ? () => handleSortingChange(accessor) : null
-                  }
-                  className="cursor-pointer"
-                >
-                  {/* {label} */}
-                  <div className="flex justify-center items-center">
+              {columns.map(({ label, accessor }) => (
+                <th key={accessor} className="cursor-pointer">
+                  <div className="flex flex-col justify-center items-center">
                     <span>{label}</span>
-                    {sortConfig.key === accessor &&
-                      (sortConfig.direction === "ascending" ? (
-                        <FaCaretUp className="ml-1 text-sm" />
-                      ) : (
-                        <FaCaretDown className="ml-1 text-sm" />
+                    <select
+                      onChange={(e) => handleFilterChange(accessor, e.target.value)}
+                      className="mt-1 p-1 border rounded"
+                    >
+                      <option value="">All</option>
+                      {dropdownFilters[accessor]?.map((option, index) => (
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
                       ))}
+                    </select>
                   </div>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            
-            {label=="SYLLABUS" && filteredData.map((rowData, index) => (
-              <tr key={index}>
-                {/* {columns?.map(({accessor})=> {
-                  return(
-                    <td key={rowData?._id}>{rowData[accessor]}</td>
-                  )
-                })} */}
-                <td>{rowData?.name}</td>
-                <td>{rowData?.reference}</td>
-                <td>{formatDate(rowData?.createdAt)}</td>
-              </tr>
-            ))}
-
-{label=="MEDIUM" && filteredData.map((rowData, index) => (
-              <tr key={index}>
-                {/* {columns?.map(({accessor})=> {
-                  return(
-                    <td key={rowData?._id}>{rowData[accessor]}</td>
-                  )
-                })} */}
-                <td>{rowData?.name}</td>
-                <td>{rowData?.reference}</td>
-                <td>{formatDate(rowData?.createdAt)}</td>
-              </tr>
-            ))}
-
-{label=="SUBJECT" && filteredData.map((rowData, index) => (
-              <tr key={index}>
-                {/* {columns?.map(({accessor})=> {
-                  return(
-                    <td key={rowData?._id}>{rowData[accessor]}</td>
-                  )
-                })} */}
-                <td>{rowData?.name}</td>
-                <td>{rowData?.syllabus}</td>
-                <td>{rowData?.medium}</td>
-                <td>{rowData?.standard}</td>
-                <td>{rowData?.noOfChapter}</td>
-              </tr>
-            ))}
+            {filteredData
+              .filter(rowData =>
+                Object.values(rowData)
+                  .join(" ")
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase())
+              )
+              .map((rowData, index) => (
+                <tr key={index}>
+                  {columns.map(({ accessor }) => (
+                    <td key={accessor}>{rowData[accessor]}</td>
+                  ))}
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
-
     </>
-  )
-}
+  );
+};
 
-export default Table
+export default Table;
