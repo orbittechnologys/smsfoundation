@@ -86,6 +86,11 @@ const Sidebar = () => {
     });
   };
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate('/');
+  }
+
   //
   const [isStudentDropdownOpen, setIsStudentDropdownOpen] = useState(false);
   const [isProgressDropdownOpen, setIsProgressDropdownOpen] = useState(false);
@@ -786,15 +791,15 @@ const Sidebar = () => {
             )}
 
             <li>
-              <Link
-                to="/"
-                className="mt-28 flex items-center p-2 text-gray-900 rounded-lg hover:bg-orange-200  group"
+              <p
+                onClick={()=> handleLogout()}
+                className="cursor-pointer mt-28 flex items-center p-2 text-gray-900 rounded-lg hover:bg-orange-200  group"
               >
                 <IoExitOutline className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " />
                 <span className="flex-1 ms-3 whitespace-nowrap text-black hover:text-orange-500">
                   Logout
                 </span>
-              </Link>
+              </p>
             </li>
           </ul>
         </div>

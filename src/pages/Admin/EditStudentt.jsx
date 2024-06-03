@@ -16,6 +16,7 @@ const EditStudentt = () => {
   const [School, setSchool] = useState("");
   const [selectedSchool, setSelectedSchool] = useState("NO");
   const [dropSchool, setDropSchool] = useState([]);
+  const [email,setEmail] = useState("");
 
   const getStudentbyId = async () => {
     try {
@@ -28,6 +29,7 @@ const EditStudentt = () => {
       setClass(res.data.studentDoc.standard);
       setSyllabus(res.data.studentDoc.syllabus);
       setSchoolId(res.data.studentDoc.school);
+      setEmail(res.data.studentDoc);
     } catch (error) {
       console.log(error);
     }
@@ -48,6 +50,18 @@ const EditStudentt = () => {
     getStudentbyId();
     fetchSchool();
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const reqbody = {
+      "studentId": studentId,
+      "firstName": name,
+      "lastName": lastName,
+      "rollNo": rollNo,
+      "standard": Class,
+      "email":"sharma@gmail.com"
+  }
+  }
 
   const fetchSchool = async () => {
     try {
@@ -177,36 +191,15 @@ const EditStudentt = () => {
                 onChange={(e) => setSyllabus(e.target.value)}
               />
             </div>
-            <div>
-              <label
-                htmlFor="syllabus"
-                className="block mb-2 text-sm font-medium text-gray-900 "
-              >
-                School Name
-              </label>
-              <input
-                type="text"
-                id="syllabus"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder="syllabus"
-                required
-                value={School}
-                onChange={(e) => setSchool(e.target.value)}
-              />
-            </div>
-            <div className="">
-              <label
-                htmlFor="standard"
-                className="block mb-2 text-sm font-medium text-gray-900 "
-              >
-                School
-              </label>
-              <SearchableDropdown
-                options={dropSchool}
-                onChange={setSelectedSchool} // Use setSelectedSchool directly
-                placeholder="Select School"
-              />
-            </div>
+           
+            <div className="grid place-items-center">
+        <button
+          type="submit"
+          className="text-white bg-orange-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center  "
+        >
+          Save
+        </button>
+      </div>
           </div>
         </form>
       </div>

@@ -38,6 +38,11 @@ const Navbar = () => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate('/');
+  }
+
   return (
     <>
       <div
@@ -122,12 +127,12 @@ const Navbar = () => {
                   </div>
                 )}
 
-                <a
-                  href="/"
+                <p
+                  onClick={()=> handleLogout()}
                   className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
                 >
                   <AiOutlineLogout className="text-red-500" /> Logout
-                </a>
+                </p>
               </div>
             )}
           </div>
