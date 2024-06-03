@@ -29,7 +29,7 @@ const EditStudentt = () => {
       setClass(res.data.studentDoc.standard);
       setSyllabus(res.data.studentDoc.syllabus);
       setSchoolId(res.data.studentDoc.school);
-      setEmail(res.data.studentDoc);
+      setEmail(res.data.studentDoc); // TODO: Aftab
     } catch (error) {
       console.log(error);
     }
