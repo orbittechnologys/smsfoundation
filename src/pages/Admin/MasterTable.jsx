@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { BASE_URL } from '../../constants';
 import Table from '../../components/Table';
 import SearchableDropdown from '../SearchableDropdown';
+import { CiEdit } from "react-icons/ci";
+import { MdDeleteOutline } from "react-icons/md";
 
 const MasterTable = () => {
   const [openTab, setOpenTab] = useState(1);
@@ -34,13 +36,51 @@ const MasterTable = () => {
   const columnsSyllabus = [
     { label: "Name", accessor: "name" },
     { label: "Reference", accessor: "reference" },
-    { label: "Date Created", accessor: "createdAt" }
+    { label: "Date Created", accessor: "createdAt" },
+    {
+      label: "Actions",
+      accessor: (rowData) => (
+        <div className="flex space-x-2">
+          <button
+            onClick={() => handleEdit(rowData)}
+            className="text-blue-500 hover:text-blue-700"
+          >
+            <CiEdit className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => handleDelete(rowData)}
+            className="text-red-500 hover:text-red-700"
+          >
+            <MdDeleteOutline className="h-5 w-5" />
+          </button>
+        </div>
+      ),
+    },
   ];
 
   const columnsMedium = [
     { label: "Name", accessor: "name" },
     { label: "Reference", accessor: "reference" },
-    { label: "Date Created", accessor: "createdAt" }
+    { label: "Date Created", accessor: "createdAt" },
+    {
+      label: "Actions",
+      accessor: (rowData) => (
+        <div className="flex space-x-2">
+          <button
+            onClick={() => handleEdit(rowData)}
+            className="text-blue-500 hover:text-blue-700"
+          >
+            <CiEdit className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => handleDelete(rowData)}
+            className="text-red-500 hover:text-red-700"
+          >
+            <MdDeleteOutline className="h-5 w-5" />
+          </button>
+        </div>
+      ),
+    },
   ];
 
   const columnsSubject = [
@@ -49,6 +89,25 @@ const MasterTable = () => {
     { label: "Medium", accessor: "medium" },
     { label: "Class", accessor: "standard" },
     { label: "Chapters", accessor: "noOfChapter" },
+    {
+      label: "Actions",
+      accessor: (rowData) => (
+        <div className="flex space-x-2">
+          <button
+            onClick={() => handleEdit(rowData)}
+            className="text-blue-500 hover:text-blue-700"
+          >
+            <CiEdit className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => handleDelete(rowData)}
+            className="text-red-500 hover:text-red-700"
+          >
+            <MdDeleteOutline className="h-5 w-5" />
+          </button>
+        </div>
+      ),
+    },
   ];
 
   const fetchData = async () => {
@@ -125,12 +184,12 @@ const MasterTable = () => {
   const handleAddSubject = async (e) => {
     e.preventDefault();
 
-    if (!selectedMedium || !selectedSyllabus || standard === 0 || subjectName === "") {
+    if (!selectedMedium || !selectedSyllabus || !standard  || subjectName === "") {
       alert('Please fill all the details');
       return;
     } else {
       const reqBody = {
-        "standard": standard,
+        "standard": standard.value,
         "medium": selectedMedium.value,
         "syllabus": selectedSyllabus.value,
         "name": subjectName
@@ -315,9 +374,14 @@ const MasterTable = () => {
               <input type="text" id='name' placeholder='Subject Name' value={subjectName} onChange={(e) => setSubjectName(e.target.value)}
                 className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
 
-              <label htmlFor="standard">Class :</label><br />
-              <input type="number" id='standard' placeholder='Class' value={standard} onChange={(e) => setStandard(e.target.value)}
-                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
+              <label htmlFor="standard">Class :</label>
+              <SearchableDropdown
+                options={dropClass}
+                onSelect={setSelectedClass}
+                selectedOption={selectedClass}
+                isClearable
+                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md'
+              />
 
               <label className='mt-2'>Medium :</label>
               <SearchableDropdown

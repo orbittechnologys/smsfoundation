@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { CiEdit } from "react-icons/ci";
+import { MdDeleteOutline } from "react-icons/md";
 
 const Table = ({ data, columns, label }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -6,7 +8,6 @@ const Table = ({ data, columns, label }) => {
   const [filteredData, setFilteredData] = useState(data);
 
   useEffect(() => {
-    // Initialize dropdown filters with unique values for each column
     const initialFilters = columns.reduce((acc, column) => {
       const uniqueValues = [...new Set(data.map(item => item[column.accessor]))];
       return { ...acc, [column.accessor]: uniqueValues };
@@ -22,8 +23,16 @@ const Table = ({ data, columns, label }) => {
     setFilteredData(filtered);
   };
 
+  const handleCustomAction = (rowData, accessor) => {
+    if (typeof accessor === "function") {
+      return accessor(rowData);
+    }
+    return rowData[accessor];
+  };
+
   return (
     <>
+      {/* Search form */}
       <form className="max-w-md my-5">
         <label
           htmlFor="default-search"
@@ -60,31 +69,37 @@ const Table = ({ data, columns, label }) => {
         </div>
       </form>
 
+      {/* Table */}
       <div className="table-container">
         <table className="custom-table">
           <thead>
             <tr>
+              {/* Column headers */}
               {columns.map(({ label, accessor }) => (
                 <th key={accessor} className="cursor-pointer">
                   <div className="flex flex-col justify-center items-center">
                     <span>{label}</span>
-                    <select
-                      onChange={(e) => handleFilterChange(accessor, e.target.value)}
-                      className="mt-1 p-1 border rounded"
-                    >
-                      <option value="">All</option>
-                      {dropdownFilters[accessor]?.map((option, index) => (
-                        <option key={index} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
+                    {/* Dropdown filter */}
+                    {typeof accessor === "string" && (
+                      <select
+                        onChange={(e) => handleFilterChange(accessor, e.target.value)}
+                        className="mt-1 p-1 border rounded"
+                      >
+                        <option value="">All</option>
+                        {dropdownFilters[accessor]?.map((option, index) => (
+                          <option key={index} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </select>
+                    )}
                   </div>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
+            {/* Table rows */}
             {filteredData
               .filter(rowData =>
                 Object.values(rowData)
@@ -94,8 +109,11 @@ const Table = ({ data, columns, label }) => {
               )
               .map((rowData, index) => (
                 <tr key={index}>
+                  {/* Table data cells */}
                   {columns.map(({ accessor }) => (
-                    <td key={accessor}>{rowData[accessor]}</td>
+                    <td key={accessor}>
+                      {handleCustomAction(rowData, accessor)}
+                    </td>
                   ))}
                 </tr>
               ))}
