@@ -6,6 +6,7 @@ const Table = ({ data, columns, label }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [dropdownFilters, setDropdownFilters] = useState({});
   const [filteredData, setFilteredData] = useState(data);
+  const [filters, setFilters] = useState({});
 
   useEffect(() => {
     const initialFilters = columns.reduce((acc, column) => {
@@ -15,12 +16,34 @@ const Table = ({ data, columns, label }) => {
     setDropdownFilters(initialFilters);
   }, [data, columns]);
 
+  useEffect(() => {
+    let newFilteredData = data;
+
+    // Apply each filter
+    for (const key in filters) {
+      if (filters[key]) {
+        newFilteredData = newFilteredData.filter(item => item[key] === filters[key]);
+      }
+    }
+
+    // Apply search term
+    if (searchTerm) {
+      newFilteredData = newFilteredData.filter(rowData =>
+        Object.values(rowData)
+          .join(" ")
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredData(newFilteredData);
+  }, [data, filters, searchTerm]);
+
   const handleFilterChange = (key, value) => {
-    const filtered = data.filter(item => {
-      if (!value) return true;
-      return item[key] === value;
-    });
-    setFilteredData(filtered);
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [key]: value,
+    }));
   };
 
   const handleCustomAction = (rowData, accessor) => {
@@ -100,23 +123,16 @@ const Table = ({ data, columns, label }) => {
           </thead>
           <tbody>
             {/* Table rows */}
-            {filteredData
-              .filter(rowData =>
-                Object.values(rowData)
-                  .join(" ")
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase())
-              )
-              .map((rowData, index) => (
-                <tr key={index}>
-                  {/* Table data cells */}
-                  {columns.map(({ accessor }) => (
-                    <td key={accessor}>
-                      {handleCustomAction(rowData, accessor)}
-                    </td>
-                  ))}
-                </tr>
-              ))}
+            {filteredData.map((rowData, index) => (
+              <tr key={index}>
+                {/* Table data cells */}
+                {columns.map(({ accessor }) => (
+                  <td key={accessor}>
+                    {handleCustomAction(rowData, accessor)}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
