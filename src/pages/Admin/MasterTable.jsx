@@ -24,6 +24,10 @@ const MasterTable = () => {
   const [showSyllabus, setShowSyllabus] = useState(false);
   const [showMedium, setShowMedium] = useState(false);
   const [showSubject, setShowSubject] = useState(false);
+  
+  const [editSyllabus,setEditSyllabus] = useState(false);
+  const [editMedium,setEditMedium] = useState(false);
+  const [editSubject,setEditSubject] = useState(false);
 
   const [selectedMedium, setSelectedMedium] = useState(null);
   const [selectedSyllabus, setSelectedSyllabus] = useState(null);
@@ -37,78 +41,22 @@ const MasterTable = () => {
     { label: "Name", accessor: "name" },
     { label: "Reference", accessor: "reference" },
     { label: "Date Created", accessor: "createdAt" },
-    {
-      label: "Actions",
-      accessor: (rowData) => (
-        <div className="flex space-x-2">
-          <button
-            onClick={() => handleEdit(rowData)}
-            className="text-blue-500 hover:text-blue-700"
-          >
-            <CiEdit className="h-5 w-5" />
-          </button>
-          <button
-            onClick={() => handleDelete(rowData)}
-            className="text-red-500 hover:text-red-700"
-          >
-            <MdDeleteOutline className="h-5 w-5" />
-          </button>
-        </div>
-      ),
-    },
   ];
 
   const columnsMedium = [
     { label: "Name", accessor: "name" },
     { label: "Reference", accessor: "reference" },
     { label: "Date Created", accessor: "createdAt" },
-    {
-      label: "Actions",
-      accessor: (rowData) => (
-        <div className="flex space-x-2">
-          <button
-            onClick={() => handleEdit(rowData)}
-            className="text-blue-500 hover:text-blue-700"
-          >
-            <CiEdit className="h-5 w-5" />
-          </button>
-          <button
-            onClick={() => handleDelete(rowData)}
-            className="text-red-500 hover:text-red-700"
-          >
-            <MdDeleteOutline className="h-5 w-5" />
-          </button>
-        </div>
-      ),
-    },
   ];
 
   const columnsSubject = [
-    { label: "Name", accessor: "name" },
-    { label: "Board", accessor: "syllabus" },
-    { label: "Medium", accessor: "medium" },
-    { label: "Class", accessor: "standard" },
-    { label: "Chapters", accessor: "noOfChapter" },
-    {
-      label: "Actions",
-      accessor: (rowData) => (
-        <div className="flex space-x-2">
-          <button
-            onClick={() => handleEdit(rowData)}
-            className="text-blue-500 hover:text-blue-700"
-          >
-            <CiEdit className="h-5 w-5" />
-          </button>
-          <button
-            onClick={() => handleDelete(rowData)}
-            className="text-red-500 hover:text-red-700"
-          >
-            <MdDeleteOutline className="h-5 w-5" />
-          </button>
-        </div>
-      ),
-    },
-  ];
+    { label: "Name", accessor: "name", filterable: true },
+    { label: "Board", accessor: "syllabus", filterable: true },
+    { label: "Medium", accessor: "medium", filterable: true },
+    { label: "Class", accessor: "standard", filterable: false },
+    { label: "Chapters", accessor: "noOfChapter", filterable: false },
+    
+];
 
   const fetchData = async () => {
     try {
@@ -284,7 +232,7 @@ const MasterTable = () => {
                     onClick={() => setShowSyllabus(true)}
                     className='bg-orange-600 px-4 py-4 rounded-lg text-white font-semibold text-sm'>Add Board</button>
 
-                  <Table data={syllabus} columns={columnsSyllabus} label={"SYLLABUS"} />
+                  <Table data={syllabus} columns={columnsSyllabus} label={"SYLLABUS"} setEditSyllabus={setEditSyllabus} />
                 </div>
 
                 {/* Medium */}
@@ -339,6 +287,31 @@ const MasterTable = () => {
         </div>
       )}
 
+      {editSyllabus && (
+        <div className='flex justify-center items-center bg-black bg-opacity-50 fixed top-0 left-0 w-full h-full'>
+          <div className='bg-white p-6 rounded-lg shadow-lg'>
+            <form onSubmit={handleAddSyllabus}>
+
+              <label htmlFor="name">Board Name :</label><br />
+              <input type="text" id='name' placeholder='Board Name' value={formSyllabus} onChange={(e) => setFormSyllabus(e.target.value)}
+                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
+
+              <label htmlFor="ref">Reference :</label><br />
+              <input type="text" id='ref' placeholder='Reference' value={formRef} onChange={(e) => setFormRef(e.target.value)}
+                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
+
+              <div className='flex justify-between items-center mt-4'>
+                <button
+                  onClick={() => setShowSyllabus(false)}
+                  className='bg-gray-500 px-4 py-2 rounded-lg text-white font-semibold text-sm'>Cancel</button>
+
+                <button type='submit' className='bg-orange-600 px-4 py-2 rounded-lg text-white font-semibold text-sm'>Add Board</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Modal for Medium */}
       {showMedium && (
         <div className='flex justify-center items-center bg-black bg-opacity-50 fixed top-0 left-0 w-full h-full'>
@@ -364,6 +337,31 @@ const MasterTable = () => {
           </div>
         </div>
       )}
+      
+      {editMedium && (
+        <div className='flex justify-center items-center bg-black bg-opacity-50 fixed top-0 left-0 w-full h-full'>
+          <div className='bg-white p-6 rounded-lg shadow-lg'>
+            <form onSubmit={handleAddSyllabus}>
+
+              <label htmlFor="name">Board Name :</label><br />
+              <input type="text" id='name' placeholder='Board Name' value={formMedium} onChange={(e) => setFormMedium(e.target.value)}
+                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
+
+              <label htmlFor="ref">Reference :</label><br />
+              <input type="text" id='ref' placeholder='Reference' value={formRef} onChange={(e) => setFormRef(e.target.value)}
+                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
+
+              <div className='flex justify-between items-center mt-4'>
+                <button
+                  onClick={() => setShowMedium(false)}
+                  className='bg-gray-500 px-4 py-2 rounded-lg text-white font-semibold text-sm'>Cancel</button>
+
+                <button type='submit' className='bg-orange-600 px-4 py-2 rounded-lg text-white font-semibold text-sm'>Add Board</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Modal for Subject */}
       {showSubject && (
@@ -375,14 +373,9 @@ const MasterTable = () => {
                 className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
 
               <label htmlFor="standard">Class :</label>
-              <SearchableDropdown
-                options={dropClass}
-                onSelect={setSelectedClass}
-                selectedOption={selectedClass}
-                isClearable
-                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md'
-              />
-
+              
+              <input type="number" id='name' placeholder='Class' value={subjectName} onChange={(e) => setSubjectName(e.target.value)}
+                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
               <label className='mt-2'>Medium :</label>
               <SearchableDropdown
                 options={dropMedium}
