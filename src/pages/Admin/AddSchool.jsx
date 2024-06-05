@@ -52,9 +52,8 @@ const AddSchool = () => {
         const res = await axios.post(`${BASE_URL}school/addSchool`, reqbody);
         console.log(res.data);
         toast.success("School added successfully");
-        setTimeout(() => {
-          navigate('/Schools');
-        }, 2000);
+        navigate('/admin/Schools');
+        
       } catch (error) {
         console.log(error);
         toast.error("School could not be added");
@@ -124,7 +123,8 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="School Name"
               required
-              onChange={(e) => setSchoolName(e.target.value)}
+              value={schoolName}
+              onChange={(e) => setSchoolName(e.target.value.toUpperCase())}
             />
           </div>
           <div>
@@ -140,7 +140,8 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="Principal Name"
               required
-              onChange={(e) => setPrincipalName(e.target.value)}
+              value={principalName}
+              onChange={(e) => setPrincipalName(e.target.value.toUpperCase())}
             />
           </div>
 
@@ -157,7 +158,8 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="Principal Contact"
               required
-              onChange={(e) => setPrincipalContact(e.target.value)}
+              value={principalContact}
+              onChange={(e) => setPrincipalContact(e.target.value.toUpperCase())}
             />
           </div>
           <div>
@@ -173,7 +175,8 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="School address goes here"
               required
-              onChange={(e) => setAddress(e.target.value)}
+              value={address}
+              onChange={(e) => setAddress(e.target.value.toUpperCase())}
             />
           </div>
           <div>
@@ -189,7 +192,8 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="district"
               required
-              onChange={(e) => setDistrict(e.target.value)}
+              value={district}
+              onChange={(e) => setDistrict(e.target.value.toUpperCase())}
             />
           </div>
           <div>
@@ -205,7 +209,8 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="pincode"
               required
-              onChange={(e) => setPincode(e.target.value)}
+              value={pincode}
+              onChange={(e) => setPincode(e.target.value.toUpperCase())}
             />
           </div>
           <div>
@@ -221,6 +226,7 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="state"
               required
+              value={state}
               onChange={(e) => setState(e.target.value.toUpperCase())}
             />
           </div>
@@ -237,7 +243,8 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="project_name"
               required
-              onChange={(e) => setProjectName(e.target.value)}
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value.toUpperCase())}
             />
           </div>
           <div>
@@ -253,7 +260,8 @@ const AddSchool = () => {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
               placeholder="partner name"
               required
-              onChange={(e) => setPartnerName(e.target.value)}
+              value={partnerName}
+              onChange={(e) => setPartnerName(e.target.value.toUpperCase())}
             />
           </div>
           <div className="">

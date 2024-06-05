@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { BASE_URL } from "../../constants";
 import axios from "axios";
 import SearchableDropdown from "../SearchableDropdown";
+import { toast } from "react-toastify";
 
 const EditStudentt = () => {
   const { studentId } = useParams();
@@ -17,6 +18,8 @@ const EditStudentt = () => {
   const [selectedSchool, setSelectedSchool] = useState("NO");
   const [dropSchool, setDropSchool] = useState([]);
   const [email,setEmail] = useState("");
+
+  const navigate = useNavigate();
 
   const getStudentbyId = async () => {
     try {
@@ -51,6 +54,24 @@ const EditStudentt = () => {
     fetchSchool();
   }, []);
 
+  const editStudentApi = async (reqbody) => {
+    try {
+      const res = await axios.post(`${BASE_URL}student/updateStudent`, reqbody);
+      console.log(res.data);
+      toast.success('Student Updated');
+      const role = sessionStorage.getItem('role');
+      if(role == "ADMIN"){
+        navigate('/admin/AllStudents');
+      }else{
+        navigate('/inst/AllStudents');
+      }
+      
+    } catch (error) {
+      console.log(error);
+      toast.error('Something went wrong');
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const reqbody = {
@@ -59,8 +80,9 @@ const EditStudentt = () => {
       "lastName": lastName,
       "rollNo": rollNo,
       "standard": Class,
-      "email":"sharma@gmail.com"
+      // "email":"sharma@gmail.com"
   }
+  editStudentApi(reqbody);
   }
 
   const fetchSchool = async () => {
@@ -87,7 +109,7 @@ const EditStudentt = () => {
         <p className="font-semibold text-2xl">Edit Student</p>
       </div>
       <div>
-        <form action="">
+        <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-2 md:grid-cols-2 gap-5">
             <div>
               <label
