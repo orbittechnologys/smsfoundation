@@ -17,6 +17,7 @@ const Table = ({ data, columns, label, fetchData }) => {
 
   const [selectedSyllabus, setSelectedSyllabus] = useState(null);
   const [selectedMedium, setSelectedMedium] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState(null);
 
   const handleEditModal = (rowData) => {
     if (label === "SYLLABUS") {
@@ -25,8 +26,9 @@ const Table = ({ data, columns, label, fetchData }) => {
     } else if (label === "MEDIUM") {
       setEditMedium(true);
       setSelectedMedium(rowData);
-    } else {
+    } else if (label === "SUBJECT") {
       setEditSubject(true);
+      setSelectedSubject(rowData);
     }
   };
 
@@ -95,7 +97,7 @@ const Table = ({ data, columns, label, fetchData }) => {
       alert("Syllabus edited successfully");
       setFilteredData(
         filteredData.map((item) =>
-          item.id === selectedSyllabus._id ? res.data : item
+          item._id === selectedSyllabus._id ? res.data : item
         )
       );
       setEditSyllabus(false);
@@ -119,7 +121,7 @@ const Table = ({ data, columns, label, fetchData }) => {
       alert("Medium edited successfully");
       setFilteredData(
         filteredData.map((item) =>
-          item.id === selectedMedium._id ? res.data : item
+          item._id === selectedMedium._id ? res.data : item
         )
       );
       setEditMedium(false);
@@ -130,11 +132,39 @@ const Table = ({ data, columns, label, fetchData }) => {
     }
   };
 
+  const handleSubjectEdit = async (e) => {
+    e.preventDefault();
+    const reqBody = {
+      standard: selectedSubject.standard,
+      medium: selectedSubject.medium,
+      syllabus: selectedSubject.syllabus,
+      name: selectedSubject.name,
+      id: selectedSubject._id,
+    };
+    try {
+      const res = await axios.post(`${BASE_URL}subject/edit`, reqBody);
+      console.log(res.data);
+      alert("Subject edited successfully");
+      setFilteredData(
+        filteredData.map((item) =>
+          item._id === selectedSubject._id ? res.data : item
+        )
+      );
+      setEditSubject(false);
+      fetchData();
+    } catch (error) {
+      console.log(error);
+      toast.error("Subject could not be edited");
+    }
+  };
+
   const handleDelete = async (rowData) => {
     const { _id } = rowData;
     let deleteUrl = `${BASE_URL}syllabus/delete/${_id}`;
     if (label === "MEDIUM") {
       deleteUrl = `${BASE_URL}medium/delete/${_id}`;
+    } else if (label === "SUBJECT") {
+      deleteUrl = `${BASE_URL}subject/delete/${_id}`;
     }
     try {
       await axios.delete(deleteUrl);
@@ -355,6 +385,95 @@ const Table = ({ data, columns, label, fetchData }) => {
                     className="bg-orange-600 px-4 py-2 rounded-lg text-white font-semibold text-sm"
                   >
                     Edit Board
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* Modal for Subject */}
+        {editSubject && (
+          <div className="flex justify-center items-center bg-black bg-opacity-50 fixed top-0 left-0 w-full h-full">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <form onSubmit={handleSubjectEdit}>
+                <label htmlFor="standard">Standard :</label>
+                <br />
+                <input
+                  type="number"
+                  id="standard"
+                  placeholder="Standard"
+                  value={selectedSubject?.standard}
+                  onChange={(e) =>
+                    setSelectedSubject({
+                      ...selectedSubject,
+                      standard: e.target.value,
+                    })
+                  }
+                  className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
+                />
+
+                <label htmlFor="medium">Medium :</label>
+                <br />
+                <input
+                  type="text"
+                  id="medium"
+                  placeholder="Medium"
+                  value={selectedSubject?.medium}
+                  onChange={(e) =>
+                    setSelectedSubject({
+                      ...selectedSubject,
+                      medium: e.target.value,
+                    })
+                  }
+                  className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
+                />
+
+                <label htmlFor="syllabus">Syllabus :</label>
+                <br />
+                <input
+                  type="text"
+                  id="syllabus"
+                  placeholder="Syllabus"
+                  value={selectedSubject?.syllabus}
+                  onChange={(e) =>
+                    setSelectedSubject({
+                      ...selectedSubject,
+                      syllabus: e.target.value,
+                    })
+                  }
+                  className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
+                />
+
+                <label htmlFor="name">Subject Name :</label>
+                <br />
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="Subject Name"
+                  value={selectedSubject?.name}
+                  onChange={(e) =>
+                    setSelectedSubject({
+                      ...selectedSubject,
+                      name: e.target.value,
+                    })
+                  }
+                  className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
+                />
+
+                <div className="flex justify-between items-center mt-4">
+                  <button
+                    onClick={() => setEditSubject(false)}
+                    className="bg-gray-500 px-4 py-2 rounded-lg text-white font-semibold text-sm"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="bg-orange-600 px-4 py-2 rounded-lg text-white font-semibold text-sm"
+                  >
+                    Edit Subject
                   </button>
                 </div>
               </form>
