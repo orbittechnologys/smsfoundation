@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
+import { toast } from "react-toastify";
+import { BASE_URL } from "../constants";
 
-const Table = ({ data, columns, label }) => {
+const Table = ({ data, columns, label , fetchData}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [dropdownFilters, setDropdownFilters] = useState({});
   const [filteredData, setFilteredData] = useState(data);
@@ -18,7 +21,6 @@ const Table = ({ data, columns, label }) => {
   const handleEditModal = (rowData) => {
     if (label === "SYLLABUS") {
       setEditSyllabus(true);
-      console.log(rowData);
       setSelectedSyllabus(rowData);
     } else if (label === "MEDIUM") {
       setEditMedium(true);
@@ -78,6 +80,30 @@ const Table = ({ data, columns, label }) => {
       return accessor(rowData);
     }
     return rowData[accessor];
+  };
+
+  const handelSyllabusEdit = async (e) => {
+    e.preventDefault();
+    const reqBody = {
+      name: selectedSyllabus.name,
+      reference: selectedSyllabus.reference,
+      id: selectedSyllabus._id,
+    };
+    try {
+      const res = await axios.post(`${BASE_URL}syllabus/edit`, reqBody);
+      console.log(res.data);
+      toast.success("Syllabus edited successfully");
+      setFilteredData(
+        filteredData.map((item) =>
+          item.id === selectedSyllabus._id ? res.data : item
+        )
+      );
+      setEditSyllabus(false);
+      fetchData();
+    } catch (error) {
+      console.log(error);
+      toast.error("Syllabus could not be edited");
+    }
   };
 
   return (
@@ -153,7 +179,7 @@ const Table = ({ data, columns, label }) => {
           <tbody>
             {/* Table rows */}
             {filteredData.map((rowData, index) => (
-              <tr key={index} >
+              <tr key={index}>
                 {/* Table data cells */}
                 {columns.map(({ accessor }) => (
                   <td key={accessor}>
@@ -185,7 +211,7 @@ const Table = ({ data, columns, label }) => {
         {editSyllabus && (
           <div className="flex justify-center items-center bg-black bg-opacity-50 fixed top-0 left-0 w-full h-full">
             <div className="bg-white p-6 rounded-lg shadow-lg">
-              <form>
+              <form onSubmit={handelSyllabusEdit}>
                 <label htmlFor="name">Board Name :</label>
                 <br />
                 <input
@@ -193,6 +219,12 @@ const Table = ({ data, columns, label }) => {
                   id="name"
                   placeholder="Board Name"
                   value={selectedSyllabus?.name}
+                  onChange={(e) =>
+                    setSelectedSyllabus({
+                      ...selectedSyllabus,
+                      name: e.target.value,
+                    })
+                  }
                   className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
                 />
 
@@ -203,12 +235,18 @@ const Table = ({ data, columns, label }) => {
                   id="ref"
                   placeholder="Reference"
                   value={selectedSyllabus?.reference}
+                  onChange={(e) =>
+                    setSelectedSyllabus({
+                      ...selectedSyllabus,
+                      reference: e.target.value,
+                    })
+                  }
                   className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
                 />
 
                 <div className="flex justify-between items-center mt-4">
                   <button
-                    onClick={() => setShowSyllabus(false)}
+                    onClick={() => setEditSyllabus(false)}
                     className="bg-gray-500 px-4 py-2 rounded-lg text-white font-semibold text-sm"
                   >
                     Cancel

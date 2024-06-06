@@ -232,7 +232,7 @@ const MasterTable = () => {
                     onClick={() => setShowSyllabus(true)}
                     className='bg-orange-600 px-4 py-4 rounded-lg text-white font-semibold text-sm'>Add Board</button>
 
-                  <Table data={syllabus} columns={columnsSyllabus} label={"SYLLABUS"} setEditSyllabus={setEditSyllabus} />
+                  <Table data={syllabus} columns={columnsSyllabus} label={"SYLLABUS"} setEditSyllabus={setEditSyllabus} fetchData={fetchData} />
                 </div>
 
                 {/* Medium */}
@@ -243,7 +243,7 @@ const MasterTable = () => {
                     onClick={() => setShowMedium(true)}
                     className='bg-orange-600 px-4 py-4 rounded-lg text-white font-semibold text-sm'>Add Medium</button>
 
-                  <Table data={medium} columns={columnsMedium} label={"MEDIUM"} />
+                  <Table data={medium} columns={columnsMedium} label={"MEDIUM"}  fetchData={fetchData} />
                 </div>
 
                 {/* Subject */}
@@ -253,7 +253,7 @@ const MasterTable = () => {
                     onClick={() => setShowSubject(true)}
                     className='bg-orange-600 px-4 py-4 rounded-lg text-white font-semibold text-sm'>Add Subject</button>
 
-                  <Table data={subjects} columns={columnsSubject} label={"SUBJECT"} />
+                  <Table data={subjects} columns={columnsSubject} label={"SUBJECT"}  fetchData={fetchData} />
                 </div>
               </div>
             </div>
