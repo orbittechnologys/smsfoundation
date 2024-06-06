@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 const addStudent = () => {
   const [name, setName] = useState("");
   const [lastName, setsetLastName] = useState("");
+  const [username, setUserName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [gender, setGender] = useState("");
   const [email, setEmail] = useState("");
@@ -22,6 +23,7 @@ const addStudent = () => {
   const [dropSchool, setDropSchool] = useState([]);
   const [instructor, setInstructor] = useState(null);
   const [role, setRole] = useState("");
+  const [usernameAvailable, setUsernameAvailable] = useState(null);
 
   const navigate = useNavigate();
 
@@ -46,6 +48,7 @@ const addStudent = () => {
       middleName,
       gender,
       phone,
+      username: username,
       rollNo: rollNo,
       standard: standard,
       // school: selectedSchool?._id,
@@ -117,6 +120,23 @@ const addStudent = () => {
     }
   };
 
+  const checkIfUsernameExists = async (username) => {
+    try {
+      const res = await axios.get(`${BASE_URL}user/checkUsername/${username}`);
+      console.log(res.data);
+      setUsernameAvailable(true);
+    } catch (error) {
+      console.log(error);
+      setUsernameAvailable(false);
+    }
+  };
+
+  useEffect(() => {
+    if (username?.length > 4) {
+      checkIfUsernameExists(username);
+    }
+  }, [username]);
+
   useEffect(() => {
     const role = sessionStorage.getItem("role");
     if (role == "ADMIN") {
@@ -148,7 +168,6 @@ const addStudent = () => {
                 type="email"
                 id="email"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder="John"
                 required
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -172,17 +191,34 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="name"
-                className="block mb-2 text-sm font-medium text-gray-900 "
+                className="block mb-2 text-sm font-medium text-gray-900"
               >
                 User Name
               </label>
               <input
                 type="text"
                 id="name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setUserName(e.target.value)}
               />
+              <div>
+                <p
+                  className={`text-sm mt-2 text-white ${
+                    username.length > 0
+                      ? username.length > 4 && usernameAvailable
+                        ? "bg-green-400 p-4 rounded-full text-2xl font-bold"
+                        : "bg-red-400 p-4 rounded-full text-2xl font-bold"
+                      : ""
+                  }`}
+                >
+                  {username.length > 0
+                    ? username.length > 4 && usernameAvailable
+                      ? "Available"
+                      : "Not Available"
+                    : ""}
+                </p>
+              </div>
             </div>
             <div>
               <label
