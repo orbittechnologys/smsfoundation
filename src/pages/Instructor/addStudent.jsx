@@ -59,19 +59,25 @@ const addStudent = () => {
     };
     console.log(reqbody);
 
-    try {
-      const res = await axios.post(`${BASE_URL}student/addStudent`, reqbody);
-      console.log(res.data);
-      alert("student added sucessfully");
-      const navUrl =
-        role == "INSTRUCTOR" ? "/inst/AllStudents" : "/admin/AllStudents";
-      navigate(navUrl);
-    } catch (error) {
-      console.log(error);
-      let errMsg = error?.response?.data?.msg;
-      errMsg = errMsg ? errMsg : "Student could not be Added";
-      alert(errMsg);
+    if(!usernameAvailable){
+      alert('Please choose a different username');
+    }else{
+      try {
+        const res = await axios.post(`${BASE_URL}student/addStudent`, reqbody);
+        console.log(res.data);
+        alert("student added sucessfully");
+        const navUrl =
+          role == "INSTRUCTOR" ? "/inst/AllStudents" : "/admin/AllStudents";
+        navigate(navUrl);
+      } catch (error) {
+        console.log(error);
+        let errMsg = error?.response?.data?.msg;
+        errMsg = errMsg ? errMsg : "Student could not be Added";
+        alert(errMsg);
+      }
     }
+
+    
   };
   const handleMedium = (e) => {
     setMedium(e.target.value);
