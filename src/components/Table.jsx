@@ -5,7 +5,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../constants";
 
-const Table = ({ data, columns, label , fetchData}) => {
+const Table = ({ data, columns, label, fetchData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [dropdownFilters, setDropdownFilters] = useState({});
   const [filteredData, setFilteredData] = useState(data);
@@ -92,7 +92,7 @@ const Table = ({ data, columns, label , fetchData}) => {
     try {
       const res = await axios.post(`${BASE_URL}syllabus/edit`, reqBody);
       console.log(res.data);
-      toast.success("Syllabus edited successfully");
+      alert("Syllabus edited successfully");
       setFilteredData(
         filteredData.map((item) =>
           item.id === selectedSyllabus._id ? res.data : item
@@ -103,6 +103,47 @@ const Table = ({ data, columns, label , fetchData}) => {
     } catch (error) {
       console.log(error);
       toast.error("Syllabus could not be edited");
+    }
+  };
+
+  const handleMediumEdit = async (e) => {
+    e.preventDefault();
+    const reqBody = {
+      name: selectedMedium.name,
+      reference: selectedMedium.reference,
+      id: selectedMedium._id,
+    };
+    try {
+      const res = await axios.post(`${BASE_URL}medium/edit`, reqBody);
+      console.log(res.data);
+      alert("Medium edited successfully");
+      setFilteredData(
+        filteredData.map((item) =>
+          item.id === selectedMedium._id ? res.data : item
+        )
+      );
+      setEditMedium(false);
+      fetchData();
+    } catch (error) {
+      console.log(error);
+      toast.error("Medium could not be edited");
+    }
+  };
+
+  const handleDelete = async (rowData) => {
+    const { _id } = rowData;
+    let deleteUrl = `${BASE_URL}syllabus/delete/${_id}`;
+    if (label === "MEDIUM") {
+      deleteUrl = `${BASE_URL}medium/delete/${_id}`;
+    }
+    try {
+      await axios.delete(deleteUrl);
+      alert(`${label} deleted successfully`);
+      setFilteredData(filteredData.filter((item) => item._id !== _id));
+      fetchData();
+    } catch (error) {
+      console.log(error);
+      toast.error(`${label} could not be deleted`);
     }
   };
 
@@ -268,7 +309,7 @@ const Table = ({ data, columns, label , fetchData}) => {
         {editMedium && (
           <div className="flex justify-center items-center bg-black bg-opacity-50 fixed top-0 left-0 w-full h-full">
             <div className="bg-white p-6 rounded-lg shadow-lg">
-              <form>
+              <form onSubmit={handleMediumEdit}>
                 <label htmlFor="name">Board Name :</label>
                 <br />
                 <input
@@ -276,6 +317,12 @@ const Table = ({ data, columns, label , fetchData}) => {
                   id="name"
                   placeholder="Board Name"
                   value={selectedMedium?.name}
+                  onChange={(e) =>
+                    setSelectedMedium({
+                      ...selectedMedium,
+                      name: e.target.value,
+                    })
+                  }
                   className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
                 />
 
@@ -286,12 +333,18 @@ const Table = ({ data, columns, label , fetchData}) => {
                   id="ref"
                   placeholder="Reference"
                   value={selectedMedium?.reference}
+                  onChange={(e) =>
+                    setSelectedMedium({
+                      ...selectedMedium,
+                      reference: e.target.value,
+                    })
+                  }
                   className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
                 />
 
                 <div className="flex justify-between items-center mt-4">
                   <button
-                    onClick={() => setShowSyllabus(false)}
+                    onClick={() => setEditMedium(false)}
                     className="bg-gray-500 px-4 py-2 rounded-lg text-white font-semibold text-sm"
                   >
                     Cancel
