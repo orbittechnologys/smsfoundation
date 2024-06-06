@@ -397,6 +397,47 @@ const Table = ({ data, columns, label, fetchData }) => {
           <div className="flex justify-center items-center bg-black bg-opacity-50 fixed top-0 left-0 w-full h-full">
             <div className="bg-white p-6 rounded-lg shadow-lg">
               <form onSubmit={handleSubjectEdit}>
+    
+                <label htmlFor="syllabus">Board :</label>
+                <br />
+                <select
+                  id="syllabus"
+                  value={selectedSubject?.syllabus}
+                  onChange={(e) =>
+                    setSelectedSubject({
+                      ...selectedSubject,
+                      syllabus: e.target.value,
+                    })
+                  }
+                  className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
+                >
+                  {dropdownFilters["syllabus"]?.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+
+                <label htmlFor="medium">Medium :</label>
+                <br />
+                <select
+                  id="medium"
+                  value={selectedSubject?.medium}
+                  onChange={(e) =>
+                    setSelectedSubject({
+                      ...selectedSubject,
+                      medium: e.target.value,
+                    })
+                  }
+                  className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
+                >
+                  {dropdownFilters["medium"]?.map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+
                 <label htmlFor="standard">Standard :</label>
                 <br />
                 <input
@@ -408,38 +449,6 @@ const Table = ({ data, columns, label, fetchData }) => {
                     setSelectedSubject({
                       ...selectedSubject,
                       standard: e.target.value,
-                    })
-                  }
-                  className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
-                />
-
-                <label htmlFor="medium">Medium :</label>
-                <br />
-                <input
-                  type="text"
-                  id="medium"
-                  placeholder="Medium"
-                  value={selectedSubject?.medium}
-                  onChange={(e) =>
-                    setSelectedSubject({
-                      ...selectedSubject,
-                      medium: e.target.value,
-                    })
-                  }
-                  className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"
-                />
-
-                <label htmlFor="syllabus">Syllabus :</label>
-                <br />
-                <input
-                  type="text"
-                  id="syllabus"
-                  placeholder="Syllabus"
-                  value={selectedSubject?.syllabus}
-                  onChange={(e) =>
-                    setSelectedSubject({
-                      ...selectedSubject,
-                      syllabus: e.target.value,
                     })
                   }
                   className="mt-2 w-full bg-gray-100 px-4 py-2 rounded-md"

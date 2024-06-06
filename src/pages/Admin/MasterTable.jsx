@@ -38,7 +38,7 @@ const MasterTable = () => {
   const [dropdownType, setDropdownType] = useState("");
 
   const columnsSyllabus = [
-    { label: "Name", accessor: "name" },
+    { label: "Name", accessor: "name" }, 
     { label: "Reference", accessor: "reference" },
     { label: "Date Created", accessor: "createdAt" },
   ];
@@ -131,28 +131,25 @@ const MasterTable = () => {
 
   const handleAddSubject = async (e) => {
     e.preventDefault();
-
-    if (!selectedMedium || !selectedSyllabus || !standard  || subjectName === "") {
+    if(!selectedMedium || !selectedSyllabus || standard == 0 || subjectName == ""){
       alert('Please fill all the details');
       return;
-    } else {
+    }else{
       const reqBody = {
-        "standard": standard.value,
+        "standard": standard,
         "medium": selectedMedium.value,
         "syllabus": selectedSyllabus.value,
         "name": subjectName
-      };
-
-      try {
-        await axios.post(`${BASE_URL}subject/addSubject`, reqBody);
-        alert('Subject added successfully');
-        setShowSubject(false);
-        fetchData();
-      } catch (error) {
-        console.log(error);
-      }
     }
-  };
+    console.log(reqBody);
+    const res = await axios.post(`${BASE_URL}subject/addSubject`,reqBody);
+    console.log(res.data);
+    alert('Subject added successfully');
+    setShowSubject(false);
+    fetchData();
+    }
+    
+  }
 
   return (
     <>
@@ -243,7 +240,7 @@ const MasterTable = () => {
                     onClick={() => setShowMedium(true)}
                     className='bg-orange-600 px-4 py-4 rounded-lg text-white font-semibold text-sm'>Add Medium</button>
 
-                  <Table data={medium} columns={columnsMedium} label={"MEDIUM"}  fetchData={fetchData} />
+                  <Table data={medium} columns={columnsMedium} label={"MEDIUM"} setEditMedium={setEditMedium}  fetchData={fetchData} />
                 </div>
 
                 {/* Subject */}
@@ -365,43 +362,113 @@ const MasterTable = () => {
 
       {/* Modal for Subject */}
       {showSubject && (
-        <div className='flex justify-center items-center bg-black bg-opacity-50 fixed top-0 left-0 w-full h-full'>
-          <div className='bg-white p-6 rounded-lg shadow-lg'>
-            <form onSubmit={handleAddSubject}>
-              <label htmlFor="name">Subject Name :</label><br />
-              <input type="text" id='name' placeholder='Subject Name' value={subjectName} onChange={(e) => setSubjectName(e.target.value)}
-                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
-
-              <label htmlFor="standard">Class :</label>
-              
-              <input type="number" id='name' placeholder='Class' value={subjectName} onChange={(e) => setSubjectName(e.target.value)}
-                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
-              <label className='mt-2'>Medium :</label>
-              <SearchableDropdown
-                options={dropMedium}
-                onSelect={setSelectedMedium}
-                selectedOption={selectedMedium}
-                isClearable
-                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md'
-              />
-
-              <label className='mt-2'>Syllabus :</label>
-              <SearchableDropdown
-                options={dropSyllabus}
-                onSelect={setSelectedSyllabus}
-                selectedOption={selectedSyllabus}
-                isClearable
-                className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md'
-              />
-
-              <div className='flex justify-between items-center mt-4'>
-                <button
-                  onClick={() => setShowSubject(false)}
-                  className='bg-gray-500 px-4 py-2 rounded-lg text-white font-semibold text-sm'>Cancel</button>
-
-                <button type='submit' className='bg-orange-600 px-4 py-2 rounded-lg text-white font-semibold text-sm'>Add Subject</button>
+        <div className="fixed z-10 inset-0 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+              <div className="px-4 py-6">
+                <div className="flex items-start justify-between">
+                  <div className="text-lg font-semibold">Add Subject</div>
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => setShowSubject(false)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <form
+                    onSubmit={handleAddSubject}
+                    className="bg-gray-200 rounded-lg p-5 mx-auto"
+                  >
+                    <div>
+                      <label
+                        htmlFor="rest_password"
+                        className="block mb-2 text-sm font-medium text-gray-900 "
+                      >
+                        Enter Board
+                      </label>
+                      <SearchableDropdown
+                          options={dropSyllabus}
+                          placeholder="Select Board"
+                          onChange={setSelectedSyllabus}
+                      />
+                    </div>
+                    <div className='my-2'>
+                      <label
+                        htmlFor="rest_password"
+                        className="block mb-2 text-sm font-medium text-gray-900 "
+                      >
+                        Enter Medium
+                      </label>
+                      <SearchableDropdown
+                          options={dropMedium}
+                          placeholder="Select Medium"
+                          onChange={setSelectedMedium}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="rest_password"
+                        className="block mb-2 text-sm font-medium text-gray-900 "
+                      >
+                        Enter Standard
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="number"
+                          placeholder="Enter Standard"
+                          value={standard}
+                          onChange={(e) => setStandard(e.target.value)}
+                          maxLength={2}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="rest_password"
+                        className="block mb-2 text-sm font-medium text-gray-900 "
+                      >
+                        Enter Subject Name
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="Enter Subject"
+                          value={subjectName}
+                          onChange={(e) => setSubjectName(e.target.value)}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                          required
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <button
+                        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center my-5"
+                        type="submit"
+                      >
+                        {" "}
+                        Add Subject
+                      </button>
+                    </div>
+                  </form>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       )}
