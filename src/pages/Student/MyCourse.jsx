@@ -121,7 +121,7 @@ const MyAcitivity = () => {
           <p
             className={
               filter === "ongoing"
-                ? "mr-2 text-orange-500 font-semibold text-xl"
+                ? "mr-2 text-white bg-orange-500 font-semibold text-xl py-3 px-3 rounded-full"
                 : "mr-2 text-xl"
             }
             onClick={() => setFilter("ongoing")}
@@ -131,7 +131,7 @@ const MyAcitivity = () => {
           <p
             className={
               filter === "completed"
-                ? "text-orange-500 font-semibold text-xl"
+                ? "text-white bg-orange-500 font-semibold text-xl py-3 px-3 rounded-full"
                 : "text-xl"
             }
             onClick={() => setFilter("completed")}

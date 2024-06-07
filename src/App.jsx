@@ -41,6 +41,8 @@ import EditSchool from "./pages/Admin/EditSchool.jsx";
 import EditInstructor from "./pages/Admin/EditInstructor.jsx";
 import EditStudentt from "./pages/Admin/EditStudentt.jsx";
 import NewMyCourses from "./pages/Student/NewMyCourses.jsx";
+import HeaderOne from "./pages/Student/HeaderOne.jsx";
+import NavbarStudent from "./components/NavbarStudent.jsx";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -65,10 +67,11 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/RestPassword" element={<RestPassword />} />
 
-        <Route path="/home2" element={<h1>Home 2</h1>} />
-
-        <Route path="" element={<Navbar />}>
+        <Route path="/home2" element={<HeaderOne />} />
+          <Route path="" element={<NavbarStudent />}>
           <Route path="/studentHome" element={<StudentHome />} />
+          </Route>
+        <Route path="" element={<Navbar />}>
           
           <Route
             path="/StudentProfile/:studentId"
