@@ -65,8 +65,11 @@ const App = () => {
         <Route path="/" element={<Login />} />
         <Route path="/RestPassword" element={<RestPassword />} />
 
+        <Route path="/home2" element={<h1>Home 2</h1>} />
+
         <Route path="" element={<Navbar />}>
           <Route path="/studentHome" element={<StudentHome />} />
+          
           <Route
             path="/StudentProfile/:studentId"
             element={<StudentProfile />}
