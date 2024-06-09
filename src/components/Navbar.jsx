@@ -53,7 +53,8 @@ const Navbar = () => {
         } w-full`}
       >
         <div className="flex justify-center items-center lg:py-0 py-3">
-          <Link to="/" className="hidden lg:block md:block">
+          <Link to={role == "STUDENT" ? "/studenthome" : role=="ADMIN" ? "/admin/adminHome" :"/inst/instHome"} 
+          className="hidden lg:block md:block">
             <img src={sfLogo} alt="logo" className="lg:h-10 h-5 mr-8" />
           </Link>
 

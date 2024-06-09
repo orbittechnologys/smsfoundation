@@ -27,6 +27,32 @@ const InstructorProfile = () => {
         }
     }
 
+    const handleResetPasswordApi = async (reqBody) => {
+      try {
+        const res = await axios.post(`${BASE_URL}user/resetPassword`,reqBody);
+        console.log(res.data);
+        alert('Password changed successfully');
+      } catch (error) {
+        console.log(error);
+        alert('Something went wrong');
+      }
+    }
+  
+    const resetPassword =  (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const password = formData.get("password");
+  
+      if(!password){
+        alert('Please enter password');
+      }else{
+        handleResetPasswordApi({
+          userId:userId,
+          newPassword: password
+        })
+      }
+    }
+
 
     useEffect(() => {
         fetchData(userId);
@@ -75,6 +101,11 @@ const InstructorProfile = () => {
           <p className="text-gray-600 mb-4">
             <span className="font-semibold">Medium:</span> {instructorDoc?.school?.medium}
           </p>
+          <form className="mb-6" onSubmit={resetPassword}>
+                <label htmlFor="default-input" className="block text-gray-600 mb-2 text-sm font-semibold">Reset Password</label>
+                <input name="password" type="text" id="default-input" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  " />
+                <button type="submit" className="my-3 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Submit</button>
+            </form>
         </div>
       </div>
     )}

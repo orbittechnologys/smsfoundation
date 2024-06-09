@@ -13,13 +13,13 @@ import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { HiSearch } from "react-icons/hi";
 import useAuth from "../authService";
 
-const NavbarStudent = () => {
+const NavbarStudent = ({ handleSearch}) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
-  const [query, setQuery] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("NO");
   const [subjects, setSubjects] = useState([]);
   const [selectedOption, setSelectedOption] = useState("Chapter Name");
+  const [query,setQuery] = useState("");
 
   const navigate = useNavigate();
   const { auth } = useAuth();
@@ -54,26 +54,12 @@ const NavbarStudent = () => {
     navigate("/");
   };
 
-  const handleSearch = async () => {
-    if (query?.length > 0) {
-      try {
-        const res = await axios.get(`${BASE_URL}chapter/query/${query}`);
-        setQuery("");
-        setChapters(res.data.chapters);
-      } catch (error) {
-        console.log(error);
-      }
-    } else if (selectedSubject != "NO") {
-      try {
-        const res = await axios.get(
-          `${BASE_URL}chapter/getChapterBySubject/${selectedSubject}`
-        );
-        setChapters(res.data.chapters);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
+  const handleFormSearch = (e) => {
+    e.preventDefault();
+    handleSearch(query);
+  }
+
+
 
   const fetchSubjectV2 = async (schoolId, standard) => {
     try {
@@ -118,20 +104,8 @@ const NavbarStudent = () => {
             : "bg-gray-100"
         }`}
       >
-        {/* <div className="flex items-center lg:py-0 py-3 w-full lg:w-auto justify-center lg:justify-start">
-          
-          <h1 className="lg:text-2xl md:text-xl text-lg font-semibold">
-            <span className="text-orange-400">Welcome </span>
-            {user && (
-              <span>
-                {user?.username.charAt(0).toUpperCase() +
-                  user?.username.slice(1)}
-              </span>
-            )}
-          </h1>
-          
-        </div> */}
-        <Link to="/" className="hidden lg:block md:block ml">
+        
+        <Link to="/studenthome" className="hidden lg:block md:block ml">
           <img src={sfLogo} alt="logo" className="lg:h-10 h-5 mr-8" />
         </Link>
         <div className="flex items-center w-full lg:w-auto justify-center lg:justify-start gap-4 lg:ml-10 relative z-50">
@@ -144,7 +118,7 @@ const NavbarStudent = () => {
               style={{ zIndex: 50 }}
             >
               <option value="Chapter Name" disabled>
-                Chapter Name
+                Subject Name
               </option>
               <option value="English">English</option>
               <option value="Kannada">Kannada</option>
@@ -153,14 +127,18 @@ const NavbarStudent = () => {
           </div>
         </div>
 
-        <div className="relative flex items-center border border-gray-300 rounded px-3 py-2 w-full lg:w-auto mt-4 lg:mt-0 lg:ml-5">
+        <form onSubmit={handleSearch} className="relative flex items-center border border-gray-300 rounded px-3 py-2 w-full lg:w-auto mt-4 lg:mt-0 lg:ml-5">
           <input
             type="text"
+            onChange={(e) => setQuery(e.target.value)}
             placeholder="Search for course"
             className="appearance-none bg-transparent border-none focus:outline-none text-gray-700 w-full"
           />
+          <button>
           <HiSearch className="text-gray-500 mr-2 text-2xl" />
-        </div>
+          </button>
+          
+        </form>
 
         <div className="flex justify-center items-center gap-8 lg:ml-40 mt-4 lg:mt-0 w-full lg:w-auto text-lg font-semibold">
           <Link to="/studenthome" className="text-gray-700 hover:text-gray-900">

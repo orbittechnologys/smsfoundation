@@ -10,6 +10,15 @@ import Img2 from "../../assets/img2.png";
 import Hexbg from "../../assets/hexbg.png";
 import { PiPlayPauseLight } from "react-icons/pi";
 import { Bar } from "react-chartjs-2";
+import sfLogo from "../../assets/logoflex.png";
+import { CiUser } from "react-icons/ci";
+import { FaCaretDown } from "react-icons/fa6";
+import { AiOutlineLogout } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import { FaUserGraduate } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
+import { HiMiniSquares2X2 } from "react-icons/hi2";
+import { HiSearch } from "react-icons/hi";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -21,6 +30,7 @@ import {
   defaults,
 } from "chart.js";
 import Counter from "./Counter";
+import NavbarStudent from "../../components/NavbarStudent";
 
 ChartJS.register(
   CategoryScale,
@@ -39,9 +49,17 @@ const StudentHome = () => {
   const [query, setQuery] = useState("");
   const [chapterActivity, setChapterActivity] = useState([]);
   const [testActivity, setTestActivity] = useState([]);
+  const [role,setRole] = useState("STUDENT");
+  const [user,setUser] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  
 
   const { auth } = useAuth();
   console.log(auth);
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
   const navigate = useNavigate();
 
   const fetchActivity = async (studentId) => {
@@ -125,10 +143,28 @@ const StudentHome = () => {
     }
   };
 
+  const fetchUser = async () => {
+    const userId = sessionStorage.getItem("user_id");
+    setRole(sessionStorage.getItem("role"));
+    try {
+      const res = await axios.get(`${BASE_URL}user/id/${userId}`);
+      setUser(res.data.userDoc);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    navigate("/");
+  };
+
+
   useEffect(() => {
     if (auth) {
       fetchStudent(auth);
     }
+    fetchUser();
   }, [auth]);
 
   const fetchSubject = async (standard, syllabus, medium) => {
@@ -168,13 +204,32 @@ const StudentHome = () => {
     }
   };
 
-  const handleSearch = async () => {
+  const getChapterBySubject = async(subjectId) => {
+    try {
+      const res = await axios.get(`${BASE_URL}chapter/getChapterBySubject/${subjectId}`);
+      console.log(res.data);
+      setChapters(res.data.chapters);
+      window.scrollTo({
+        top: window.scrollY + 1000, 
+        behavior: 'smooth'
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
     if (query?.length > 0) {
       try {
         const res = await axios.get(`${BASE_URL}chapter/query/${query}`);
         console.log(res.data);
         setQuery("");
         setChapters(res.data.chapters);
+        window.scrollTo({
+          top: window.scrollY + 1000, 
+          behavior: 'smooth'
+        });
       } catch (error) {
         console.log(error);
       }
@@ -191,8 +246,130 @@ const StudentHome = () => {
     }
   };
 
+  useEffect(()=> {
+    getChapterBySubject(selectedSubject)
+  },[selectedSubject])
+
   return (
     <>
+      <div
+        className={`flex flex-wrap lg:justify-between justify-center items-center px-4 py-3 lg:py-5 w-full
+            bg-white lg:border-b md:border-b lg:border-gray-400 md:border-gray-400`}
+      >
+        
+        <Link to="/studenthome" className="hidden lg:block md:block ml">
+          <img src={sfLogo} alt="logo" className="lg:h-10 h-5 mr-8" />
+        </Link>
+        <div className="flex items-center w-full lg:w-auto justify-center lg:justify-start gap-4 lg:ml-10 relative z-50">
+          <HiMiniSquares2X2 className="text-2xl" />
+          <div className="relative">
+            <select
+              
+              onChange={(e) => setSelectedSubject(e.target.value)}
+              className="appearance-none bg-transparent border-none focus:outline-none w-full px-4 py-2 pr-8 text-gray-700 font-semibold leading-tight focus:ring-0"
+              style={{ zIndex: 50 }}
+            >
+              <option value="NO">
+                Subject 
+              </option>
+              {subjects?.map((subject) => {
+               return(
+                <option value={subject?._id} key={subject?._id}>{subject?.name}</option>
+               )
+              })}
+            </select>
+          </div>
+        </div>
+
+        <form onSubmit={handleSearch} className="relative flex items-center border border-gray-300 rounded px-3 py-2 w-full lg:w-auto mt-4 lg:mt-0 lg:ml-5">
+          <input
+            type="text"
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search for course"
+            className="appearance-none bg-transparent border-none focus:outline-none text-gray-700 w-full"
+          />
+          <button>
+          <HiSearch className="text-gray-500 mr-2 text-2xl" />
+          </button>
+          
+        </form>
+
+        <div className="flex justify-center items-center gap-8 lg:ml-40 mt-4 lg:mt-0 w-full lg:w-auto text-lg font-semibold">
+          <Link to="/studenthome" className="text-gray-700 hover:text-gray-900">
+            Home
+          </Link>
+          <Link to="/mycourses" className="text-gray-700 hover:text-gray-900">
+            Courses
+          </Link>
+          <Link to="/mycourse" className="text-gray-700 hover:text-gray-900">
+            Activity
+          </Link>
+        </div>
+
+        <div className="flex items-center gap-5 w-full lg:w-auto mt-4 lg:mt-0">
+          <div className="relative">
+            <button
+              onClick={toggleDropdown}
+              className="flex items-center gap-2"
+            >
+              <FaUserGraduate />
+              <div className="flex flex-col gap-1 items-center">
+                <span>{user?.username}</span>
+                {(user?.role === "ADMIN" || user?.role === "INSTRUCTOR") && (
+                  <span className="text-sm absolute top-6 text-gray-500">
+                    {user?.role === "ADMIN" ? "Admin" : "Instructor"}
+                  </span>
+                )}
+              </div>
+              <FaCaretDown className="h-4 w-4" />
+            </button>
+            {dropdownOpen && (
+              <div className="z-50 absolute right-0 mt-2 w-48 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
+                {role == "ADMIN" ? (
+                  <div
+                    onClick={() => {
+                      navigate(`/admin/adminProfile/${user?._id}`);
+                      toggleDropdown();
+                    }}
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                  >
+                    <CgProfile className="text-blue-500" />
+                    Profile
+                  </div>
+                ) : role == "INSTRUCTOR" ? (
+                  <div
+                    onClick={() => {
+                      navigate(`/inst/instructorProfile/${user?._id}`);
+                      toggleDropdown();
+                    }}
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                  >
+                    <CgProfile className="text-blue-500" />
+                    Profile
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => {
+                      navigate(`/studentProfile/${user?._id}`);
+                      toggleDropdown();
+                    }}
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                  >
+                    <CgProfile className="text-blue-500" />
+                    Profile
+                  </div>
+                )}
+                <p
+                  onClick={() => handleLogout()}
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                >
+                  <AiOutlineLogout className="text-red-500" /> Logout
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
       <div className="relative h-screen">
         <section className="bg-[#2f2d51] py-8 h-auto md:h-3/4 relative">
           <div className="flex flex-col md:flex-row justify-center items-center w-full h-full">
@@ -314,7 +491,7 @@ const StudentHome = () => {
         </div>
         
         
-        <div className="mt-20 w-full text-center">
+        <div className="mt-32 w-full text-center">
           <p>{chapter?.length} Materials Found</p>
         </div>
         <section className=" py-8 px-5 grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
@@ -330,7 +507,7 @@ const StudentHome = () => {
               >
                 <div className="flex justify-start items-start w-full">
                   <span className="bg-teal-500 text-white px-3 py-1 rounded-full text-sm">
-                    {card.subject.name}
+                    {card?.subject?.name}
                   </span>
                 </div>
                 <img src={flask} alt="flask" className="h-10" />
@@ -363,12 +540,12 @@ const StudentHome = () => {
           ))}
         </section>
 
-        <section className="">
+        {/* <section className="">
           <h1 className="font-bold text-4xl xl:ml-40">Activity</h1>
 
           <section className="">
-            <div class="flex flex-wrap justify-evenly gap-4">
-              <div class="w-full md:w-1/2 lg:w-1/3 p-4 rounded-lg shadow-md relative">
+            <div className="flex flex-wrap justify-evenly gap-4">
+              <div className="w-full md:w-1/2 lg:w-1/3 p-4 rounded-lg shadow-md relative">
                 <button
                   className="absolute top-4 right-4 text-[#F26651]"
                   onClick={() => navigate(`/mycourse`)}
@@ -377,12 +554,12 @@ const StudentHome = () => {
                 </button>
                 <Bar data={data} options={options} />
               </div>
-              <div class="w-full md:w-1/2 lg:w-1/3 p-4 rounded-lg shadow-md">
+              <div className="w-full md:w-1/2 lg:w-1/3 p-4 rounded-lg shadow-md">
                 <Bar data={data1} options={options} />
               </div>
             </div>
           </section>
-        </section>
+        </section> */}
 
         <div className="flex justify-center items-center my-5 static">
           <img src={Img2} alt="" />
