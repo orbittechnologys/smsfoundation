@@ -31,6 +31,7 @@ import {
 } from "chart.js";
 import Counter from "./Counter";
 import NavbarStudent from "../../components/NavbarStudent";
+import Saple from "../Student/saple";
 
 ChartJS.register(
   CategoryScale,
@@ -49,11 +50,9 @@ const StudentHome = () => {
   const [query, setQuery] = useState("");
   const [chapterActivity, setChapterActivity] = useState([]);
   const [testActivity, setTestActivity] = useState([]);
-  const [role,setRole] = useState("STUDENT");
-  const [user,setUser] = useState(null);
+  const [role, setRole] = useState("STUDENT");
+  const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  
 
   const { auth } = useAuth();
   console.log(auth);
@@ -159,7 +158,6 @@ const StudentHome = () => {
     navigate("/");
   };
 
-
   useEffect(() => {
     if (auth) {
       fetchStudent(auth);
@@ -204,19 +202,21 @@ const StudentHome = () => {
     }
   };
 
-  const getChapterBySubject = async(subjectId) => {
+  const getChapterBySubject = async (subjectId) => {
     try {
-      const res = await axios.get(`${BASE_URL}chapter/getChapterBySubject/${subjectId}`);
+      const res = await axios.get(
+        `${BASE_URL}chapter/getChapterBySubject/${subjectId}`
+      );
       console.log(res.data);
       setChapters(res.data.chapters);
       window.scrollTo({
-        top: window.scrollY + 1000, 
-        behavior: 'smooth'
+        top: window.scrollY + 1000,
+        behavior: "smooth",
       });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -227,8 +227,8 @@ const StudentHome = () => {
         setQuery("");
         setChapters(res.data.chapters);
         window.scrollTo({
-          top: window.scrollY + 1000, 
-          behavior: 'smooth'
+          top: window.scrollY + 1000,
+          behavior: "smooth",
         });
       } catch (error) {
         console.log(error);
@@ -246,130 +246,207 @@ const StudentHome = () => {
     }
   };
 
-  useEffect(()=> {
-    getChapterBySubject(selectedSubject)
-  },[selectedSubject])
+  useEffect(() => {
+    getChapterBySubject(selectedSubject);
+  }, [selectedSubject]);
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <>
-      <div
+      {/* <div
         className={`flex flex-wrap lg:justify-between justify-center items-center px-4 py-3 lg:py-5 w-full
             bg-white lg:border-b md:border-b lg:border-gray-400 md:border-gray-400`}
-      >
-        
-        <Link to="/studenthome" className="hidden lg:block md:block ml">
-          <img src={sfLogo} alt="logo" className="lg:h-10 h-5 mr-8" />
-        </Link>
-        <div className="flex items-center w-full lg:w-auto justify-center lg:justify-start gap-4 lg:ml-10 relative z-50">
-          <HiMiniSquares2X2 className="text-2xl" />
-          <div className="relative">
-            <select
-              
-              onChange={(e) => setSelectedSubject(e.target.value)}
-              className="appearance-none bg-transparent border-none focus:outline-none w-full px-4 py-2 pr-8 text-gray-700 font-semibold leading-tight focus:ring-0"
-              style={{ zIndex: 50 }}
+      > */}
+      <div>
+        <div className="max-w-screen-2xl flex flex-wrap items-center  justify-between mx-auto p-4">
+          {/* <Link to="/studenthome" className="hidden lg:block md:block ml">
+           */}
+          <Link
+            to="/studenthome"
+            className="flex items-center space-x-3 rtl:space-x-reverse"
+          >
+            <img src={sfLogo} alt="logo" className="lg:h-10 h-5 mr-8" />
+          </Link>
+          <button
+            onClick={toggleMenu}
+            type="button"
+            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            aria-controls="navbar-default"
+            aria-expanded={isMenuOpen ? "true" : "false"}
+          >
+            <span className="sr-only">
+              {isMenuOpen ? "Close main menu" : "Open main menu"}
+            </span>
+            <svg
+              className="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
             >
-              <option value="NO">
-                Subject 
-              </option>
-              {subjects?.map((subject) => {
-               return(
-                <option value={subject?._id} key={subject?._id}>{subject?.name}</option>
-               )
-              })}
-            </select>
-          </div>
-        </div>
-
-        <form onSubmit={handleSearch} className="relative flex items-center border border-gray-300 rounded px-3 py-2 w-full lg:w-auto mt-4 lg:mt-0 lg:ml-5">
-          <input
-            type="text"
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search for course"
-            className="appearance-none bg-transparent border-none focus:outline-none text-gray-700 w-full"
-          />
-          <button>
-          <HiSearch className="text-gray-500 mr-2 text-2xl" />
+              {isMenuOpen ? (
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 1L1 13M1 1l16 12"
+                />
+              ) : (
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 1h15M1 7h15M1 13h15"
+                />
+              )}
+            </svg>
           </button>
-          
-        </form>
 
-        <div className="flex justify-center items-center gap-8 lg:ml-40 mt-4 lg:mt-0 w-full lg:w-auto text-lg font-semibold">
-          <Link to="/studenthome" className="text-gray-700 hover:text-gray-900">
-            Home
-          </Link>
-          <Link to="/mycourses" className="text-gray-700 hover:text-gray-900">
-            Courses
-          </Link>
-          <Link to="/mycourse" className="text-gray-700 hover:text-gray-900">
-            Activity
-          </Link>
-        </div>
+          <div
+            className={`w-full md:block md:w-auto ${
+              isMenuOpen ? "" : "hidden"
+            }`}
+            id="navbar-default"
+          >
+            <ul className="font-medium flex items-center flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
+              <li>
+                <div className="flex items-center w-full lg:w-auto justify-center lg:justify-start gap-4 lg:ml-10 relative z-50">
+                  <HiMiniSquares2X2 className="text-2xl" />
+                  <div className="relative">
+                    <select
+                      onChange={(e) => setSelectedSubject(e.target.value)}
+                      className="appearance-none bg-transparent border-none focus:outline-none w-full px-4 py-2 pr-8 text-gray-700 font-semibold leading-tight focus:ring-0"
+                      style={{ zIndex: 50 }}
+                    >
+                      <option value="NO">Subject</option>
+                      {subjects?.map((subject) => {
+                        return (
+                          <option value={subject?._id} key={subject?._id}>
+                            {subject?.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+              </li>
 
-        <div className="flex items-center gap-5 w-full lg:w-auto mt-4 lg:mt-0">
-          <div className="relative">
-            <button
-              onClick={toggleDropdown}
-              className="flex items-center gap-2"
-            >
-              <FaUserGraduate />
-              <div className="flex flex-col gap-1 items-center">
-                <span>{user?.username}</span>
-                {(user?.role === "ADMIN" || user?.role === "INSTRUCTOR") && (
-                  <span className="text-sm absolute top-6 text-gray-500">
-                    {user?.role === "ADMIN" ? "Admin" : "Instructor"}
-                  </span>
-                )}
-              </div>
-              <FaCaretDown className="h-4 w-4" />
-            </button>
-            {dropdownOpen && (
-              <div className="z-50 absolute right-0 mt-2 w-48 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
-                {role == "ADMIN" ? (
-                  <div
-                    onClick={() => {
-                      navigate(`/admin/adminProfile/${user?._id}`);
-                      toggleDropdown();
-                    }}
-                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
-                  >
-                    <CgProfile className="text-blue-500" />
-                    Profile
-                  </div>
-                ) : role == "INSTRUCTOR" ? (
-                  <div
-                    onClick={() => {
-                      navigate(`/inst/instructorProfile/${user?._id}`);
-                      toggleDropdown();
-                    }}
-                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
-                  >
-                    <CgProfile className="text-blue-500" />
-                    Profile
-                  </div>
-                ) : (
-                  <div
-                    onClick={() => {
-                      navigate(`/studentProfile/${user?._id}`);
-                      toggleDropdown();
-                    }}
-                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
-                  >
-                    <CgProfile className="text-blue-500" />
-                    Profile
-                  </div>
-                )}
-                <p
-                  onClick={() => handleLogout()}
-                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+              <li>
+                <form
+                  onSubmit={handleSearch}
+                  className="relative flex items-center border border-gray-300 rounded px-3 py-2 w-full lg:w-auto mt-4 lg:mt-0 lg:ml-5"
                 >
-                  <AiOutlineLogout className="text-red-500" /> Logout
-                </p>
-              </div>
-            )}
+                  <input
+                    type="text"
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search for course"
+                    className="appearance-none bg-transparent border-none focus:outline-none text-gray-700 w-full"
+                  />
+                  <button>
+                    <HiSearch className="text-gray-500 mr-2 text-2xl" />
+                  </button>
+                </form>
+              </li>
+              <li>
+                <div className="flex justify-center items-center gap-8 lg:ml-40 mt-4 lg:mt-0 w-full lg:w-auto text-lg font-semibold">
+                  <Link
+                    to="/studenthome"
+                    className="text-gray-700 hover:text-gray-900"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    to="/mycourses"
+                    className="text-gray-700 hover:text-gray-900"
+                  >
+                    Courses
+                  </Link>
+                  <Link
+                    to="/mycourse"
+                    className="text-gray-700 hover:text-gray-900"
+                  >
+                    Activity
+                  </Link>
+                </div>
+              </li>
+              <li>
+                <div className="flex items-center gap-5 w-full lg:w-auto mt-4 lg:mt-0">
+                  <div className="relative">
+                    <button
+                      onClick={toggleDropdown}
+                      className="flex items-center gap-2"
+                    >
+                      <FaUserGraduate />
+                      <div className="flex flex-col gap-1 items-center">
+                        <span>{user?.username}</span>
+                        {(user?.role === "ADMIN" ||
+                          user?.role === "INSTRUCTOR") && (
+                          <span className="text-sm absolute top-6 text-gray-500">
+                            {user?.role === "ADMIN" ? "Admin" : "Instructor"}
+                          </span>
+                        )}
+                      </div>
+                      <FaCaretDown className="h-4 w-4" />
+                    </button>
+                    {dropdownOpen && (
+                      <div className="z-50 absolute right-0 mt-2 w-48 bg-white border border-gray-200 divide-y divide-gray-100 rounded-md shadow-lg">
+                        {role == "ADMIN" ? (
+                          <div
+                            onClick={() => {
+                              navigate(`/admin/adminProfile/${user?._id}`);
+                              toggleDropdown();
+                            }}
+                            className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                          >
+                            <CgProfile className="text-blue-500" />
+                            Profile
+                          </div>
+                        ) : role == "INSTRUCTOR" ? (
+                          <div
+                            onClick={() => {
+                              navigate(`/inst/instructorProfile/${user?._id}`);
+                              toggleDropdown();
+                            }}
+                            className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                          >
+                            <CgProfile className="text-blue-500" />
+                            Profile
+                          </div>
+                        ) : (
+                          <div
+                            onClick={() => {
+                              navigate(`/studentProfile/${user?._id}`);
+                              toggleDropdown();
+                            }}
+                            className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                          >
+                            <CgProfile className="text-blue-500" />
+                            Profile
+                          </div>
+                        )}
+                        <p
+                          onClick={() => handleLogout()}
+                          className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                        >
+                          <AiOutlineLogout className="text-red-500" /> Logout
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
+      {/* <Saple /> */}
       <div className="relative h-screen">
         <section className="bg-[#2f2d51] py-8 h-auto md:h-3/4 relative">
           <div className="flex flex-col md:flex-row justify-center items-center w-full h-full">
@@ -380,37 +457,36 @@ const StudentHome = () => {
                   <br className="hidden md:block" /> futures with knowledge as
                   their guide.
                 </h1>
-                
+
                 <div className="flex flex-col md:flex-row justify-center items-center my-5 static">
                   <img src={Img2} alt="" className="w-24 md:w-48" />
                   <img src={Slogan} alt="" className="w-28 md:w-56" />
                 </div>
               </div>
               <button
-              type="button"
-              onClick={() => navigate("/mycourses")}
-              className="mt-5  text-white bg-orange-600 hover:text-white border border-orange-500 hover:bg-orange-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-2xl text-lg px-10 py-3 md:px-10 md:py-3 text-center me-2 mb-2 md:mt-0 lg:ml-28 ml-24"
-            >
-              My Courses
-              <svg
-                className="inline-block ml-2"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-                width="16"
-                height="16"
+                type="button"
+                onClick={() => navigate("/mycourses")}
+                className="mt-5  text-white bg-orange-600 hover:text-white border border-orange-500 hover:bg-orange-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-2xl text-lg px-10 py-3 md:px-10 md:py-3 text-center me-2 mb-2 md:mt-0 lg:ml-28 ml-24"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
+                My Courses
+                <svg
+                  className="inline-block ml-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  width="16"
+                  height="16"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
             </div>
-            
           </div>
         </section>
 
@@ -486,11 +562,10 @@ const StudentHome = () => {
           </div>
         </div> */}
 
-        <div className="lg:absolute lg:top-3/4 lg:left-1/2 lg:w-3/4 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2"> 
-        <Counter />
+        <div className="lg:absolute lg:top-3/4 lg:left-1/2 lg:w-3/4 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2">
+          <Counter />
         </div>
-        
-        
+
         <div className="mt-32 w-full text-center">
           <p>{chapter?.length} Materials Found</p>
         </div>

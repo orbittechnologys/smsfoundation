@@ -13,13 +13,13 @@ import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { HiSearch } from "react-icons/hi";
 import useAuth from "../authService";
 
-const NavbarStudent = ({ handleSearch}) => {
+const NavbarStudent = ({ handleSearch }) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("NO");
   const [subjects, setSubjects] = useState([]);
   const [selectedOption, setSelectedOption] = useState("Chapter Name");
-  const [query,setQuery] = useState("");
+  const [query, setQuery] = useState("");
 
   const navigate = useNavigate();
   const { auth } = useAuth();
@@ -57,9 +57,7 @@ const NavbarStudent = ({ handleSearch}) => {
   const handleFormSearch = (e) => {
     e.preventDefault();
     handleSearch(query);
-  }
-
-
+  };
 
   const fetchSubjectV2 = async (schoolId, standard) => {
     try {
@@ -104,7 +102,6 @@ const NavbarStudent = ({ handleSearch}) => {
             : "bg-gray-100"
         }`}
       >
-        
         <Link to="/studenthome" className="hidden lg:block md:block ml">
           <img src={sfLogo} alt="logo" className="lg:h-10 h-5 mr-8" />
         </Link>
@@ -127,7 +124,10 @@ const NavbarStudent = ({ handleSearch}) => {
           </div>
         </div>
 
-        <form onSubmit={handleSearch} className="relative flex items-center border border-gray-300 rounded px-3 py-2 w-full lg:w-auto mt-4 lg:mt-0 lg:ml-5">
+        <form
+          onSubmit={handleSearch}
+          className="relative flex items-center border border-gray-300 rounded px-3 py-2 w-full lg:w-auto mt-4 lg:mt-0 lg:ml-5"
+        >
           <input
             type="text"
             onChange={(e) => setQuery(e.target.value)}
@@ -135,9 +135,8 @@ const NavbarStudent = ({ handleSearch}) => {
             className="appearance-none bg-transparent border-none focus:outline-none text-gray-700 w-full"
           />
           <button>
-          <HiSearch className="text-gray-500 mr-2 text-2xl" />
+            <HiSearch className="text-gray-500 mr-2 text-2xl" />
           </button>
-          
         </form>
 
         <div className="flex justify-center items-center gap-8 lg:ml-40 mt-4 lg:mt-0 w-full lg:w-auto text-lg font-semibold">
