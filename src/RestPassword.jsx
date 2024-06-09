@@ -8,12 +8,18 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Icons from "./assets/icons.png";
 import Img1 from "./assets/img1.png";
 import { BASE_URL } from "./constants";
+import { toast } from "react-toastify";
 
 const RestPassword = () => {
   const [email, setEmail] = useState("");
+  const [enteredOtp,setEnteredOtp] = useState(null);
   const [password, setPassword] = useState("");
+  const [confPassword,setConfPassword] = useState("");
   const { auth, setAuth } = useAuth();
   const [role, setRole] = useState("");
+  const [otp,setOtp] = useState(null);
+  const [user,setUser] = useState(null);
+  const [stages,setStages] = useState(1);
   const navigate = useNavigate();
 
   const callLoginApi = async (reqbody) => {
@@ -36,6 +42,49 @@ const RestPassword = () => {
       alert("Invalid Credentials");
     }
   };
+
+  const verifyOtp = async () => {
+    if(enteredOtp!=otp){
+      alert('Invalid OTP');
+    }else{
+      alert('OTP verified');
+      setStages(3);
+    }
+  }
+
+  const triggerOtp =async () => {
+    try {
+      const res = await axios.post(`${BASE_URL}user/triggerOtp`,{email});
+      console.log(res.data);
+      setOtp(res.data.otp);
+      setUser(res.data.userDoc);
+      setStages(2);
+    } catch (error) {
+      console.log(error.response);
+      alert(error?.response?.data?.msg);
+    }
+  } 
+
+  const resetPassword = async () => {
+    if(password?.length <5 ){
+      alert('Password must atleast be of length 6')
+    }else if(password != confPassword){
+      alert('Passwords do not match')
+    }else{
+      try {
+        const res = await axios.post(`${BASE_URL}user/resetPassword`,{
+          userId:user._id,
+          newPassword: password
+        })
+        console.log(res.data);
+        alert('Password reset successfully');
+        navigate('/')
+      } catch (error) {
+        console.log(error);
+        alert('Something went wrong')
+      }
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -85,16 +134,17 @@ const RestPassword = () => {
               </h1>
               <img src={Img1} alt="" />
             </div>
-            <form
+            <div
               className="space-y-4 md:space-y-6 mt-5"
-              onSubmit={handleSubmit}
             >
+            {stages ==1 ? (
+              <>
               <div>
                 <label
                   htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
-                  Roll No
+                  Email
                 </label>
                 <input
                   type="email"
@@ -106,6 +156,48 @@ const RestPassword = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
+              <div className="grid place-items-center">
+                <button
+                    type="button"
+                    onClick={() => triggerOtp()}
+                    className="text-white bg-orange-500 font-semibold hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300  rounded-lg text-sm px-7 py-1.5 text-center border-2 border-orange-500 "
+                  >
+                    Send OTP
+                </button>
+              </div>
+              </>
+            ): stages == 2 ? (
+              <>
+              <div>
+                              <label
+                                htmlFor="email"
+                                className="block mb-2 text-sm font-medium text-gray-900 "
+                              >
+                                Enter OTP
+                              </label>
+                              <input
+                                type="number"
+                                name="otp"
+                                id="otp"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                placeholder="otp"
+                                required=""
+                                onChange={(e) => setEnteredOtp(e.target.value)}
+                              />
+                            </div>
+
+                            <div className="grid place-items-center">
+                              <button
+                                  type="button"
+                                  onClick={() => verifyOtp()}
+                                  className="text-white bg-orange-500 font-semibold hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300  rounded-lg text-sm px-7 py-1.5 text-center border-2 border-orange-500 "
+                                >
+                                  Verify OTP
+                              </button>
+                            </div>
+              </>
+            ): stages ==3 ? (
+              <>
               <div className="mb-8">
                 <label
                   htmlFor="password"
@@ -149,8 +241,8 @@ const RestPassword = () => {
                     id="password"
                     className="bg-gray-50 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-10"
                     placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={confPassword}
+                    onChange={(e) => setConfPassword(e.target.value)}
                     required
                   />
                   <button
@@ -169,17 +261,18 @@ const RestPassword = () => {
 
               <div className="grid place-items-center">
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={() => resetPassword()}
                   className="text-white bg-orange-500 font-semibold hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300  rounded-lg text-sm px-7 py-1.5 text-center border-2 border-orange-500 "
                 >
-                  Confirm password
+                  Reset password
                 </button>
-                <div>
-                  <a href="" className="text-orange-500 underline my-2">
-                    Notify Instructor
-                  </a>
-                </div>
+              
               </div>
+              </>
+            ): ``}  
+              
+
               <div>
                 <p className="text-xl">
                   <span className="text-orange-500">Together</span>
@@ -187,7 +280,7 @@ const RestPassword = () => {
                   <span className="text-green-500"> Rural India</span>
                 </p>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
