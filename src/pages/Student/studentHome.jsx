@@ -355,7 +355,7 @@ const StudentHome = () => {
                 </form>
               </li>
               <li>
-                <div className="flex justify-center items-center gap-8 lg:ml-40 mt-4 lg:mt-0 w-full lg:w-auto text-lg font-semibold">
+                <div className="lg:flex md:flex grid    lg:justify-center lg:items-center  md:justify-center md:items-center place-items-center   gap-8 lg:ml-40 mt-4 lg:mt-0 w-full lg:w-auto text-lg font-semibold">
                   <Link
                     to="/studenthome"
                     className="text-gray-700 hover:text-gray-900"
