@@ -6,7 +6,7 @@ import { BASE_URL, convertSeconds } from "../../constants";
 import useAuth from "../../Hooks/useAuth";
 import { useNavigate } from "react-router";
 import Slogan from "../../assets/slogan.png";
-import Img2 from "../../assets/img2.png";
+import Img2 from "../../assets/final_haati.png";
 import Hexbg from "../../assets/hexbg.png";
 import { PiPlayPauseLight } from "react-icons/pi";
 import { Bar } from "react-chartjs-2";
