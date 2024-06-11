@@ -270,6 +270,7 @@ const AddQuestions = () => {
     try {
       const res = await axios.post(`${BASE_URL}test/addTest`, reqBody);
       console.log(res.data);
+      setTest(res.data.test);
       alert("Test Created successfully");
     } catch (error) {
       console.log(error);

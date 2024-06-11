@@ -107,6 +107,7 @@ const MasterTable = () => {
       fetchData();
     } catch (error) {
       console.log(error);
+      alert(error?.response?.data?.msg);
     }
   };
 
@@ -126,6 +127,7 @@ const MasterTable = () => {
       fetchData();
     } catch (error) {
       console.log(error);
+      alert(error?.response?.data?.msg);
     }
   };
 
@@ -142,11 +144,17 @@ const MasterTable = () => {
         "name": subjectName
     }
     console.log(reqBody);
-    const res = await axios.post(`${BASE_URL}subject/addSubject`,reqBody);
-    console.log(res.data);
-    alert('Subject added successfully');
-    setShowSubject(false);
-    fetchData();
+    try {
+      const res = await axios.post(`${BASE_URL}subject/addSubject`,reqBody);
+      console.log(res.data);
+      alert('Subject added successfully');
+      setShowSubject(false);
+      fetchData();
+    } catch (error) {
+      console.log(error);
+      alert(error?.response?.data?.msg);
+    }
+    
     }
     
   }
@@ -265,7 +273,7 @@ const MasterTable = () => {
             <form onSubmit={handleAddSyllabus}>
 
               <label htmlFor="name">Board Name :</label><br />
-              <input type="text" id='name' placeholder='Board Name' value={formSyllabus} onChange={(e) => setFormSyllabus(e.target.value)}
+              <input type="text" id='name' placeholder='Board Name' value={formSyllabus} onChange={(e) => setFormSyllabus(e.target.value.toUpperCase())}
                 className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
 
               <label htmlFor="ref">Reference :</label><br />
@@ -290,7 +298,7 @@ const MasterTable = () => {
             <form onSubmit={handleAddSyllabus}>
 
               <label htmlFor="name">Board Name :</label><br />
-              <input type="text" id='name' placeholder='Board Name' value={formSyllabus} onChange={(e) => setFormSyllabus(e.target.value)}
+              <input type="text" id='name' placeholder='Board Name' value={formSyllabus} onChange={(e) => setFormSyllabus(e.target.value.toUpperCase())}
                 className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
 
               <label htmlFor="ref">Reference :</label><br />
@@ -316,7 +324,7 @@ const MasterTable = () => {
             <form onSubmit={handleAddMedium}>
 
               <label htmlFor="name">Medium Name :</label><br />
-              <input type="text" id='name' placeholder='Medium Name' value={formMedium} onChange={(e) => setFormMedium(e.target.value)}
+              <input type="text" id='name' placeholder='Medium Name' value={formMedium} onChange={(e) => setFormMedium(e.target.value.toUpperCase())}
                 className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
 
               <label htmlFor="ref">Reference :</label><br />
@@ -341,7 +349,7 @@ const MasterTable = () => {
             <form onSubmit={handleAddSyllabus}>
 
               <label htmlFor="name">Board Name :</label><br />
-              <input type="text" id='name' placeholder='Board Name' value={formMedium} onChange={(e) => setFormMedium(e.target.value)}
+              <input type="text" id='name' placeholder='Board Name' value={formMedium} onChange={(e) => setFormMedium(e.target.value.toUpperCase())}
                 className='mt-2 w-full bg-gray-100 px-4 py-2 rounded-md' />
 
               <label htmlFor="ref">Reference :</label><br />
@@ -450,7 +458,7 @@ const MasterTable = () => {
                           type="text"
                           placeholder="Enter Subject"
                           value={subjectName}
-                          onChange={(e) => setSubjectName(e.target.value)}
+                          onChange={(e) => setSubjectName(e.target.value.toUpperCase())}
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                           required
                         />

@@ -118,6 +118,14 @@ const UpdateContent = () => {
         const res = await axios.post(`${BASE_URL}chapter/addChapter`, reqBody);
         console.log(res.data);
         alert("Chapter Added successfully");
+        setUploadedAudioUrl(null);
+        setUploadedFileUrl(null);
+        setVideoUrl(null);
+        setSelectedSubject(null);
+        setChapterDesc(null);
+        setChapterName(null);
+        setFileName(null);
+
         fetchChapters(selectedSubject);
       }
     } catch (error) {

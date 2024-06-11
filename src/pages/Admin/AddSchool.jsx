@@ -112,6 +112,16 @@ const AddSchool = () => {
       console.log(error);
     }
   };
+ 
+  const handleChangePrinicipalContact = (e) => {
+    if(e.target.value?.length >10){
+      alert('Cannot enter more than 10 numbers');
+    }else if(e.target.value?.length > 2 && parseInt(e.target.value.charAt(0)) < 6){
+      alert('Please enter a valid number')
+    }else{
+      setPrincipalContact(e.target.value);
+    }
+  }
 
   useEffect(() => {
     fetchData();
@@ -163,7 +173,9 @@ const AddSchool = () => {
               placeholder="Principal Contact"
               required
               value={principalContact}
-              onChange={(e) => setPrincipalContact(e.target.value)}
+              maxLength="10" 
+              pattern="\d{10}"
+              onChange={(e) => handleChangePrinicipalContact(e)}
             />
           </div>
           <div>
@@ -181,20 +193,6 @@ const AddSchool = () => {
             />
           </div>
           <div>
-            <label htmlFor="district" className="block mb-2 text-sm font-medium text-gray-900 ">
-              District
-            </label>
-            <input
-              type="text"
-              id="district"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-              placeholder="District"
-              required
-              value={district}
-              readOnly
-            />
-          </div>
-          <div>
             <label htmlFor="pincode" className="block mb-2 text-sm font-medium text-gray-900 ">
               Pincode
             </label>
@@ -208,6 +206,21 @@ const AddSchool = () => {
               onChange={handlePincodeChange}
             />
           </div>
+          <div>
+            <label htmlFor="district" className="block mb-2 text-sm font-medium text-gray-900 ">
+              District
+            </label>
+            <input
+              type="text"
+              id="district"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+              placeholder="District"
+              required
+              value={district}
+              readOnly
+            />
+          </div>
+          
           <div>
             <label htmlFor="state" className="block mb-2 text-sm font-medium text-gray-900 ">
               State
