@@ -637,7 +637,7 @@ const StudentHome = () => {
         </section> */}
 
         <div className="flex justify-center items-center my-5 static">
-          <img src={Img2} alt="" />
+          <img src={Img2} alt="" className="w-24 md:w-48" />
           <img src={Slogan} alt="" />
         </div>
         <footer className="bg-[#140342]">
