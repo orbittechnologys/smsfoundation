@@ -292,17 +292,17 @@ const StudentHome = () => {
               {isMenuOpen ? (
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M17 1L1 13M1 1l16 12"
                 />
               ) : (
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M1 1h15M1 7h15M1 13h15"
                 />
               )}
@@ -318,7 +318,7 @@ const StudentHome = () => {
             <ul className="font-medium flex items-center flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
               <li>
                 <div className="flex items-center w-full lg:w-auto justify-center lg:justify-start gap-4 lg:ml-10 relative z-50">
-                  <HiMiniSquares2X2 className="text-2xl" />
+                  {/* <HiMiniSquares2X2 className="text-2xl" /> */}
                   <div className="relative">
                     <select
                       onChange={(e) => setSelectedSubject(e.target.value)}
@@ -358,7 +358,7 @@ const StudentHome = () => {
                 <div className="lg:flex md:flex grid    lg:justify-center lg:items-center  md:justify-center md:items-center place-items-center   gap-8 lg:ml-40 mt-4 lg:mt-0 w-full lg:w-auto text-lg font-semibold">
                   <Link
                     to="/studenthome"
-                    className="text-gray-700 hover:text-gray-900"
+                    className="text-orange-500 hover:text-gray-900"
                   >
                     Home
                   </Link>
@@ -425,7 +425,7 @@ const StudentHome = () => {
                               navigate(`/studentProfile/${user?._id}`);
                               toggleDropdown();
                             }}
-                            className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                            className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2 cursor-pointer"
                           >
                             <CgProfile className="text-blue-500" />
                             Profile
@@ -433,7 +433,7 @@ const StudentHome = () => {
                         )}
                         <p
                           onClick={() => handleLogout()}
-                          className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                          className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2 cursor-pointer"
                         >
                           <AiOutlineLogout className="text-red-500" /> Logout
                         </p>
@@ -447,26 +447,27 @@ const StudentHome = () => {
         </div>
       </div>
       {/* <Saple /> */}
-      <div className="relative h-screen">
-        <section className="bg-[#2f2d51] py-8 h-auto md:h-3/4 relative">
-          <div className="flex flex-col md:flex-row justify-center items-center w-full h-full">
-            <div className="text-left w-full md:w-auto">
-              <div className="flex flex-col md:flex-row justify-center items-center md:gap-36">
-                <h1 className="text-2xl md:text-5xl text-white font-semibold mb-4 md:w-1/2 px-5 ">
-                  Empowering students to shape their{" "}
-                  <br className="hidden md:block" /> futures with knowledge as
-                  their guide.
-                </h1>
+      <div className="h-screen" style={{padding:0, margin:0}}>
+        <section className="bg-[#2f2d51] py-8 h-2/3">
+          <div className="flex flex-col md:flex-row justify-evenly items-center w-full h-2/3">
+                  <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white font-semibold mb-4 md:w-1/2 px-5 ">
+                    Empowering students to shape their{" "}
+                     futures with knowledge as
+                    their guide.
+                  </h1>
 
-                <div className="flex flex-col md:flex-row justify-center items-center my-5 static">
-                  <img src={Img2} alt="" className="w-24 md:w-48" />
-                  <img src={Slogan} alt="" className="w-28 md:w-56" />
-                </div>
-              </div>
-              <button
+                  <div className="flex flex-col md:flex-row justify-center items-center my-5 static">
+                    <img src={Img2} alt="" className="w-24 md:w-36 lg:w-48" />
+                    <img src={Slogan} alt="" className="w-28 md:w-36 lg:w-48" />
+                  </div>
+                
+          </div>
+          <div className="grid grid-cols-1 place-items-center">
+          <button
                 type="button"
                 onClick={() => navigate("/mycourses")}
-                className="mt-5  text-white bg-orange-600 hover:text-white border border-orange-500 hover:bg-orange-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-2xl text-lg px-10 py-3 md:px-10 md:py-3 text-center me-2 mb-2 md:mt-0 lg:ml-28 ml-24"
+                className="mt-5 text-white bg-orange-600 hover:text-white border border-orange-500 hover:bg-orange-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-2xl 
+                text-lg px-10 py-3 md:px-10 md:py-3 lg:px-20 lg:py-4 xl:px-24 xl:py-5 xl:text-2xl text-center  mb-2 md:mt-0"
               >
                 My Courses
                 <svg
@@ -486,8 +487,9 @@ const StudentHome = () => {
                   />
                 </svg>
               </button>
-            </div>
           </div>
+          
+          
         </section>
 
         {/* <div className="search-maindiv absolute top-1/2 left-1/2 w-fit transform -translate-x-1/2 -translate-y-1/2  mx-auto p-5 rounded-2xl shadow-md bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400">
@@ -562,12 +564,14 @@ const StudentHome = () => {
           </div>
         </div> */}
 
-        <div className="lg:absolute lg:top-3/4 lg:left-1/2 lg:w-3/4 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2">
+        <div 
+        // className="lg:absolute lg:top-3/4 lg:left-1/2 lg:w-3/4 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2"
+        >
           <Counter />
         </div>
 
         <div className="mt-32 w-full text-center">
-          <p>{chapter?.length} Materials Found</p>
+          <p>{chapter?.length} Activites Found</p>
         </div>
         <section className=" py-8 px-5 grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
           {chapter.map((card, index) => (

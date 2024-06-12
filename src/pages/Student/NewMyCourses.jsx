@@ -96,7 +96,7 @@ const NewMyCourses = () => {
         ))}
       </div>
       <div className="mt-4">
-        <section className="py-8 px-5 grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
+        <section className="py-8 px-5 grid lg:grid-cols-2 xl:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
           {chapters.map((card, index) => (
             <div
               key={index}

@@ -126,7 +126,7 @@ const MyAcitivity = () => {
             }
             onClick={() => setFilter("ongoing")}
           >
-            Ongoing
+            Chapters
           </p>
           <p
             className={
@@ -136,7 +136,7 @@ const MyAcitivity = () => {
             }
             onClick={() => setFilter("completed")}
           >
-            Completed
+            Tests
           </p>
         </div>
       </div>

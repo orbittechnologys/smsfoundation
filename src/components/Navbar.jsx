@@ -99,7 +99,7 @@ const Navbar = () => {
                       navigate(`/admin/adminProfile/${user?._id}`);
                       toggleDropdown();
                     }}
-                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2 cursor-pointer"
                   >
                     <CgProfile className="text-blue-500" />
                     Profile
@@ -110,7 +110,7 @@ const Navbar = () => {
                       navigate(`/inst/instructorProfile/${user?._id}`);
                       toggleDropdown();
                     }}
-                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2 cursor-pointer"
                   >
                     <CgProfile className="text-blue-500" />
                     Profile
@@ -121,7 +121,7 @@ const Navbar = () => {
                       navigate(`/studentProfile/${user?._id}`);
                       toggleDropdown();
                     }}
-                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2 cursor-pointer"
                   >
                     <CgProfile className="text-blue-500" />
                     Profile
@@ -130,7 +130,7 @@ const Navbar = () => {
 
                 <p
                   onClick={()=> handleLogout()}
-                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2"
+                  className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex justify-start items-center gap-2 cursor-pointer"
                 >
                   <AiOutlineLogout className="text-red-500" /> Logout
                 </p>

@@ -288,6 +288,29 @@ const Sidebar = () => {
               ``
             )}
             {/* schools */}
+            {role == "INSTRUCTOR" ? (
+              <li>
+              <Link
+                to="/inst/school"
+                className={`flex items-center p-2 rounded-lg group ${
+                  isActive("/inst/school")
+                    ? "bg-orange-200"
+                    : ""
+                }`}
+              >
+                <BiSolidSchool className="w-5 h-5 text-gray-500 transition duration-75" />
+                <span
+                  className={`${
+                    isActive("/inst/school")
+                      ? "text-black"
+                      : "text-black"
+                  } ms-3 hover:text-orange-500`}
+                >
+                  School
+                </span>
+              </Link>
+            </li>
+            ):``}
 
             {/* Student */}
             {role == "ADMIN" ? (

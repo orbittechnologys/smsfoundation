@@ -43,6 +43,7 @@ import EditStudentt from "./pages/Admin/EditStudentt.jsx";
 import NewMyCourses from "./pages/Student/NewMyCourses.jsx";
 import HeaderOne from "./pages/Student/HeaderOne.jsx";
 import NavbarStudent from "./components/NavbarStudent.jsx";
+import InstSchool from "./pages/Instructor/InstSchool.jsx";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -95,6 +96,7 @@ const App = () => {
             <Route path="LearningReport" element={<LearningReport />} />
             <Route path="TestReport" element={<TestReport />} />
             <Route path="editStudent" element={<EditStudent />} />
+            <Route path="school" element={<InstSchool/>} />
             <Route
               path="instructorProfile/:userId"
               element={<InstructorProfile />}

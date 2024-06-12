@@ -131,7 +131,9 @@ const InstHome = () => {
         </div>
         <div>
           <div className="flex justify-center items-center my-5 static">
-            <img src={Img2} alt="" className="lg:h-16 md:h-12 h-10" />
+            
+               <img src={Img2} alt="" className="lg:h-16 md:h-12 h-10 " />
+         
             <img src={Slogan} alt="" className="lg:h-16 md:h-12 h-10" />
           </div>
         </div>
@@ -140,20 +142,16 @@ const InstHome = () => {
         <div className="w-3/4">
           <div className="grid lg:grid-cols-2 sm:grid-cols-1  gap-5 ">
             <div
-              className=" grid place-items-center shadow-xl rounded-2xl p-5 border"
+              className=" grid place-items-center shadow-xl rounded-2xl p-5 border hover:scale-105 hover:shadow-2xl hover:shadow-orange-200 transition duration-300 ease-in-out"
               onClick={() => triggerCsvDownload()}
             >
               <img src={Expimg} alt="" className="lg:h-32 md:h-24 h-14" />
               <p className="text-xl font-bold">Export Files</p>
               {/* <p className="text-gray-500">Instruction goes here</p> */}
             </div>
-            {/* <div className=" grid place-items-center shadow-xl rounded-2xl p-5 border ">
-              <img src={Uploadimg} alt="" />
-              <p className="text-xl font-bold">Upload Content</p>
-              <p className="text-gray-500">Instruction goes here</p>
-            </div> */}
+            
             <div
-              className=" grid place-items-center shadow-xl rounded-2xl p-5 border"
+              className=" grid place-items-center shadow-xl rounded-2xl p-5 border hover:scale-105 hover:shadow-2xl hover:shadow-orange-200 transition duration-300 ease-in-out"
               onClick={() => navigate("/inst/LearningReport")}
             >
               <img src={Vresult} alt="" className="lg:h-32 md:h-24 h-14" />
@@ -163,7 +161,7 @@ const InstHome = () => {
               {/* <p className="text-gray-500">Instruction goes here</p> */}
             </div>
             <div
-              className=" grid place-items-center shadow-xl rounded-2xl p-5 border"
+              className=" grid place-items-center shadow-xl rounded-2xl p-5 border hover:scale-105 hover:shadow-2xl hover:shadow-orange-200 transition duration-300 ease-in-out"
               onClick={() => navigate("/inst/editStudent  ")}
             >
               <img src={Cariculamv} alt="" className="lg:h-32 md:h-24 h-14" />
@@ -173,7 +171,7 @@ const InstHome = () => {
               {/* <p className="text-gray-500">Instruction goes here</p> */}
             </div>
             <div
-              className=" grid place-items-center shadow-xl rounded-2xl p-5 border"
+              className=" grid place-items-center shadow-xl rounded-2xl p-5 border hover:scale-105 hover:shadow-2xl hover:shadow-orange-200 transition duration-300 ease-in-out"
               onClick={() => syncDataApi()}
             >
               <img src={syncLogo} alt="" className="lg:h-32 md:h-24 h-14" />
