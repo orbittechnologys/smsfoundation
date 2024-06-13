@@ -19,6 +19,8 @@ const AddInstructor = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [phone, setPhone] = useState("");
   const [qualification, setQualification] = useState("");
+  const [username, setUserName] = useState("");
+  const [usernameAvailable, setUsernameAvailable] = useState(null);
   // const [selectedSchool, setSelectedSchool] = useState("NO");
   const [selectedSchool, setSelectedSchool] = useState(null); // Initialize selectedSchool as null
   const [dropSchool, setDropSchool] = useState([]);
@@ -38,6 +40,7 @@ const AddInstructor = () => {
       firstName: name,
       lastName: lastName,
       middleName: middleName,
+      username:username,
       email: email,
       phone,
       qualification,
@@ -102,6 +105,23 @@ const AddInstructor = () => {
     }
   };
 
+  const checkIfUsernameExists = async (username) => {
+    try {
+      const res = await axios.get(`${BASE_URL}user/checkUsername/${username}`);
+      console.log(res.data);
+      setUsernameAvailable(true);
+    } catch (error) {
+      console.log(error);
+      setUsernameAvailable(false);
+    }
+  };
+
+  useEffect(() => {
+    if (username?.length > 4) {
+      checkIfUsernameExists(username);
+    }
+  }, [username]);
+
   useEffect(() => {
     fetchSchool();
   }, []);
@@ -144,7 +164,7 @@ const AddInstructor = () => {
                 id="lastName"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 placeholder="Middle Name"
-                required
+             
                 onChange={(e) => setMiddleName(e.target.value)}
               />
             </div>
@@ -163,6 +183,38 @@ const AddInstructor = () => {
                 required
                 onChange={(e) => setLastName(e.target.value)}
               />
+            </div>
+            <div>
+              <label
+                htmlFor="name"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                User Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                required
+                onChange={(e) => setUserName(e.target.value)}
+              />
+              <div>
+                <p
+                  className={`text-sm mt-2 text-white ${
+                    username.length > 0
+                      ? username.length > 4 && usernameAvailable
+                        ? "bg-green-400 p-4 rounded-full text-2xl font-bold"
+                        : "bg-red-400 p-4 rounded-full text-2xl font-bold"
+                      : ""
+                  }`}
+                >
+                  {username.length > 0
+                    ? username.length > 4 && usernameAvailable
+                      ? "Available"
+                      : "Not Available"
+                    : ""}
+                </p>
+              </div>
             </div>
             <div>
               <select
