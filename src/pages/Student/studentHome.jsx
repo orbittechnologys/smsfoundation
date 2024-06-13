@@ -145,12 +145,18 @@ const StudentHome = () => {
   const fetchUser = async () => {
     const userId = sessionStorage.getItem("user_id");
     setRole(sessionStorage.getItem("role"));
-    try {
-      const res = await axios.get(`${BASE_URL}user/id/${userId}`);
-      setUser(res.data.userDoc);
-    } catch (error) {
-      console.log(error);
+    if(userId){
+      try {
+        const res = await axios.get(`${BASE_URL}user/id/${userId}`);
+        setUser(res.data.userDoc);
+      } catch (error) {
+        console.log(error);
+        navigate('/')
+      }
+    }else{
+      navigate('/')
     }
+    
   };
 
   const handleLogout = () => {
@@ -362,12 +368,12 @@ const StudentHome = () => {
                   >
                     Home
                   </Link>
-                  <Link
+                  {/* <Link
                     to="/mycourses"
                     className="text-gray-700 hover:text-gray-900"
                   >
                     Courses
-                  </Link>
+                  </Link> */}
                   <Link
                     to="/mycourse"
                     className="text-gray-700 hover:text-gray-900"
@@ -450,7 +456,7 @@ const StudentHome = () => {
       <div className="h-screen" style={{padding:0, margin:0}}>
         <section className="bg-[#2f2d51] py-8 h-2/3">
           <div className="flex flex-col md:flex-row justify-evenly items-center w-full h-2/3">
-                  <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white font-semibold mb-4 md:w-1/2 px-5 ">
+                  <h1 style={{lineHeight:"1.2em"}} className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white font-semibold mb-4 md:w-1/2 px-5">
                     Empowering students to shape their{" "}
                      futures with knowledge as
                     their guide.

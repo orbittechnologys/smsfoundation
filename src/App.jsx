@@ -69,9 +69,9 @@ const App = () => {
         <Route path="/RestPassword" element={<RestPassword />} />
 
         <Route path="/home2" element={<HeaderOne />} />
-          
-          <Route path="/studentHome" element={<StudentHome />} />
-          
+        
+        <Route path="/studentHome" element={<StudentHome />} />
+        
         <Route path="" element={<Navbar />}>
           
           <Route

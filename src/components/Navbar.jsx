@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import sfLogo from "../assets/logoflex.png";
 import { Outlet, useNavigate } from "react-router";
-import { CiUser } from "react-icons/ci";
 import axios from "axios";
 import { BASE_URL } from "../constants";
 import { FaCaretDown } from "react-icons/fa6";
@@ -14,6 +13,7 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
   const navigate = useNavigate();
+  
 
   const fetchUser = async () => {
     const userId = sessionStorage.getItem("user_id");
@@ -74,7 +74,15 @@ const Navbar = () => {
             <span>Language</span>
             <button>English</button>
           </div> */}
+          
+            <Link to={role == "STUDENT" ? "/studenthome" : role=="ADMIN" ? "/admin/adminHome" :"/inst/instHome"} 
+            className="hidden lg:block md:block">
+              <p className="hover:underline">Back to Home</p>
+            </Link>
+        
+          
           <div className="relative">
+          
             <button
               onClick={toggleDropdown}
               className="flex items-center gap-2"
