@@ -16,6 +16,7 @@ import { IoMdHome } from "react-icons/io";
 import { BiSolidSchool } from "react-icons/bi";
 import { LuSchool2 } from "react-icons/lu";
 import { GiTeacher } from "react-icons/gi";
+import Footer from "./Footer";
 
 const Sidebar = () => {
   const { auth, setAuth } = useAuth();
@@ -88,8 +89,8 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     sessionStorage.clear();
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   //
   const [isStudentDropdownOpen, setIsStudentDropdownOpen] = useState(false);
@@ -290,27 +291,25 @@ const Sidebar = () => {
             {/* schools */}
             {role == "INSTRUCTOR" ? (
               <li>
-              <Link
-                to="/inst/school"
-                className={`flex items-center p-2 rounded-lg group ${
-                  isActive("/inst/school")
-                    ? "bg-orange-200"
-                    : ""
-                }`}
-              >
-                <BiSolidSchool className="w-5 h-5 text-gray-500 transition duration-75" />
-                <span
-                  className={`${
-                    isActive("/inst/school")
-                      ? "text-black"
-                      : "text-black"
-                  } ms-3 hover:text-orange-500`}
+                <Link
+                  to="/inst/school"
+                  className={`flex items-center p-2 rounded-lg group ${
+                    isActive("/inst/school") ? "bg-orange-200" : ""
+                  }`}
                 >
-                  School
-                </span>
-              </Link>
-            </li>
-            ):``}
+                  <BiSolidSchool className="w-5 h-5 text-gray-500 transition duration-75" />
+                  <span
+                    className={`${
+                      isActive("/inst/school") ? "text-black" : "text-black"
+                    } ms-3 hover:text-orange-500`}
+                  >
+                    School
+                  </span>
+                </Link>
+              </li>
+            ) : (
+              ``
+            )}
 
             {/* Student */}
             {role == "ADMIN" ? (
@@ -815,7 +814,7 @@ const Sidebar = () => {
 
             <li>
               <p
-                onClick={()=> handleLogout()}
+                onClick={() => handleLogout()}
                 className="cursor-pointer mt-28 flex items-center p-2 text-gray-900 rounded-lg hover:bg-orange-200  group"
               >
                 <IoExitOutline className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " />
@@ -828,10 +827,20 @@ const Sidebar = () => {
         </div>
       </aside>
 
-      <div className="p-4 sm:ml-64">
+      {/* <div className="p-4 sm:ml-64">
         <div className="p-4">
           <Outlet />
+          
         </div>
+        <Footer/>
+      </div> */}
+      <div className="min-h-screen flex flex-col">
+        <div className="flex-1 flex flex-col p-4 sm:ml-64">
+          <div className="flex-1 p-4">
+            <Outlet />
+          </div>
+        </div>
+        <Footer />
       </div>
     </>
   );
