@@ -44,6 +44,7 @@ import NewMyCourses from "./pages/Student/NewMyCourses.jsx";
 import HeaderOne from "./pages/Student/HeaderOne.jsx";
 import NavbarStudent from "./components/NavbarStudent.jsx";
 import InstSchool from "./pages/Instructor/InstSchool.jsx";
+import StatusPage from "./pages/StatusPage.jsx";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -58,7 +59,9 @@ const App = () => {
       setAuth(storedData);
       setRole(sessionStorage.getItem("role"));
     } else {
-      navigate("/");
+      const pathname = window.location.pathname;
+      if(pathname !="/status")
+        navigate("/");
     }
   }, []);
 
@@ -69,6 +72,7 @@ const App = () => {
         <Route path="/RestPassword" element={<RestPassword />} />
 
         <Route path="/home2" element={<HeaderOne />} />
+        <Route path="/status" element={<StatusPage/>} />
         
         <Route path="/studentHome" element={<StudentHome />} />
         
