@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import sfLogo from "../assets/sflogo.png";
-import mainSvg from "../assets/undraw_starlink_3r0a.svg";
 import syncImg from "../assets/sync.png";
 import ethernetImg from "../assets/lan.png";
 import wifiImg from "../assets/wifi.png";
