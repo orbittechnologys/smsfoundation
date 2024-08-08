@@ -52,11 +52,11 @@ const App = () => {
   console.log(auth);
 
   useEffect(() => {
-    const storedData = sessionStorage.getItem("user_id");
+    const storedData = localStorage.getItem("user_id");
     console.log(storedData);
     if (storedData) {
       setAuth(storedData);
-      setRole(sessionStorage.getItem("role"));
+      setRole(localStorage.getItem("role"));
     } else {
       navigate("/");
     }

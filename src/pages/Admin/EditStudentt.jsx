@@ -59,7 +59,7 @@ const EditStudentt = () => {
       const res = await axios.post(`${BASE_URL}student/updateStudent`, reqbody);
       console.log(res.data);
       toast.success('Student Updated');
-      const role = sessionStorage.getItem('role');
+      const role = localStorage.getItem('role');
       if(role == "ADMIN"){
         navigate('/admin/AllStudents');
       }else{

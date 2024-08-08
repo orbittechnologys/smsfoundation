@@ -27,11 +27,11 @@ const Sidebar = () => {
   const [margin, setMargin] = useState(false);
 
   useEffect(() => {
-    const storedData = sessionStorage.getItem("user_id");
+    const storedData = localStorage.getItem("user_id");
     console.log(storedData);
     if (storedData) {
       setAuth(storedData);
-      setRole(sessionStorage.getItem("role"));
+      setRole(localStorage.getItem("role"));
     } else {
       navigate("/");
     }
@@ -88,7 +88,7 @@ const Sidebar = () => {
   };
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     navigate("/");
   };
 

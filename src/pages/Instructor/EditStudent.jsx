@@ -56,7 +56,7 @@ const EditStudent = () => {
   };
 
   useEffect(() => {
-    const userId = sessionStorage.getItem("user_id");
+    const userId = localStorage.getItem("user_id");
     fetchInstructorByUserId(userId);
   }, []);
 

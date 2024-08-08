@@ -52,7 +52,7 @@ const LearningReport = () => {
     console.log("Fetching learning report");
     try {
       const res = await axios.get(
-        `${BASE_URL}instructor/getByUserId/${sessionStorage.getItem("user_id")}`
+        `${BASE_URL}instructor/getByUserId/${localStorage.getItem("user_id")}`
       );
       console.log(res.data);
       setSchool(res.data.instructorDoc?.school);
@@ -87,7 +87,7 @@ const LearningReport = () => {
   };
 
   const fetchLearningReport = async () => {
-    if (sessionStorage.getItem("role") == "INSTRUCTOR") {
+    if (localStorage.getItem("role") == "INSTRUCTOR") {
       fetchSchoolLearningReport();
       setRole("INSTRUCTOR");
     } else {

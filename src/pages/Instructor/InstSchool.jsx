@@ -18,7 +18,7 @@ const InstSchool = () => {
     }
 
     useEffect(() => {
-        fetchSchool(sessionStorage.getItem('user_id'));
+        fetchSchool(localStorage.getItem('user_id'));
     }, []);
 
     const renderJsonData = (data) => {

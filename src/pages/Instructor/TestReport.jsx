@@ -66,7 +66,7 @@ const TestReport = () => {
   const fetchSchoolTestReport = async () => {
     try {
       const res = await axios.get(
-        `${BASE_URL}instructor/getByUserId/${sessionStorage.getItem("user_id")}`
+        `${BASE_URL}instructor/getByUserId/${localStorage.getItem("user_id")}`
       );
       console.log(res.data);
       const transformedSchools = res.data.instructorDoc.school.map(
@@ -108,7 +108,7 @@ const TestReport = () => {
   };
 
   const fetchTestReport = async () => {
-    if (sessionStorage.getItem("role") == "INSTRUCTOR") {
+    if (localStorage.getItem("role") == "INSTRUCTOR") {
       fetchSchoolTestReport();
       setRole("INSTRUCTOR");
     } else {

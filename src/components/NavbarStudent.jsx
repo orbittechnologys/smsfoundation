@@ -29,8 +29,8 @@ const NavbarStudent = ({ handleSearch }) => {
   };
 
   const fetchUser = async () => {
-    const userId = sessionStorage.getItem("user_id");
-    setRole(sessionStorage.getItem("role"));
+    const userId = localStorage.getItem("user_id");
+    setRole(localStorage.getItem("role"));
     try {
       const res = await axios.get(`${BASE_URL}user/id/${userId}`);
       setUser(res.data.userDoc);
@@ -50,7 +50,7 @@ const NavbarStudent = ({ handleSearch }) => {
   };
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     navigate("/");
   };
 
