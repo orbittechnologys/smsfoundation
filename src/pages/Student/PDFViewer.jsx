@@ -95,7 +95,7 @@ const PDFViewer = () => {
   const [student, setStudent] = useState(null);
 
   const fetchStudent = async () => {
-    const userId = sessionStorage.getItem("user_id");
+    const userId = localStorage.getItem("user_id");
     console.log(userId);
     try {
       const res = await axios.get(

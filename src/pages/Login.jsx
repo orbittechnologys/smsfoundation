@@ -22,8 +22,8 @@ const Login = () => {
       console.log(res.data);
       setAuth(res.data._id);
       setRole(res.data.role);
-      sessionStorage.setItem("user_id", res.data._id);
-      sessionStorage.setItem("role", res.data.role);
+      localStorage.setItem("user_id", res.data._id);
+      localStorage.setItem("role", res.data.role);
       if (res.data.role === "STUDENT") {
         navigate("/studenthome");
       } else if (res.data.role === "ADMIN") {

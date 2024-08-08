@@ -37,7 +37,7 @@ const PreviewTest = () => {
     if (testId) {
       fetchQuestions(testId);
       fetchTest(testId);
-      setRole(sessionStorage.getItem("role"));
+      setRole(localStorage.getItem("role"));
     }
   }, [testId]);
 

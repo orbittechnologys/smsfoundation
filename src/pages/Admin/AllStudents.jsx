@@ -51,7 +51,7 @@ const AllStudents = () => {
 
   const getAllStudents = async () => {
     console.log(role);
-    if (sessionStorage.getItem("role") == "ADMIN") {
+    if (localStorage.getItem("role") == "ADMIN") {
       try {
         const res = await axios.get(`${BASE_URL}student/getAll`);
         console.log(res.data.students);
@@ -78,9 +78,9 @@ const AllStudents = () => {
 
   const fetchInstructor = async () => {
     try {
-      const userId = sessionStorage.getItem("user_id");
-      setRole(sessionStorage.getItem("role"));
-      if (sessionStorage.getItem("role") == "ADMIN") {
+      const userId = localStorage.getItem("user_id");
+      setRole(localStorage.getItem("role"));
+      if (localStorage.getItem("role") == "ADMIN") {
         getAllStudents();
       } else {
         const res = await axios.get(

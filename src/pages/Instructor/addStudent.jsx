@@ -103,8 +103,8 @@ const addStudent = () => {
 
   const fetchInstructor = async () => {
     try {
-      const userId = sessionStorage.getItem("user_id");
-      setRole(sessionStorage.getItem("role"));
+      const userId = localStorage.getItem("user_id");
+      setRole(localStorage.getItem("role"));
       const res = await axios.get(
         `${BASE_URL}instructor/getByUserId/${userId}`
       );
@@ -144,7 +144,7 @@ const addStudent = () => {
   }, [username]);
 
   useEffect(() => {
-    const role = sessionStorage.getItem("role");
+    const role = localStorage.getItem("role");
     if (role == "ADMIN") {
       fetchSchool();
     } else {
@@ -182,21 +182,6 @@ const addStudent = () => {
             <div>
               <label
                 htmlFor="name"
-                className="block mb-2 text-sm font-medium text-gray-900 "
-              >
-                First Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                required
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="name"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
                 User Name
@@ -226,6 +211,23 @@ const addStudent = () => {
                 </p>
               </div>
             </div>
+
+            <div>
+              <label
+                htmlFor="name"
+                className="block mb-2 text-sm font-medium text-gray-900 "
+              >
+                First Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+           
             <div>
               <label
                 htmlFor="middlename"
@@ -237,7 +239,6 @@ const addStudent = () => {
                 type="text"
                 id="middlename"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                required
                 onChange={(e) => setMiddleName(e.target.value)}
               />
             </div>

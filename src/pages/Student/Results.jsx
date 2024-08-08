@@ -28,8 +28,8 @@ const Results = () => {
 
   const fetchStudent = async () => {
     try {
-      console.log(sessionStorage.getItem("user_id"));
-      const userId = sessionStorage.getItem("user_id");
+      console.log(localStorage.getItem("user_id"));
+      const userId = localStorage.getItem("user_id");
       const res = await axios.get(
         `${BASE_URL}student/getStudentByUserId/${userId}`
       );
