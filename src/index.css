@@ -1,3 +1,93 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* .search-inputt {
+  background-color: blue;
+} */
+
+body{
+  font-family: 'Poppins';
+}
+
+.search-maindiv {
+  width: auto;
+}
+
+/* .search-div {
+  background-color: blue;
+} */
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+@media screen and (max-width: 800px) {
+  .search-inputt {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .search-maindiv {
+    width: 360px;
+    padding: 10px 30px 10px 30px;
+  }
+  .search-div {
+    width: 350px;
+  }
+  .doughnut-div {
+    width: 350px !important;
+    /* background-color: blue; */
+  }
+  .barr-div {
+    width: 350px !important;
+    /* background-color: blue; */
+  }
+}
+
+.doughhh {
+  width: 400px;
+  height: 400px;
+}
+
+.doughnut-div {
+  width: 400px;
+}
+
+.barr-div {
+  width: 400px;
+}
+
+.cont-boxx {
+  width: 350px;
+  height: 350px;
+}
+
+@media screen and (max-width: 400px) {
+  .doughnut-div {
+    width: 300px !important;
+    /* background-color: blue; */
+  }
+  .barr-div {
+    width: 300px !important;
+    /* background-color: blue; */
+  }
+  .doughhh {
+    width: 280px;
+    height: 280px;
+  }
+  .inputbutton-div {
+    width: "34em";
+  }
+  .select-div {
+    /* background-color: black; */
+    width: 150px;
+  }
+}
