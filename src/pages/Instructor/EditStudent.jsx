@@ -16,6 +16,9 @@ const EditStudent = () => {
   const [phone, setPhone] = useState("");
   const [getAllStudents, setGetAllStudents] = useState([]);
   const [uniqueIds, setUniqueIds] = useState({});
+  const [showModel, setShowModel] = useState(false);
+
+  
 
   const fetchInstructorByUserId = async (userId) => {
     try {
@@ -65,23 +68,6 @@ const EditStudent = () => {
       fetchStudentsByInstructor(instructor._id);
     }
   }, [instructor]);
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const res = await axios.get(`${BASE_URL}student/getStudentQuerySchool`, {
-  //       headers: {
-  //         query: query,
-  //         school: instructor?.school?._id,
-  //       },
-  //     });
-  //     console.log(res.data);
-  //     setStudents(res.data.students);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

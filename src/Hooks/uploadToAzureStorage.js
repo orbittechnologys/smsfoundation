@@ -1,6 +1,6 @@
 import { BlobServiceClient } from '@azure/storage-blob';
 
-const uploadToAzureStorage = async (file, blobName) => {
+const uploadToAzureStorage = async (file, blobName, setUploadProgress) => {
 
     console.log(file);
 
@@ -26,7 +26,15 @@ const uploadToAzureStorage = async (file, blobName) => {
       const blobClient = containerClient.getBlockBlobClient(uuid + file.name );
 
   // set mimetype as determined from browser with file upload control
-         const options = { blobHTTPHeaders: { blobContentType: file.type } };
+
+         const options = {
+          blobHTTPHeaders: { blobContentType: file.type },
+          onProgress: (progress) => {
+            // Calculate percentage progress
+            const percentCompleted = Math.round((progress.loadedBytes / file.size) * 100);
+            setUploadProgress(percentCompleted); // Update the percentage in state
+          },
+        };
 
          console.log(blobClient);
 

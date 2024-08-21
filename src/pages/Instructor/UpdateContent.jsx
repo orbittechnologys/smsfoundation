@@ -5,6 +5,7 @@ import axios from "axios";
 import { BASE_URL } from "../../constants";
 import uploadToAzureStorage from "../../Hooks/uploadToAzureStorage";
 import SearchableDropdown from "../SearchableDropdown";
+import { LuLoader2 } from "react-icons/lu";
 
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
@@ -30,33 +31,56 @@ const UpdateContent = () => {
 
   const [dropMedium, setDropMedium] = useState([]);
   const [dropSyllabus, setDropSyllabus] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [fileUploadPercentage, setFileUploadPercentage] = useState(0);
+  const [audioUplpoadPercentage, setAudioUplpoadPercentage] = useState(0);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file && file.type === "application/pdf") {
       setFileName(file.name);
+      setIsLoading(true);
       const blobName = file?.name;
-      const url = await uploadToAzureStorage(file, blobName);
-      console.log(url);
-      setUploadedFileUrl(url);
+      try {
+        const url = await uploadToAzureStorage(
+          file,
+          blobName,
+          setFileUploadPercentage
+        );
+        console.log(url);
+        setUploadedFileUrl(url);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      } finally {
+        setIsLoading(false);
+      }
     } else {
-      // Handle invalid file type
       alert("Please upload a PDF file.");
     }
   };
-
   const handleFileChangeAudio = async (event) => {
     const file = event.target.files[0];
     const audioTypeRegex = /^audio\//;
     if (file && audioTypeRegex.test(file.type)) {
       setAudioFileName(file.name);
       const blobName = file?.name;
-      const url = await uploadToAzureStorage(file, blobName);
-      console.log(url);
-      setUploadedAudioUrl(url);
+      setIsLoading(true);
+      try {
+        const url = await uploadToAzureStorage(
+          file,
+          blobName,
+          setAudioUplpoadPercentage
+        );
+        console.log(url);
+        setUploadedAudioUrl(url);
+      } catch (error) {
+        console.error("Error uploading audio file:", error);
+      } finally {
+        setIsLoading(false); // Stop loading
+      }
     } else {
-      // Handle invalid file type
-      alert("Please upload a PDF file.");
+      alert("Please upload an audio file.");
     }
   };
 
@@ -285,7 +309,7 @@ const UpdateContent = () => {
               <div>
                 <label
                   htmlFor="cont"
-                  className="block mb-2 text-sm font-semibold text-gray-900 "
+                  className="block mb-2 text-sm font-semibold text-gray-900"
                 >
                   Upload Content
                 </label>
@@ -294,23 +318,35 @@ const UpdateContent = () => {
                   id="cont"
                   accept="application/pdf"
                   onChange={handleFileChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Upload Content"
                   required
                 />
+
+                {isLoading && (
+                  <p className="text-sm font-medium text-gray-700 mt-2">
+                    Uploading: {fileUploadPercentage}%
+                  </p>
+                )}
+
+                {/* Progress Bar */}
+                {isLoading && (
+                  <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                    <div
+                      className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
+                      style={{ width: `${fileUploadPercentage}%` }}
+                    >
+                      {fileUploadPercentage}%
+                    </div>
+                  </div>
+                )}
               </div>
-              {/* <button
-                onClick={() => document.getElementById("cont").click()}
-                className="mt-5 ml-5"
-              >
-                <FaSquarePlus className="text-xl" />
-              </button> */}
             </div>
             <div className="flex justify-center items-center">
               <div>
                 <label
                   htmlFor="cont"
-                  className="block mb-2 text-sm font-semibold text-gray-900 "
+                  className="block mb-2 text-sm font-semibold text-gray-900"
                 >
                   Upload Audio File
                 </label>
@@ -319,10 +355,29 @@ const UpdateContent = () => {
                   id="cont"
                   accept="audio/*"
                   onChange={handleFileChangeAudio}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Upload Content"
                   required
                 />
+
+                {isLoading && (
+                  <>
+                    {/* Progress Percentage Text */}
+                    <p className="text-sm font-medium text-gray-700 mt-2">
+                      Uploading: {audioUplpoadPercentage}%
+                    </p>
+
+                    {/* Progress Bar */}
+                    <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                      <div
+                        className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
+                        style={{ width: `${audioUplpoadPercentage}%` }}
+                      >
+                        {audioUplpoadPercentage}%
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
             <div>
