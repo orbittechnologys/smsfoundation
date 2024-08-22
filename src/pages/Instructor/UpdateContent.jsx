@@ -6,10 +6,12 @@ import { BASE_URL } from "../../constants";
 import uploadToAzureStorage from "../../Hooks/uploadToAzureStorage";
 import SearchableDropdown from "../SearchableDropdown";
 import { LuLoader2 } from "react-icons/lu";
+import { MdOutlineAudioFile } from "react-icons/md";
 
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
   const [audioFileName, setAudioFileName] = useState("");
+  const [videoFileName, setVideoFileName] = useState("");
 
   const [standard, setStandard] = useState(null);
   const [medium, setMedium] = useState(null);
@@ -18,16 +20,14 @@ const UpdateContent = () => {
 
   const [selectedSubject, setSelectedSubject] = useState(null);
 
-  const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
-
   const [chapters, setChapters] = useState(null);
 
   const [chapterName, setChapterName] = useState(null);
   const [chapterDesc, setChapterDesc] = useState(null);
 
-  const [vidoeUrl, setVideoUrl] = useState(null);
-
+  const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState(null);
+  const [vidoeUrl, setVideoUrl] = useState(null);
 
   const [dropMedium, setDropMedium] = useState([]);
   const [dropSyllabus, setDropSyllabus] = useState([]);
@@ -35,6 +35,7 @@ const UpdateContent = () => {
 
   const [fileUploadPercentage, setFileUploadPercentage] = useState(0);
   const [audioUplpoadPercentage, setAudioUplpoadPercentage] = useState(0);
+  const [videoUploadPercentage, setVideoUploadPercentage] = useState(0);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -81,6 +82,29 @@ const UpdateContent = () => {
       }
     } else {
       alert("Please upload an audio file.");
+    }
+  };
+  const handleVideoFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file && file.type === "video/mp4") {
+      setVideoFileName(file.name);
+      setIsLoading(true);
+      const blobName = file.name;
+      try {
+        const url = await uploadToAzureStorage(
+          file,
+          blobName,
+          setVideoUploadPercentage
+        );
+        console.log(url);
+        setVideoUrl(url);
+      } catch (error) {
+        console.error("Error uploading video:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      alert("Please upload a valid MP4 video file.");
     }
   };
 
@@ -380,29 +404,62 @@ const UpdateContent = () => {
                 )}
               </div>
             </div>
-            <div>
-              <label
-                htmlFor="desc"
-                className="block mb-2 text-sm font-semibold text-gray-900 "
-              >
-                Video URL
-              </label>
-              <input
-                type="text"
-                id="desc"
-                onChange={(e) => setVideoUrl(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder="Enter Description"
-                required
-              />
-            </div>
-            {fileName && (
-              <div className="grid mt-2">
-                <FaFilePdf className="text-red-500 text-2xl mr-2" />
-                <span>{fileName}</span>
+            <div className="flex justify-center items-center">
+              <div>
+                <label
+                  htmlFor="videoUpload"
+                  className="block mb-2 text-sm font-semibold text-gray-900"
+                >
+                  Upload Video
+                </label>
+                <input
+                  type="file"
+                  id="videoUpload"
+                  accept="video/mp4"
+                  onChange={handleVideoFileChange}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  placeholder="Upload Video"
+                  required
+                />
+
+                {isLoading && (
+                  <>
+                    <p className="text-sm font-medium text-gray-700 mt-2">
+                      Uploading: {videoUploadPercentage}%
+                    </p>
+                    <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                      <div
+                        className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
+                        style={{ width: `${videoUploadPercentage}%` }}
+                      >
+                        {videoUploadPercentage}%
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
-            )}
+            </div>
           </div>
+          {fileName && (
+            <div className="grid mt-2">
+              <FaFilePdf className="text-red-500 text-2xl mr-2" />
+              <span>{fileName}</span>
+            </div>
+          )}
+          {audioFileName && (
+            <div className="grid mt-2">
+              <MdOutlineAudioFile className="text-red-500 text-2xl mr-2" />
+              <span>{audioFileName}</span>
+            </div>
+          )}
+          {videoFileName && (
+            <div className="mt-4">
+              <p className="text-sm font-medium text-green-600 mb-2">
+                Uploaded successfully! Your video:
+              </p>
+            </div>
+          )}
+
           <div className="flex justify-end items-center">
             <button
               type="button"
