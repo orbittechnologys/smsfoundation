@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">sehgal-foundation</string>
     <string name="title_activity_main">sehgal-foundation</string>
-    <string name="package_name">com.example.app</string>
-    <string name="custom_url_scheme">com.example.app</string>
+    <string name="package_name">com.ot.smsfoundation</string>
+    <string name="custom_url_scheme">com.ot.smsfoundation</string>
 </resources>

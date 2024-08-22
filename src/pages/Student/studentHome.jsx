@@ -145,18 +145,17 @@ const StudentHome = () => {
   const fetchUser = async () => {
     const userId = sessionStorage.getItem("user_id");
     setRole(sessionStorage.getItem("role"));
-    if(userId){
+    if (userId) {
       try {
         const res = await axios.get(`${BASE_URL}user/id/${userId}`);
         setUser(res.data.userDoc);
       } catch (error) {
         console.log(error);
-        navigate('/')
+        navigate("/");
       }
-    }else{
-      navigate('/')
+    } else {
+      navigate("/");
     }
-    
   };
 
   const handleLogout = () => {
@@ -453,49 +452,48 @@ const StudentHome = () => {
         </div>
       </div>
       {/* <Saple /> */}
-      <div className="h-screen" style={{padding:0, margin:0}}>
+      <div className="h-screen" style={{ padding: 0, margin: 0 }}>
         <section className="bg-[#2f2d51] py-8 h-2/3">
           <div className="flex flex-col md:flex-row justify-evenly items-center w-full h-2/3">
-                  <h1 style={{lineHeight:"1.2em"}} className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white font-semibold mb-4 md:w-1/2 px-5">
-                    Empowering students to shape their{" "}
-                     futures with knowledge as
-                    their guide.
-                  </h1>
+            <h1
+              style={{ lineHeight: "1.2em" }}
+              className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white font-semibold mb-4 md:w-1/2 px-5"
+            >
+              Empowering students to shape their futures with knowledge as their
+              guide.
+            </h1>
 
-                  <div className="flex flex-col md:flex-row justify-center items-center my-5 static">
-                    <img src={Img2} alt="" className="w-24 md:w-36 lg:w-48" />
-                    <img src={Slogan} alt="" className="w-28 md:w-36 lg:w-48" />
-                  </div>
-                
+            <div className="flex flex-col md:flex-row justify-center items-center my-5 static">
+              <img src={Img2} alt="" className="w-24 md:w-36 lg:w-48" />
+              <img src={Slogan} alt="" className="w-28 md:w-36 lg:w-48" />
+            </div>
           </div>
           <div className="grid grid-cols-1 place-items-center">
-          <button
-                type="button"
-                onClick={() => navigate("/mycourses")}
-                className="mt-5 text-white bg-orange-600 hover:text-white border border-orange-500 hover:bg-orange-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-2xl 
+            <button
+              type="button"
+              onClick={() => navigate("/mycourses")}
+              className="mt-5 text-white bg-orange-600 hover:text-white border border-orange-500 hover:bg-orange-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-2xl 
                 text-lg px-10 py-3 md:px-10 md:py-3 lg:px-20 lg:py-4 xl:px-24 xl:py-5 xl:text-2xl text-center  mb-2 md:mt-0"
+            >
+              My Courses
+              <svg
+                className="inline-block ml-2"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                width="16"
+                height="16"
               >
-                My Courses
-                <svg
-                  className="inline-block ml-2"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  width="16"
-                  height="16"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
-          
-          
         </section>
 
         {/* <div className="search-maindiv absolute top-1/2 left-1/2 w-fit transform -translate-x-1/2 -translate-y-1/2  mx-auto p-5 rounded-2xl shadow-md bg-gradient-to-r from-amber-300 via-amber-200 to-amber-400">
@@ -529,13 +527,11 @@ const StudentHome = () => {
                     }}
                   >
                     <option value="NO">Select Subject</option>
-                    {subjects?.map((subject, index) => {
-                      return (
-                        <option key={index} value={subject?._id}>
-                          {subject?.name}
-                        </option>
-                      );
-                    })}
+                    {subjects?.map((subject, index) => (
+                      <option key={index} value={subject?._id}>
+                        {subject?.name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div
@@ -570,7 +566,7 @@ const StudentHome = () => {
           </div>
         </div> */}
 
-        <div 
+        <div
         // className="lg:absolute lg:top-3/4 lg:left-1/2 lg:w-3/4 lg:transform lg:-translate-x-1/2 lg:-translate-y-1/2"
         >
           <Counter />

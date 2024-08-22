@@ -54,6 +54,7 @@ const App = () => {
   useEffect(() => {
     const storedData = sessionStorage.getItem("user_id");
     console.log(storedData);
+    setRole(sessionStorage.getItem("role"));
     if (storedData) {
       setAuth(storedData);
       setRole(sessionStorage.getItem("role"));
@@ -69,11 +70,10 @@ const App = () => {
         <Route path="/RestPassword" element={<RestPassword />} />
 
         <Route path="/home2" element={<HeaderOne />} />
-        
+
         <Route path="/studentHome" element={<StudentHome />} />
-        
+
         <Route path="" element={<Navbar />}>
-          
           <Route
             path="/StudentProfile/:studentId"
             element={<StudentProfile />}
@@ -83,7 +83,7 @@ const App = () => {
 
           <Route path="/pdf/:chapterId" element={<PDFViewer />} />
           <Route path="/mycourse" element={<MyCourse />} />
-          <Route path="/mycourses" element={<NewMyCourses/>}/>
+          <Route path="/mycourses" element={<NewMyCourses />} />
           <Route path="/mcq/:testId" element={<Mcq />} />
           <Route path="/results/:testId" element={<Results />} />
           <Route path="/preview/:testId" element={<PreviewTest />} />
@@ -96,7 +96,7 @@ const App = () => {
             <Route path="LearningReport" element={<LearningReport />} />
             <Route path="TestReport" element={<TestReport />} />
             <Route path="editStudent" element={<EditStudent />} />
-            <Route path="school" element={<InstSchool/>} />
+            <Route path="school" element={<InstSchool />} />
             <Route
               path="instructorProfile/:userId"
               element={<InstructorProfile />}

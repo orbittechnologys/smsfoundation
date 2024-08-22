@@ -1,4 +1,4 @@
-package com.example.app;
+package com.ot.smsfoundation;
 
 import com.getcapacitor.BridgeActivity;
 
