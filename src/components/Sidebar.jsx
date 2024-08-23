@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import sfLogo from "../assets/fulllogo.png";
 import { Link, useLocation } from "react-router-dom";
@@ -52,6 +52,8 @@ const Sidebar = () => {
     return location.pathname === path;
   };
 
+  const sidebarRef = useRef(null);
+
   const [showSidebar, setShowSidebar] = useState(false);
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
@@ -59,6 +61,18 @@ const Sidebar = () => {
 
   const handleCloseSidebar = () => {
     setShowSidebar(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideOfPincode);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideOfPincode);
+    };
+  }, []);
+  const handleClickOutsideOfPincode = (event) => {
+    if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+      setShowSidebar(false);
+    }
   };
 
   // dropdowns
@@ -144,6 +158,7 @@ const Sidebar = () => {
           showSidebar ? "" : "-translate-x-full sm:translate-x-0"
         }  `}
         aria-label="Sidebar"
+        ref={sidebarRef}
       >
         <button
           onClick={handleCloseSidebar}
@@ -156,7 +171,7 @@ const Sidebar = () => {
           style={{ borderRadius: "0 50px 50px 0" }}
         >
           <Link
-            to="/"
+           
             className="flex items-center ps-2.5 mb-10 justify-center"
           >
             <img src={sfLogo} className="" alt="Logo" />
@@ -170,6 +185,9 @@ const Sidebar = () => {
                   className={`flex items-center p-2 rounded-lg group ${
                     isActive("/admin/AdminHome") ? "bg-orange-200" : ""
                   }`}
+                  onClick={() => {
+                    setShowSidebar(false);
+                  }}
                 >
                   <IoMdHome className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
@@ -191,6 +209,9 @@ const Sidebar = () => {
                   className={`flex items-center p-2 rounded-lg group ${
                     isActive("/inst/InstHome") ? "bg-orange-200" : ""
                   }`}
+                  onClick={() => {
+                    setShowSidebar(false);
+                  }}
                 >
                   <IoMdHome className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
@@ -246,6 +267,9 @@ const Sidebar = () => {
                             className={`flex items-center p-2 rounded-lg group ${
                               isActive("/admin/Schools") ? "bg-orange-200" : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             <GiTeacher className="w-5 h-5 text-gray-500 transition duration-75" />
                             <span
@@ -267,6 +291,9 @@ const Sidebar = () => {
                                 ? "bg-orange-200"
                                 : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
                             <span
@@ -296,6 +323,9 @@ const Sidebar = () => {
                   className={`flex items-center p-2 rounded-lg group ${
                     isActive("/inst/school") ? "bg-orange-200" : ""
                   }`}
+                  onClick={() => {
+                    setShowSidebar(false);
+                  }}
                 >
                   <BiSolidSchool className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
@@ -355,6 +385,9 @@ const Sidebar = () => {
                                 ? "bg-orange-200"
                                 : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
                             <span
@@ -376,6 +409,9 @@ const Sidebar = () => {
                                 ? "bg-orange-200"
                                 : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
                             <span
@@ -397,6 +433,9 @@ const Sidebar = () => {
                                 ? "bg-orange-200"
                                 : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
                             <span
@@ -464,6 +503,9 @@ const Sidebar = () => {
                                 ? "bg-orange-200"
                                 : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
                             <span
@@ -485,6 +527,9 @@ const Sidebar = () => {
                                 ? "bg-orange-200"
                                 : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             <FaUserGraduate className="w-5 h-5 text-gray-500 transition duration-75" />
                             <span
@@ -551,6 +596,9 @@ const Sidebar = () => {
                                 ? "bg-orange-200"
                                 : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             <BiSolidSchool className="w-5 h-5 text-gray-500 transition duration-75" />
                             <span
@@ -572,6 +620,9 @@ const Sidebar = () => {
                                 ? "bg-orange-200"
                                 : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             <FaChalkboardTeacher className="w-5 h-5 text-gray-500 transition duration-75" />
                             <span
@@ -602,6 +653,9 @@ const Sidebar = () => {
                   className={`flex items-center p-2 rounded-lg group ${
                     isActive("/admin/AddTest") ? "bg-orange-200" : ""
                   }`}
+                  onClick={() => {
+                    setShowSidebar(false);
+                  }}
                 >
                   <SlNote className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
@@ -626,6 +680,9 @@ const Sidebar = () => {
                       ? "bg-orange-200 text-black"
                       : ""
                   }`}
+                  onClick={() => {
+                    setShowSidebar(false);
+                  }}
                 >
                   <BsCloudUpload className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span
@@ -700,6 +757,9 @@ const Sidebar = () => {
                                 ? "bg-gray-200"
                                 : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             Learning Report
                           </Link>
@@ -767,6 +827,9 @@ const Sidebar = () => {
                                 ? "bg-gray-200"
                                 : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                            }}
                           >
                             Learning Report
                           </Link>
@@ -777,6 +840,10 @@ const Sidebar = () => {
                             className={`block px-4 py-2 text-gray-800 hover:bg-gray-200 ${
                               isActive("/inst/TestReport") ? "bg-gray-200" : ""
                             }`}
+                            onClick={() => {
+                              setShowSidebar(false);
+                              console.log(showSidebar);
+                            }}
                           >
                             Test Report
                           </Link>
@@ -795,6 +862,9 @@ const Sidebar = () => {
                   className={`flex items-center p-2 rounded-lg group ${
                     isActive("/admin/masterTable") ? "bg-orange-200" : ""
                   }`}
+                  onClick={() => {
+                    setShowSidebar(false);
+                  }}
                 >
                   <SlNote className="w-5 h-5 text-gray-500 transition duration-75" />
                   <span

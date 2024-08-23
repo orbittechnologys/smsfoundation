@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router"
 import { BASE_URL } from "../../constants";
 import SearchableMultiDropdown from "../SearchableMultiDropdown";
+import { toast } from "react-toastify";
 
 
 const EditInstructor = () => {
@@ -24,6 +25,7 @@ const EditInstructor = () => {
     // const [selectedSchool, setSelectedSchool] = useState("NO");
     const [selectedSchool, setSelectedSchool] = useState([]); // Initialize selectedSchool as null
     const [dropSchool, setDropSchool] = useState([]);
+    const [showModel, setShowModel] = useState(false);
 
 
     const handleSchoolChange = (selectedOptions) => {
@@ -80,7 +82,29 @@ const EditInstructor = () => {
         }
     }
 
-
+    const handelDeleteClick = () => {
+      setShowModel(true);
+    }
+  
+    const handelDeleteCancle = () => {
+      setShowModel(false);
+    }
+  
+    const handelConfirmDelete = async () => {
+      try {
+        const response = await axios.delete(`${BASE_URL}instructor/deleteInstructor/${instructorId}`);
+        console.log(instructorId);
+        console.log(response.data);
+        if(response.status === 200) {
+          toast.success("School deleted successfully");
+          setShowModel(false);
+          navigate("/admin/allInstructor");
+        } 
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to delete the school");
+      }
+    }
 
     useEffect(()=> {
         if(instructorId){
@@ -287,6 +311,36 @@ const EditInstructor = () => {
           </button>
         </div>
       </form>
+      <button
+        onClick={handelDeleteClick}
+        className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 mt-4"
+      >
+        Delete Instructor
+      </button>
+      {showModel && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 className="text-xl font-semibold mb-4">Are you sure?</h2>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete the instructor?
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={handelDeleteCancle}
+                className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handelConfirmDelete}
+                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

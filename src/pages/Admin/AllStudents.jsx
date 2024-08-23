@@ -295,7 +295,7 @@ const AllStudents = () => {
             {filteredSchools.map((rowData, index) => (
               <tr key={index}>
                 <td>
-                  {rowData.firstName} {rowData.lastName}
+                  {rowData.firstName?.toUpperCase()} {rowData.lastName?.toUpperCase()}
                 </td>
                 <td>{rowData?.user?.email}</td>
                 <td>{rowData.medium}</td>

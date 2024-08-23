@@ -18,6 +18,7 @@ const EditStudentt = () => {
   const [selectedSchool, setSelectedSchool] = useState("NO");
   const [dropSchool, setDropSchool] = useState([]);
   const [email,setEmail] = useState("");
+  const [showModel, setShowModel] = useState(false);
 
   const navigate = useNavigate();
 
@@ -47,6 +48,29 @@ const EditStudentt = () => {
       console.log(error);
     }
   };
+
+  const handelDeleteClick = () => {
+    setShowModel(true);
+  }
+
+  const handelDeleteCancle = () => {
+    setShowModel(false);
+  }
+
+  const handelConfirmDelete = async () => {
+    try {
+      const response = await axios.delete(`${BASE_URL}student/deleteStudent/${studentId}`);
+      console.log(response.data);
+      if(response.status === 200) {
+        toast.success("School deleted successfully");
+        setShowModel(false);
+        navigate("/admin/AllStudents");
+      } 
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to delete the school");
+    }
+  }
 
   useEffect(() => {
     getSchoolbyId();
@@ -225,6 +249,36 @@ const EditStudentt = () => {
           </div>
         </form>
       </div>
+      <button
+        onClick={handelDeleteClick}
+        className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 mt-4"
+      >
+        Delete student
+      </button>
+      {showModel && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 className="text-xl font-semibold mb-4">Are you sure?</h2>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete the instructor?
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={handelDeleteCancle}
+                className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handelConfirmDelete}
+                className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
