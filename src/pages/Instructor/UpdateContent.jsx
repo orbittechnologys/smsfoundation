@@ -26,9 +26,10 @@ const UpdateContent = () => {
   const [chapterDesc, setChapterDesc] = useState(null);
 
   const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
+
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState(null);
   const [vidoeUrl, setVideoUrl] = useState(null);
-
+  const [videoUrls, setVideoUrls] = useState([]);
   const [dropMedium, setDropMedium] = useState([]);
   const [dropSyllabus, setDropSyllabus] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -84,11 +85,45 @@ const UpdateContent = () => {
       alert("Please upload an audio file.");
     }
   };
+  // const handleVideoFileChange = async (event) => {
+  //   const file = event.target.files[0];
+  //   if (file && file.type === "video/mp4") {
+  //     setVideoFileName(file.name);
+  //     setIsLoading(true);
+  //     const blobName = file.name;
+  //     try {
+  //       const url = await uploadToAzureStorage(
+  //         file,
+  //         blobName,
+  //         setVideoUploadPercentage
+  //       );
+  //       console.log(url);
+  //       setVideoUrl(url);
+  //     } catch (error) {
+  //       console.error("Error uploading video:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   } else {
+  //     alert("Please upload a valid MP4 video file.");
+  //   }
+  // };
+
   const handleVideoFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (file && file.type === "video/mp4") {
-      setVideoFileName(file.name);
-      setIsLoading(true);
+    const files = event.target.files; // Get multiple files
+    const validVideos = Array.from(files).filter(
+      (file) => file.type === "video/mp4"
+    );
+
+    if (validVideos.length === 0) {
+      alert("Please upload valid MP4 video files.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    const newVideoUrls = [];
+    for (let file of validVideos) {
       const blobName = file.name;
       try {
         const url = await uploadToAzureStorage(
@@ -97,15 +132,14 @@ const UpdateContent = () => {
           setVideoUploadPercentage
         );
         console.log(url);
-        setVideoUrl(url);
+        newVideoUrls.push(url); // Add each uploaded URL to the array
       } catch (error) {
         console.error("Error uploading video:", error);
-      } finally {
-        setIsLoading(false);
       }
-    } else {
-      alert("Please upload a valid MP4 video file.");
     }
+
+    setVideoUrls((prevUrls) => [...prevUrls, ...newVideoUrls]); // Update state with new URLs
+    setIsLoading(false);
   };
 
   const fetchSubjectsApiCall = async (reqBody) => {
@@ -147,6 +181,7 @@ const UpdateContent = () => {
 
   useEffect(() => {
     if (selectedSubject) {
+      console.log("selectedSubject", selectedSubject);
       fetchChapters(selectedSubject);
     }
   }, [selectedSubject]);
@@ -157,18 +192,18 @@ const UpdateContent = () => {
         const reqBody = {
           chapterUrl: uploadedFileUrl,
           audioUrl: uploadedAudioUrl,
-          videoUrl: vidoeUrl,
+          videoUrl: videoUrls,
           subjectId: selectedSubject,
           name: chapterName,
           desc: chapterDesc,
         };
-        console.log(reqBody);
+        console.log("addchapter" + reqBody);
         const res = await axios.post(`${BASE_URL}chapter/addChapter`, reqBody);
         console.log(res.data);
         alert("Chapter Added successfully");
         setUploadedAudioUrl(null);
         setUploadedFileUrl(null);
-        setVideoUrl(null);
+        setVideoUrls(null);
         setSelectedSubject(null);
         setChapterDesc(null);
         setChapterName(null);
@@ -415,6 +450,7 @@ const UpdateContent = () => {
                 <input
                   type="file"
                   id="videoUpload"
+                  multiple
                   accept="video/mp4"
                   onChange={handleVideoFileChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
