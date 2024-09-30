@@ -35,18 +35,53 @@ const Content = () => {
       <div className="flex justify-center items-center my-5 w-full">
         <div className="grid lg:grid-cols-2 sm:grid-cols-1 place-items-center w-1/2 gap-5">
           {chapter?.videoUrl ? (
-            <div
-            className="flex flex-col justify-center items-center border p-5 rounded-xl cursor-pointer shadow-md shadow-orange-200"
-            onClick={() => window.open(chapter?.videoUrl, "_blank")}
-          >
-            <p className="text-xl font-semibold text-gray-400">Watch a Video</p>
-            <img src={VideoFilespng} alt="" className="lg:h-64 sm:h-36" />
-          </div>
-          ): ``
-          }
-          
+            <>
+              <div
+                className="flex flex-col justify-center items-center border p-5 rounded-xl cursor-pointer shadow-md shadow-orange-200 "
+                title="Click to watch the video"
+              >
+                <p className="text-xl font-semibold text-gray-700 mb-4">
+                  Watch the Video Tutorial
+                </p>
+                <div className="relative">
+                  <img
+                    src={VideoFilespng}
+                    alt="Video Thumbnail"
+                    className="lg:h-64 sm:h-36 mb-4 rounded-md"
+                  />
+                </div>
+
+                <div className="w-full grid place-content-start max-w-xs">
+                  <h3 className="text-lg font-semibold mb-2">
+                    Available Videos
+                  </h3>
+                  <div className="flex space-x-5">
+                    {chapter?.videoUrl.map((url, index) => (
+                      <div
+                        key={index}
+                        className="flex justify-start items-center gap-2 my-1"
+                      >
+                        <span className="font-medium">{index + 1}.</span>
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline text-blue-600 hover:text-blue-800"
+                        >
+                          {chapter?.name} {index + 1}
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            ``
+          )}
+
           <div
-            className="flex flex-col justify-center items-center border p-5 rounded-xl cursor-pointer shadow-md shadow-orange-200"
+            className="flex flex-col justify-center items-center border p-5 rounded-xl cursor-pointer shadow-md shadow-orange-200 "
             onClick={() => navigate(`/pdf/${chapter?._id}`)}
           >
             <p className="text-xl font-semibold text-gray-400">Read a PDF</p>
