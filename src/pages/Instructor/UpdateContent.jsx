@@ -8,6 +8,7 @@ import uploadToAzureStorage from "../../Hooks/uploadToAzureStorage";
 import SearchableDropdown from "../SearchableDropdown";
 import { LuLoader2 } from "react-icons/lu";
 import { MdOutlineAudioFile } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
@@ -171,6 +172,9 @@ const UpdateContent = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+  const handleDeleteChapter = (indexToDelete) => {
+    setChapters((prevChapters) => prevChapters.filter((_, index) => index !== indexToDelete));
   };
 
   useEffect(() => {
@@ -542,53 +546,57 @@ const UpdateContent = () => {
       )}
 
       {Array.isArray(chapters) && chapters.length > 0 && (
-        <div className="my-5 mx-auto bg-white shadow-md p-8 rounded-md border">
-          <h1 className="lg:text-2xl md:text-2xl sm:text-xl lg:text-left text-center my-5 font-semibold lg:py-5 py-5 border-b ">
-            Chapters found: {chapters?.length}
+    <div className="my-5 mx-auto bg-white shadow-md p-8 rounded-md border">
+      <h1 className="lg:text-2xl md:text-2xl sm:text-xl lg:text-left text-center my-5 font-semibold lg:py-5 py-5 border-b ">
+        Chapters found: {chapters?.length}
+      </h1>
+      {chapters.map((chapter, index) => (
+        <div key={index} className="my-4 relative">
+          <h1 className="lg:text-xl md:text-lg sm:text-base font-semibold mb-2">
+            {chapter?.name}
           </h1>
-          {chapters.map((chapter, index) => (
-            <div key={index} className="my-4">
-              <h1 className="lg:text-xl md:text-lg sm:text-base font-semibold mb-2">
-                {chapter?.name}
-              </h1>
-              <p className="text-gray-600 mb-2 lg:text-lg md:text-base sm:text-xs">
-                {chapter?.desc}
-              </p>
-              <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-fit gap-3">
-                <a
-                  href={chapter?.chapterUrl}
-                  target="_blank"
-                  className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs flex justify-center items-center whitespace-nowrap"
-                >
-                  View PDF
-                </a>
-                {chapter?.audioUrl ? (
-                  <a
-                    href={chapter?.audioUrl}
-                    target="_blank"
-                    className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
-                  >
-                    View Audio
-                  </a>
-                ) : (
-                  ``
-                )}
-                {chapter?.videoUrl ? (
-                  <a
-                    href={chapter?.videoUrl}
-                    target="_blank"
-                    className="border mx-3 border-orange-300 px-3 py-1 rounded-full  text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
-                  >
-                    View Video
-                  </a>
-                ) : (
-                  ``
-                )}
-              </div>
-            </div>
-          ))}
+          <p className="text-gray-600 mb-2 lg:text-lg md:text-base sm:text-xs">
+            {chapter?.desc}
+          </p>
+          <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-fit gap-3">
+            <a
+              href={chapter?.chapterUrl}
+              target="_blank"
+              className="border mx-3 border-orange-300 px-3 py-1 rounded-full text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs flex justify-center items-center whitespace-nowrap"
+            >
+              View PDF
+            </a>
+            {chapter?.audioUrl && (
+              <a
+                href={chapter?.audioUrl}
+                target="_blank"
+                className="border mx-3 border-orange-300 px-3 py-1 rounded-full text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
+              >
+                View Audio
+              </a>
+            )}
+            {chapter?.videoUrl && (
+              <a
+                href={chapter?.videoUrl}
+                target="_blank"
+                className="border mx-3 border-orange-300 px-3 py-1 rounded-full text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
+              >
+                View Video
+              </a>
+            )}
+          </div>
+
+          {/* Delete Chapter Button */}
+          <button
+            onClick={() => handleDeleteChapter(index)}
+            className="absolute top-0 right-0 text-red-500 hover:text-red-700"
+          >
+            <MdDelete className="text-xl" />
+          </button>
         </div>
-      )}
+      ))}
+    </div>
+  )}
     </>
   );
 };
