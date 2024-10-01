@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaSquarePlus } from "react-icons/fa6";
 import { FaFilePdf } from "react-icons/fa";
+import { MdClose, MdOutlineVideoLibrary } from "react-icons/md";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
 import uploadToAzureStorage from "../../Hooks/uploadToAzureStorage";
@@ -61,6 +62,12 @@ const UpdateContent = () => {
       alert("Please upload a PDF file.");
     }
   };
+
+  const handleRemoveFile = () => {
+    setFileName("");
+    setFileUploadPercentage(0);
+    setIsLoading(false);
+  };
   const handleFileChangeAudio = async (event) => {
     const file = event.target.files[0];
     const audioTypeRegex = /^audio\//;
@@ -85,32 +92,15 @@ const UpdateContent = () => {
       alert("Please upload an audio file.");
     }
   };
-  // const handleVideoFileChange = async (event) => {
-  //   const file = event.target.files[0];
-  //   if (file && file.type === "video/mp4") {
-  //     setVideoFileName(file.name);
-  //     setIsLoading(true);
-  //     const blobName = file.name;
-  //     try {
-  //       const url = await uploadToAzureStorage(
-  //         file,
-  //         blobName,
-  //         setVideoUploadPercentage
-  //       );
-  //       console.log(url);
-  //       setVideoUrl(url);
-  //     } catch (error) {
-  //       console.error("Error uploading video:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   } else {
-  //     alert("Please upload a valid MP4 video file.");
-  //   }
-  // };
+  const handleRemoveAudioFile = async () => {
+    setAudioFileName("");
+    setAudioUplpoadPercentage(0);
+    setIsLoading(false);
+    setUploadedAudioUrl("");
+  };
 
   const handleVideoFileChange = async (event) => {
-    const files = event.target.files; // Get multiple files
+    const files = event.target.files;
     const validVideos = Array.from(files).filter(
       (file) => file.type === "video/mp4"
     );
@@ -131,15 +121,19 @@ const UpdateContent = () => {
           blobName,
           setVideoUploadPercentage
         );
-        console.log(url);
-        newVideoUrls.push(url); // Add each uploaded URL to the array
+        newVideoUrls.push(url);
       } catch (error) {
         console.error("Error uploading video:", error);
       }
     }
 
-    setVideoUrls((prevUrls) => [...prevUrls, ...newVideoUrls]); // Update state with new URLs
+    // Append the new URLs to the existing video URLs in state
+    setVideoUrls((prevUrls) => [...prevUrls, ...newVideoUrls]);
     setIsLoading(false);
+  };
+
+  const handleRemoveVideo = (url) => {
+    setVideoUrls((prevUrls) => prevUrls.filter((videoUrl) => videoUrl !== url));
   };
 
   const fetchSubjectsApiCall = async (reqBody) => {
@@ -364,8 +358,8 @@ const UpdateContent = () => {
                 required
               />
             </div>
-            <div className="flex justify-center items-center">
-              <div>
+            <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
+              <div className="">
                 <label
                   htmlFor="cont"
                   className="block mb-2 text-sm font-semibold text-gray-900"
@@ -377,7 +371,7 @@ const UpdateContent = () => {
                   id="cont"
                   accept="application/pdf"
                   onChange={handleFileChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-2"
                   placeholder="Upload Content"
                   required
                 />
@@ -399,102 +393,141 @@ const UpdateContent = () => {
                     </div>
                   </div>
                 )}
-              </div>
-            </div>
-            <div className="flex justify-center items-center">
-              <div>
-                <label
-                  htmlFor="cont"
-                  className="block mb-2 text-sm font-semibold text-gray-900"
-                >
-                  Upload Audio File
-                </label>
-                <input
-                  type="file"
-                  id="cont"
-                  accept="audio/*"
-                  onChange={handleFileChangeAudio}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Upload Content"
-                  required
-                />
 
-                {isLoading && (
-                  <>
-                    {/* Progress Percentage Text */}
-                    <p className="text-sm font-medium text-gray-700 mt-2">
-                      Uploading: {audioUplpoadPercentage}%
-                    </p>
-
-                    {/* Progress Bar */}
-                    <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
-                      <div
-                        className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
-                        style={{ width: `${audioUplpoadPercentage}%` }}
-                      >
-                        {audioUplpoadPercentage}%
-                      </div>
+                {/* Uploaded File Display with Remove Option */}
+                {fileName && (
+                  <div className="flex items-center justify-between mt-4 bg-gray-100 p-2 rounded-lg">
+                    <div className="flex items-center">
+                      <FaFilePdf className="text-red-500 text-2xl mr-2" />
+                      <span className="text-sm">{fileName}</span>
                     </div>
-                  </>
+                    <button onClick={handleRemoveFile} className="text-red-500">
+                      <MdClose className="text-2xl" />
+                    </button>
+                  </div>
                 )}
               </div>
             </div>
-            <div className="flex justify-center items-center">
-              <div>
-                <label
-                  htmlFor="videoUpload"
-                  className="block mb-2 text-sm font-semibold text-gray-900"
-                >
-                  Upload Video
-                </label>
-                <input
-                  type="file"
-                  id="videoUpload"
-                  multiple
-                  accept="video/mp4"
-                  onChange={handleVideoFileChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Upload Video"
-                  required
-                />
 
-                {isLoading && (
-                  <>
-                    <p className="text-sm font-medium text-gray-700 mt-2">
-                      Uploading: {videoUploadPercentage}%
-                    </p>
-                    <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
-                      <div
-                        className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
-                        style={{ width: `${videoUploadPercentage}%` }}
-                      >
-                        {videoUploadPercentage}%
+            {/* audio file */}
+            <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
+              <div className="">
+                <div>
+                  <label
+                    htmlFor="cont"
+                    className="block mb-2 text-sm font-semibold text-gray-900"
+                  >
+                    Upload Audio File
+                  </label>
+                  <input
+                    type="file"
+                    id="cont"
+                    accept="audio/*"
+                    onChange={handleFileChangeAudio}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Upload Content"
+                    required
+                  />
+
+                  {/* Show upload progress when loading */}
+                  {isLoading && (
+                    <>
+                      <p className="text-sm font-medium text-gray-700 mt-2">
+                        Uploading: {audioUplpoadPercentage}%
+                      </p>
+                      <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                        <div
+                          className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
+                          style={{ width: `${audioUplpoadPercentage}%` }}
+                        >
+                          {audioUplpoadPercentage}%
+                        </div>
                       </div>
-                    </div>
-                  </>
-                )}
+                    </>
+                  )}
+                </div>
               </div>
+
+              {/* Display uploaded audio file with remove option */}
+              {audioFileName && (
+                <div className="flex items-center justify-between mt-4 bg-gray-100 p-2 rounded-lg">
+                  <div className="flex items-center">
+                    <MdOutlineAudioFile className="text-red-500 text-2xl mr-2" />
+                    <span>{audioFileName}</span>
+                  </div>
+                  <button
+                    onClick={handleRemoveAudioFile}
+                    className="text-red-500"
+                  >
+                    <MdClose className="text-2xl" />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* video file */}
+            <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
+              <div className="">
+                <div>
+                  <label
+                    htmlFor="videoUpload"
+                    className="block mb-2 text-sm font-semibold text-gray-900"
+                  >
+                    Upload Video
+                  </label>
+                  <input
+                    type="file"
+                    id="videoUpload"
+                    multiple
+                    accept="video/mp4"
+                    onChange={handleVideoFileChange}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Upload Video"
+                    required
+                  />
+
+                  {isLoading && (
+                    <>
+                      <p className="text-sm font-medium text-gray-700 mt-2">
+                        Uploading: {videoUploadPercentage}%
+                      </p>
+                      <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                        <div
+                          className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
+                          style={{ width: `${videoUploadPercentage}%` }}
+                        >
+                          {videoUploadPercentage}%
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Display Uploaded Videos */}
+              {videoUrls.length > 0 && (
+                <div className="grid mt-4">
+                  {videoUrls.map((videoUrl, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between mt-2 bg-gray-100 p-2 rounded-lg"
+                    >
+                      <div className="flex items-center">
+                        <MdOutlineVideoLibrary className="text-blue-500 text-2xl mr-2" />
+                        <span>Video {index + 1}</span>
+                      </div>
+                      <button
+                        onClick={() => handleRemoveVideo(videoUrl)}
+                        className="text-red-500"
+                      >
+                        <MdClose className="text-2xl" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
-          {fileName && (
-            <div className="grid mt-2">
-              <FaFilePdf className="text-red-500 text-2xl mr-2" />
-              <span>{fileName}</span>
-            </div>
-          )}
-          {audioFileName && (
-            <div className="grid mt-2">
-              <MdOutlineAudioFile className="text-red-500 text-2xl mr-2" />
-              <span>{audioFileName}</span>
-            </div>
-          )}
-          {videoFileName && (
-            <div className="mt-4">
-              <p className="text-sm font-medium text-green-600 mb-2">
-                Uploaded successfully! Your video:
-              </p>
-            </div>
-          )}
 
           <div className="flex justify-end items-center">
             <button
