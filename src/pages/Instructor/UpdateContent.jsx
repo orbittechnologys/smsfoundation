@@ -9,6 +9,8 @@ import SearchableDropdown from "../SearchableDropdown";
 import { LuLoader2 } from "react-icons/lu";
 import { MdOutlineAudioFile } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
@@ -30,7 +32,6 @@ const UpdateContent = () => {
   const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
 
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState(null);
-  const [vidoeUrl, setVideoUrl] = useState(null);
   const [videoUrls, setVideoUrls] = useState([]);
   const [dropMedium, setDropMedium] = useState([]);
   const [dropSyllabus, setDropSyllabus] = useState([]);
@@ -39,6 +40,9 @@ const UpdateContent = () => {
   const [fileUploadPercentage, setFileUploadPercentage] = useState(0);
   const [audioUplpoadPercentage, setAudioUplpoadPercentage] = useState(0);
   const [videoUploadPercentage, setVideoUploadPercentage] = useState(0);
+
+  const [showModel, setShowModel] = useState(false);
+  const [chapterToDelete, setChapterToDelete] = useState(null);
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -173,9 +177,29 @@ const UpdateContent = () => {
       console.log(error);
     }
   };
-  const handleDeleteChapter = (indexToDelete) => {
-    setChapters((prevChapters) => prevChapters.filter((_, index) => index !== indexToDelete));
+
+  const handleDeleteChapter = (index) => {
+    setChapterToDelete(index);
+    setShowModel(true);
   };
+
+  const confirmDelete = async () => {
+    if (chapterToDelete != null) {
+      const chapterId = chapters[chapterToDelete]._id;
+      try {
+        await axios.delete(`${BASE_URL}chapter/delete/${chapterId}`);
+        setShowModel(false);
+        alert("Chapter deleted successfully");
+        window.location.reload();
+      } catch (error) {
+        console.log("error deleting chapter", error);
+        alert("Error deleting chapter");
+      }
+    }
+  };
+  // const handleDeleteChapter = (indexToDelete) => {
+  //   setChapters((prevChapters) => prevChapters.filter((_, index) => index !== indexToDelete));
+  // };
 
   useEffect(() => {
     if (selectedSubject) {
@@ -430,7 +454,7 @@ const UpdateContent = () => {
                     onChange={handleFileChangeAudio}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Upload Content"
-                    required
+                    // required
                   />
 
                   {/* Show upload progress when loading */}
@@ -487,7 +511,7 @@ const UpdateContent = () => {
                     onChange={handleVideoFileChange}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Upload Video"
-                    required
+                    // required
                   />
 
                   {isLoading && (
@@ -545,58 +569,106 @@ const UpdateContent = () => {
         </div>
       )}
 
-      {Array.isArray(chapters) && chapters.length > 0 && (
-    <div className="my-5 mx-auto bg-white shadow-md p-8 rounded-md border">
-      <h1 className="lg:text-2xl md:text-2xl sm:text-xl lg:text-left text-center my-5 font-semibold lg:py-5 py-5 border-b ">
-        Chapters found: {chapters?.length}
-      </h1>
-      {chapters.map((chapter, index) => (
-        <div key={index} className="my-4 relative">
-          <h1 className="lg:text-xl md:text-lg sm:text-base font-semibold mb-2">
-            {chapter?.name}
-          </h1>
-          <p className="text-gray-600 mb-2 lg:text-lg md:text-base sm:text-xs">
-            {chapter?.desc}
-          </p>
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-fit gap-3">
-            <a
-              href={chapter?.chapterUrl}
-              target="_blank"
-              className="border mx-3 border-orange-300 px-3 py-1 rounded-full text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs flex justify-center items-center whitespace-nowrap"
-            >
-              View PDF
-            </a>
-            {chapter?.audioUrl && (
-              <a
-                href={chapter?.audioUrl}
-                target="_blank"
-                className="border mx-3 border-orange-300 px-3 py-1 rounded-full text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
-              >
-                View Audio
-              </a>
-            )}
-            {chapter?.videoUrl && (
-              <a
-                href={chapter?.videoUrl}
-                target="_blank"
-                className="border mx-3 border-orange-300 px-3 py-1 rounded-full text-gray-500 hover:bg-orange-300 hover:text-white lg:text-lg text-xs whitespace-nowrap flex justify-center items-center"
-              >
-                View Video
-              </a>
-            )}
-          </div>
+      <div className="my-5 mx-auto bg-white shadow-md p-8 rounded-md border max-w-4xl">
+        {Array.isArray(chapters) && chapters.length > 0 && (
+          <>
+            <h1 className="text-2xl text-center font-semibold mb-6 border-b pb-4">
+              Chapters found: {chapters?.length}
+            </h1>
 
-          {/* Delete Chapter Button */}
-          <button
-            onClick={() => handleDeleteChapter(index)}
-            className="absolute top-0 right-0 text-red-500 hover:text-red-700"
-          >
-            <MdDelete className="text-xl" />
-          </button>
-        </div>
-      ))}
-    </div>
-  )}
+            {chapters.map((chapter, index) => (
+              <div
+                key={chapter._id}
+                className="relative p-5 border-b mb-4 bg-gray-50 rounded-lg"
+              >
+                <div className="lg:flex lg:justify-between lg:items-center mb-4">
+                  <div className="flex-grow">
+                    <h2 className="text-xl font-semibold text-gray-800">
+                      {chapter?.name}
+                    </h2>
+                    <p className="text-gray-600">{chapter?.desc}</p>
+                  </div>
+
+                  <div className="mt-4 lg:mt-0 flex justify-start lg:justify-end space-x-4">
+                    {chapter?.chapterUrl && (
+                      <a
+                        href={chapter?.chapterUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="border border-orange-300 px-4 py-2 rounded-full text-orange-500 hover:bg-orange-300 hover:text-white transition duration-300"
+                      >
+                        View PDF
+                      </a>
+                    )}
+                    {chapter?.audioUrl && (
+                      <a
+                        href={chapter?.audioUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="border border-orange-300 px-4 py-2 rounded-full text-orange-500 hover:bg-orange-300 hover:text-white transition duration-300"
+                      >
+                        View Audio
+                      </a>
+                    )}
+                    {chapter?.videoUrl && (
+                      <a
+                        href={chapter?.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="border border-orange-300 px-4 py-2 rounded-full text-orange-500 hover:bg-orange-300 hover:text-white transition duration-300"
+                      >
+                        View Video
+                      </a>
+                    )}
+                  </div>
+                </div>
+
+                <div className="absolute bottom-3 right-4 flex items-center space-x-3">
+                  <button
+                    onClick={() => handleDeleteChapter(index)}
+                    className="text-red-500 hover:text-red-700 transition duration-300"
+                  >
+                    <MdDelete className="text-2xl" />
+                  </button>
+                  <Link
+                    to={`/admin/updateChapter/${chapter._id}`}
+                    className="text-blue-500 hover:text-blue-700 transition duration-300"
+                  >
+                    <FaRegEdit className="text-2xl" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+
+            {/* Confirmation Modal */}
+            {showModel && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+                  <h2 className="text-xl font-semibold mb-4">Are you sure?</h2>
+                  <p className="mb-6">
+                    All chapter-related tests, questions, videos, PDFs, and
+                    audio files will be permanently deleted.
+                  </p>
+                  <div className="flex justify-end space-x-4 ">
+                    <button
+                      onClick={() => setShowModel(false)}
+                      className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 transition duration-300"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={confirmDelete}
+                      className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 };

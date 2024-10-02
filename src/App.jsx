@@ -44,6 +44,7 @@ import NewMyCourses from "./pages/Student/NewMyCourses.jsx";
 import HeaderOne from "./pages/Student/HeaderOne.jsx";
 import NavbarStudent from "./components/NavbarStudent.jsx";
 import InstSchool from "./pages/Instructor/InstSchool.jsx";
+import EditChapter from "./pages/Instructor/EditChapter.jsx";
 
 const App = () => {
   const { auth, setAuth } = useAuth();
@@ -119,6 +120,7 @@ const App = () => {
             <Route path="addStudent" element={<AddStudent />} />
             <Route path="TestReport" element={<TestReport />} />
             <Route path="UpdateContent" element={<UpdateContent />} />
+            <Route path="updateChapter/:chapterId" element={<EditChapter />} />
             <Route path="AddInstructor" element={<AddInstructor />} />
             <Route path="AddTest" element={<AddTest />} />
             <Route path="preview/:testId" element={<PreviewTest />} />
