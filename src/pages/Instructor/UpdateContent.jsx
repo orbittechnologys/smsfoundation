@@ -13,31 +13,23 @@ import { Link } from "react-router-dom";
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
   const [audioFileName, setAudioFileName] = useState("");
-
   const [standard, setStandard] = useState(null);
   const [medium, setMedium] = useState(null);
   const [syllabus, setSyllabus] = useState(null);
   const [subjects, setSubjects] = useState(null);
-
   const [selectedSubject, setSelectedSubject] = useState(null);
-
   const [chapters, setChapters] = useState(null);
-
   const [chapterName, setChapterName] = useState(null);
   const [chapterDesc, setChapterDesc] = useState(null);
-
   const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
-
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState(null);
   const [videoUrls, setVideoUrls] = useState([]);
   const [dropMedium, setDropMedium] = useState([]);
   const [dropSyllabus, setDropSyllabus] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const [fileUploadPercentage, setFileUploadPercentage] = useState(0);
   const [audioUplpoadPercentage, setAudioUplpoadPercentage] = useState(0);
   const [videoUploadPercentage, setVideoUploadPercentage] = useState(0);
-
   const [showModel, setShowModel] = useState(false);
   const [chapterToDelete, setChapterToDelete] = useState(null);
 
