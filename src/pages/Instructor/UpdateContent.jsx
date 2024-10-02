@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FaSquarePlus } from "react-icons/fa6";
 import { FaFilePdf } from "react-icons/fa";
 import { MdClose, MdOutlineVideoLibrary } from "react-icons/md";
 import axios from "axios";
 import { BASE_URL } from "../../constants";
 import uploadToAzureStorage from "../../Hooks/uploadToAzureStorage";
 import SearchableDropdown from "../SearchableDropdown";
-import { LuLoader2 } from "react-icons/lu";
 import { MdOutlineAudioFile } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
@@ -15,7 +13,6 @@ import { Link } from "react-router-dom";
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
   const [audioFileName, setAudioFileName] = useState("");
-  const [videoFileName, setVideoFileName] = useState("");
 
   const [standard, setStandard] = useState(null);
   const [medium, setMedium] = useState(null);
