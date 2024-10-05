@@ -186,10 +186,6 @@ const UpdateContent = () => {
       }
     }
   };
-  // const handleDeleteChapter = (indexToDelete) => {
-  //   setChapters((prevChapters) => prevChapters.filter((_, index) => index !== indexToDelete));
-  // };
-
   useEffect(() => {
     if (selectedSubject) {
       console.log("selectedSubject", selectedSubject);
@@ -198,35 +194,59 @@ const UpdateContent = () => {
   }, [selectedSubject]);
 
   const handleUpload = async () => {
-    try {
-      if (chapterName && chapterDesc && uploadedFileUrl && selectedSubject) {
-        const reqBody = {
-          chapterUrl: uploadedFileUrl,
-          audioUrl: uploadedAudioUrl,
-          videoUrl: videoUrls,
-          subjectId: selectedSubject,
-          name: chapterName,
-          desc: chapterDesc,
-        };
-        console.log("addchapter" + reqBody);
-        const res = await axios.post(`${BASE_URL}chapter/addChapter`, reqBody);
-        console.log(res.data);
-        alert("Chapter Added successfully");
-        setUploadedAudioUrl(null);
-        setUploadedFileUrl(null);
-        setVideoUrls(null);
-        setSelectedSubject(null);
-        setChapterDesc(null);
-        setChapterName(null);
-        setFileName(null);
+  try {
+    // Ensure that the required fields are present
+    if (chapterName && chapterDesc && selectedSubject) {
+      // Construct the request body dynamically, only including optional fields if they exist
+      const reqBody = {
+        name: chapterName,
+        desc: chapterDesc,
+        subjectId: selectedSubject,
+      };
 
-        fetchChapters(selectedSubject);
-      }
-    } catch (error) {
-      console.log(error);
-      alert("Something went wrong. Please ensure all the fields are present");
+      // Include `chapterUrl`, `audioUrl`, and `videoUrl` only if they are available
+      if (uploadedFileUrl) reqBody.chapterUrl = uploadedFileUrl;
+      if (uploadedAudioUrl) reqBody.audioUrl = uploadedAudioUrl;
+
+      // Ensure videoUrls is always an array
+      reqBody.videoUrl = Array.isArray(videoUrls) ? videoUrls : [];
+
+      console.log("addChapter request body:", reqBody);
+
+      // Make the API request to add the chapter
+      const res = await axios.post(`${BASE_URL}chapter/addChapter`, reqBody);
+      console.log(res.data);
+      alert("Chapter added successfully");
+
+      // Reset form fields after successful submission
+      setUploadedAudioUrl(null);
+      setUploadedFileUrl(null);
+      setVideoUrls([]);
+      setSelectedSubject(null);
+      setChapterDesc(null);
+      setChapterName(null);
+      setFileName(null);
+
+      // Fetch updated chapters
+      fetchChapters(selectedSubject);
+    } else {
+      // Alert if required fields are missing
+      alert("Please provide the required fields: Chapter Name, Description, and Subject.");
     }
-  };
+  } catch (error) {
+    console.error("Error adding chapter:", error);
+    
+    // Handle error based on status code
+    if (error.response) {
+      alert(`Error: ${error.response.data.msg || 'Failed to add chapter.'}`);
+    } else if (error.request) {
+      alert("Network error: Could not connect to the server.");
+    } else {
+      alert("Error: Something went wrong while setting up the request.");
+    }
+  }
+};
+
 
   const fetchData = async () => {
     try {
@@ -390,7 +410,7 @@ const UpdateContent = () => {
                   onChange={handleFileChange}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-2"
                   placeholder="Upload Content"
-                  required
+                  // required
                 />
 
                 {isLoading && (
