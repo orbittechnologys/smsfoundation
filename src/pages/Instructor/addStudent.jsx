@@ -9,7 +9,7 @@ const addStudent = () => {
   const [lastName, setsetLastName] = useState("");
   const [username, setUserName] = useState("");
   const [middleName, setMiddleName] = useState("");
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState("NONE");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [rollNo, setRollNo] = useState("");
@@ -29,6 +29,11 @@ const addStudent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (gender === "NONE") {
+      alert("Please select a gender");
+      return;
+    }
 
     console.log(
       email,
@@ -59,9 +64,9 @@ const addStudent = () => {
     };
     console.log(reqbody);
 
-    if(!usernameAvailable){
-      alert('Please choose a different username');
-    }else{
+    if (!usernameAvailable) {
+      alert("Please choose a different username");
+    } else {
       try {
         const res = await axios.post(`${BASE_URL}student/addStudent`, reqbody);
         console.log(res.data);
@@ -76,8 +81,6 @@ const addStudent = () => {
         alert(errMsg);
       }
     }
-
-    
   };
   const handleMedium = (e) => {
     setMedium(e.target.value);
@@ -227,7 +230,7 @@ const addStudent = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
-           
+
             <div>
               <label
                 htmlFor="middlename"
@@ -259,13 +262,27 @@ const addStudent = () => {
             </div>
 
             <div>
-              <select
+              {/* <select
                 name=""
                 id=""
+                required
                 className="mt-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 onChange={(e) => setGender(e.target.value)}
               >
                 <option value="NONE">Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select> */}
+              <select
+                name="gender"
+                id="gender"
+                required
+                className="mt-7 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                onChange={(e) => setGender(e.target.value)}
+              >
+                <option value="NONE" disabled selected hidden>
+                  Select Gender
+                </option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
               </select>
@@ -295,13 +312,18 @@ const addStudent = () => {
                 Phone No
               </label>
               <input
-                type="number"
+                type="text"
                 id="phoneno"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                onChange={(e) => setPhone(e.target.value)}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                onChange={(e) => {
+                  const value = e.target.value.replace(/\D/g, "");
+                  if (value.length <= 10) {
+                    setPhone(value);
+                  }
+                }}
+                value={phone}
                 maxLength={10}
                 required
-                // onChange={(e) => setRollNo(e.target.value)}
               />
             </div>
           </div>

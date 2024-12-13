@@ -63,6 +63,7 @@ const NewMyCourses = () => {
   };
 
   const getChapterBySubject = async (subjectId) => {
+    console.log("getChapterBySubject" + subjectId);
     try {
       const res = await axios.get(
         `${BASE_URL}chapter/getChapterBySubject/${subjectId}`
@@ -91,7 +92,9 @@ const NewMyCourses = () => {
               getChapterBySubject(subject?._id);
             }}
           >
-            <span className="font-poppins px-5 py-1.5 rounded-full">{subject?.name}</span>
+            <span className="font-poppins px-5 py-1.5 rounded-full">
+              {subject?.name}
+            </span>
           </div>
         ))}
       </div>

@@ -25,6 +25,7 @@ const Mcq = () => {
     try {
       console.log(localStorage.getItem("user_id"));
       const userId = localStorage.getItem("user_id");
+      console.log(`${BASE_URL}student/getStudentByUserId/${userId}`);
       const res = await axios.get(
         `${BASE_URL}student/getStudentByUserId/${userId}`
       );
@@ -39,9 +40,11 @@ const Mcq = () => {
 
   const fetchQuestions = async (testId) => {
     try {
+      console.log(`${BASE_URL}question/getQuestions/${testId}`);
       const res = await axios.get(`${BASE_URL}question/getQuestions/${testId}`);
       console.log(res.data);
       setQuestions(res.data);
+      console.log("setQuestions", res.data);
       setAnswers(
         Array.from({ length: res.data?.length }, () => {
           return { option: "NONE", score: 0 };
@@ -55,17 +58,23 @@ const Mcq = () => {
   const handleOptionClick = (index, option) => {
     console.log(index, option);
     const correctAnswer = questions[index]?.answer;
+    console.log("correctAnswer", correctAnswer);
     const marks = questions[index]?.marks;
+    console.log("marks", marks);
 
     // Create a copy of the answers array
     const updatedAnswers = [...answers];
 
+    console.log("updatedAnswers", updatedAnswers);
+
     if (correctAnswer === option) {
       console.log("Correct answer");
       updatedAnswers[index] = { option, score: marks };
+      console.log("ifsc", updatedAnswers);
     } else {
       console.log("Wrong answer");
       updatedAnswers[index] = { option, score: 0 };
+      console.log("elsesc", updatedAnswers);
     }
 
     // Update the state with the new answers array
@@ -74,9 +83,11 @@ const Mcq = () => {
 
   const fetchTest = async (testId) => {
     try {
+      console.log(`${BASE_URL}test/id/${testId}`);
       const res = await axios.get(`${BASE_URL}test/id/${testId}`);
       console.log(res.data);
       setTest(res.data.test);
+      console.log("setTest", res.data.test);
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +117,7 @@ const Mcq = () => {
   };
 
   const handleSubmitTest = () => {
-    console.log(answers);
+    console.log("handleSubmitTest", answers);
     let total = 0;
     for (let i = 0; i < answers.length; i++) {
       if (answers[i].option == "NONE") {
@@ -115,6 +126,7 @@ const Mcq = () => {
         break;
       }
       total += answers[i].score;
+      console.log("Total+=", total);
     }
     console.log("Total score ", total);
     setTotalScore(total);
