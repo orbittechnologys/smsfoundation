@@ -194,59 +194,60 @@ const UpdateContent = () => {
   }, [selectedSubject]);
 
   const handleUpload = async () => {
-  try {
-    // Ensure that the required fields are present
-    if (chapterName && chapterDesc && selectedSubject) {
-      // Construct the request body dynamically, only including optional fields if they exist
-      const reqBody = {
-        name: chapterName,
-        desc: chapterDesc,
-        subjectId: selectedSubject,
-      };
+    try {
+      // Ensure that the required fields are present
+      if (chapterName && chapterDesc && selectedSubject) {
+        // Construct the request body dynamically, only including optional fields if they exist
+        const reqBody = {
+          name: chapterName,
+          desc: chapterDesc,
+          subjectId: selectedSubject,
+        };
 
-      // Include `chapterUrl`, `audioUrl`, and `videoUrl` only if they are available
-      if (uploadedFileUrl) reqBody.chapterUrl = uploadedFileUrl;
-      if (uploadedAudioUrl) reqBody.audioUrl = uploadedAudioUrl;
+        // Include `chapterUrl`, `audioUrl`, and `videoUrl` only if they are available
+        if (uploadedFileUrl) reqBody.chapterUrl = uploadedFileUrl;
+        if (uploadedAudioUrl) reqBody.audioUrl = uploadedAudioUrl;
 
-      // Ensure videoUrls is always an array
-      reqBody.videoUrl = Array.isArray(videoUrls) ? videoUrls : [];
+        // Ensure videoUrls is always an array
+        reqBody.videoUrl = Array.isArray(videoUrls) ? videoUrls : [];
 
-      console.log("addChapter request body:", reqBody);
+        console.log("addChapter request body:", reqBody);
 
-      // Make the API request to add the chapter
-      const res = await axios.post(`${BASE_URL}chapter/addChapter`, reqBody);
-      console.log(res.data);
-      alert("Chapter added successfully");
+        // Make the API request to add the chapter
+        const res = await axios.post(`${BASE_URL}chapter/addChapter`, reqBody);
+        console.log(res.data);
+        alert("Chapter added successfully");
 
-      // Reset form fields after successful submission
-      setUploadedAudioUrl(null);
-      setUploadedFileUrl(null);
-      setVideoUrls([]);
-      setSelectedSubject(null);
-      setChapterDesc(null);
-      setChapterName(null);
-      setFileName(null);
+        // Reset form fields after successful submission
+        setUploadedAudioUrl(null);
+        setUploadedFileUrl(null);
+        setVideoUrls([]);
+        setSelectedSubject(null);
+        setChapterDesc(null);
+        setChapterName(null);
+        setFileName(null);
 
-      // Fetch updated chapters
-      fetchChapters(selectedSubject);
-    } else {
-      // Alert if required fields are missing
-      alert("Please provide the required fields: Chapter Name, Description, and Subject.");
+        // Fetch updated chapters
+        fetchChapters(selectedSubject);
+      } else {
+        // Alert if required fields are missing
+        alert(
+          "Please provide the required fields: Chapter Name, Description, and Subject."
+        );
+      }
+    } catch (error) {
+      console.error("Error adding chapter:", error);
+
+      // Handle error based on status code
+      if (error.response) {
+        alert(`Error: ${error.response.data.msg || "Failed to add chapter."}`);
+      } else if (error.request) {
+        alert("Network error: Could not connect to the server.");
+      } else {
+        alert("Error: Something went wrong while setting up the request.");
+      }
     }
-  } catch (error) {
-    console.error("Error adding chapter:", error);
-    
-    // Handle error based on status code
-    if (error.response) {
-      alert(`Error: ${error.response.data.msg || 'Failed to add chapter.'}`);
-    } else if (error.request) {
-      alert("Network error: Could not connect to the server.");
-    } else {
-      alert("Error: Something went wrong while setting up the request.");
-    }
-  }
-};
-
+  };
 
   const fetchData = async () => {
     try {
@@ -619,9 +620,9 @@ const UpdateContent = () => {
                         View Audio
                       </a>
                     )}
-                    {chapter?.videoUrl && (
+                    {chapter?.videoUrl?.length > 0 && (
                       <a
-                        href={chapter?.videoUrl}
+                        href={chapter?.videoUrl[0]} 
                         target="_blank"
                         rel="noopener noreferrer"
                         className="border border-orange-300 px-4 py-2 rounded-full text-orange-500 hover:bg-orange-300 hover:text-white transition duration-300"

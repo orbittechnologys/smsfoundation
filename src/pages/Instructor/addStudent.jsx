@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import SearchableDropdown from "../SearchableDropdown";
 import { useNavigate } from "react-router";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const addStudent = () => {
   const [name, setName] = useState("");
@@ -155,6 +156,17 @@ const addStudent = () => {
     }
   }, []);
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfPassword,setShowConfPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfPasswordVisibility = () => {
+    setShowConfPassword(!showConfPassword);
+  };
+
   return (
     <>
       <div className="flex justify-start items-center">
@@ -166,54 +178,7 @@ const addStudent = () => {
       <div>
         <form className="1" onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4">
-            <div>
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 "
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                required
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
 
-            <div>
-              <label
-                htmlFor="name"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                User Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                required
-                onChange={(e) => setUserName(e.target.value)}
-              />
-              <div>
-                <p
-                  className={`text-sm mt-2 text-white ${
-                    username.length > 0
-                      ? username.length > 4 && usernameAvailable
-                        ? "bg-green-400 p-4 rounded-full text-2xl font-bold"
-                        : "bg-red-400 p-4 rounded-full text-2xl font-bold"
-                      : ""
-                  }`}
-                >
-                  {username.length > 0
-                    ? username.length > 4 && usernameAvailable
-                      ? "Available"
-                      : "Not Available"
-                    : ""}
-                </p>
-              </div>
-            </div>
 
             <div>
               <label
@@ -260,6 +225,39 @@ const addStudent = () => {
                 onChange={(e) => setsetLastName(e.target.value)}
               />
             </div>
+            
+            <div>
+              <label
+                htmlFor="name"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                User Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                required
+                onChange={(e) => setUserName(e.target.value)}
+              />
+              <div>
+                <p
+                  className={`text-sm mt-2 text-white ${
+                    username.length > 0
+                      ? username.length > 4 && usernameAvailable
+                        ? "bg-green-400 p-4 rounded-full text-2xl font-bold"
+                        : "bg-red-400 p-4 rounded-full text-2xl font-bold"
+                      : ""
+                  }`}
+                >
+                  {username.length > 0
+                    ? username.length > 4 && usernameAvailable
+                      ? "Available"
+                      : "Not Available"
+                    : ""}
+                </p>
+              </div>
+            </div>
 
             <div>
               {/* <select
@@ -290,17 +288,17 @@ const addStudent = () => {
 
             <div>
               <label
-                htmlFor="rollno"
+                htmlFor="email"
                 className="block mb-2 text-sm font-medium text-gray-900 "
               >
-                Roll No
+                Email
               </label>
               <input
-                type="text"
-                id="rollno"
+                type="email"
+                id="email"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 required
-                onChange={(e) => setRollNo(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -326,9 +324,28 @@ const addStudent = () => {
                 required
               />
             </div>
+
+
+            <div>
+              <label
+                htmlFor="rollno"
+                className="block mb-2 text-sm font-medium text-gray-900 "
+              >
+                Roll No
+              </label>
+              <input
+                type="text"
+                id="rollno"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                required
+                onChange={(e) => setRollNo(e.target.value)}
+              />
+            </div>
+
+
           </div>
           <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-2">
-            <div>
+            <div className="relative">
               <label
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900 "
@@ -336,15 +353,26 @@ const addStudent = () => {
                 Password
               </label>
               <input
-                type="text"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 required
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 pt-6 flex items-center"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <FaEye className="w-5 h-5 text-gray-500" />
+                    ) : (
+                      <FaEyeSlash className="w-5 h-5 text-gray-500" />
+                    )}
+                  </button>
             </div>
 
-            <div>
+            <div className="relative">
               <label
                 htmlFor="cnfrmpswrd"
                 className="block mb-2 text-sm font-medium text-gray-900 "
@@ -352,12 +380,23 @@ const addStudent = () => {
                 Confirm Password
               </label>
               <input
-                type="text"
+                type={showConfPassword ? "text" : "password"}
                 id="cnfrmpswrd"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 required
                 onChange={(e) => setConfPassword(e.target.value)}
               />
+                <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 pt-6 flex items-center"
+                    onClick={toggleConfPasswordVisibility}
+                  >
+                    {showConfPassword ? (
+                      <FaEye className="w-5 h-5 text-gray-500" />
+                    ) : (
+                      <FaEyeSlash className="w-5 h-5 text-gray-500" />
+                    )}
+                  </button>
             </div>
 
             {password != confPassword ? (
