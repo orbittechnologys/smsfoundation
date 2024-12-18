@@ -20,6 +20,9 @@ const AddQuestions = () => {
   const [negativeMark, setNegativeMark] = useState(0);
   const [boxChecked, setBoxChecked] = useState(false);
   const [numOptions, setNumOptions] = useState(4);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadStatus, setUploadStatus] = useState("");
+
   // const [submitDisabled, setSubmitDisabled] = useState(true);
   const [options, setOptions] = useState([
     { option: "", isCorrect: false },
@@ -183,24 +186,24 @@ const AddQuestions = () => {
   const [test, setTest] = useState(null);
   const [testName, setTestName] = useState(null);
   const [testDesc, setTestDesc] = useState(null);
-  const [selectedTest,setSelectedTest] = useState(null);
+  const [selectedTest, setSelectedTest] = useState(null);
 
   const [answer, setAnswer] = useState(null);
   const [optionA, setOptionA] = useState(null);
   const [optionB, setOptionB] = useState(null);
   const [optionC, setOptionC] = useState(null);
   const [optionD, setOptionD] = useState(null);
-  const [optionE,setOptionE] = useState(null);
-  const [optionF,setOptionF] = useState(null);
+  const [optionE, setOptionE] = useState(null);
+  const [optionF, setOptionF] = useState(null);
 
-  const [noOfOptions,setNoOfOptions] = useState(4);
+  const [noOfOptions, setNoOfOptions] = useState(4);
 
-  const [pageRef,setPageRef] = useState(0);
+  const [pageRef, setPageRef] = useState(0);
 
   const [hint, setHint] = useState(null);
 
-  const [dropMedium,setDropMedium] = useState([]);
-  const [dropSyllabus,setDropSyllabus] = useState([]);
+  const [dropMedium, setDropMedium] = useState([]);
+  const [dropSyllabus, setDropSyllabus] = useState([]);
 
   const navigate = useNavigate();
 
@@ -217,8 +220,8 @@ const AddQuestions = () => {
   const getSubjects = () => {
     console.log(syllabus, medium, standard);
     fetchSubjectsApiCall({
-      syllabus:syllabus.value,
-      medium:medium.value,
+      syllabus: syllabus.value,
+      medium: medium.value,
       standard,
     });
   };
@@ -291,34 +294,69 @@ const AddQuestions = () => {
   const fetchData = async () => {
     try {
       const res2 = await axios.get(`${BASE_URL}syllabus/getAll`);
-      
+
       const transformedSyllabus = res2.data.syllabus.map((syllabus) => ({
         // value: school._id,
         value: syllabus.name,
-        label: syllabus.name, 
-        id : syllabus._id,
+        label: syllabus.name,
+        id: syllabus._id,
       }));
-      
+
       setDropSyllabus(transformedSyllabus);
 
       const res3 = await axios.get(`${BASE_URL}medium/getAll`);
-      
+
       const transformedMediums = res3.data.mediums.map((medium) => ({
         // value: school._id,
         value: medium.name,
-        label: medium.name, 
-        id : medium._id,
+        label: medium.name,
+        id: medium._id,
       }));
 
       setDropMedium(transformedMediums);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchData();
-  },[])
+  }, []);
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+  const handleFileUpload = async () => {
+    if (!selectedFile) {
+      setUploadStatus("Please select a file.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      setUploadStatus("Uploading...");
+      const response = await axios.post(
+        `${BASE_URL}test/uploadTestFile/${selectedChapter}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setUploadStatus("File uploaded successfully!");
+      } else {
+        setUploadStatus("Error uploading file. Please try again.");
+      }
+    } catch (error) {
+      setUploadStatus("Error uploading file. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -410,6 +448,7 @@ const AddQuestions = () => {
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                 onChange={(e) => {
                   setSelectedChapter(e.target.value);
+                  console.log("selectedChapter", e.target.value);
                 }}
               >
                 <option selected>Choose a Chapter</option>
@@ -427,57 +466,105 @@ const AddQuestions = () => {
       </div>
 
       {selectedChapter ? (
-        <div className="my-4 shadow-md p-8 rounded-xl lg:w-fit sm:w-full text-xl">
-          <span className="text-center text-xl font-semibold">
-            Test for the chapter
-          </span>
-          {test ? (
-            <div className="mt-5 grid gap-2">
-              <h1 className="text-xl font-semibold">{test?.name}</h1>
-              <h1 className="text-xl font-semibold">{test?.desc}</h1>
-              <h1>
-                <span className="font-semibold text-xl">
-                  No of Questions :{" "}
-                </span>
-                {test?.noOfQuestions}
-              </h1>
-              <h1>
-                <span className="font-semibold text-xl">Total Marks:</span>{" "}
-                {test?.totalMarks}
-              </h1>
-              <h1
-                className="mt-5 text-center font-semibold text-xl shadow-xl border border-orange-500 py-2 rounded-full cursor-pointer"
-                onClick={() => navigate("/admin/preview/" + test?._id)}
-              >
-                Preview
-              </h1>
-            </div>
-          ) : (
-            <div className="w-full">
-              <h1 className="my-2">No tests found</h1>
-              <form
-                onSubmit={handleCreateTest}
-                className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 my-5 "
-              >
+        <>
+          <div className="flex justify-center items-center w-full h-full py-4">
+            <div className="bg-white shadow-lg rounded-lg p-6 w-full">
+              <h3 className="text-center text-md font-semibold text-gray-800 mb-4">
+                Upload Your File Questions and Answers Sheet
+              </h3>
+              <div className="flex justify-center items-center border-2 border-dashed border-gray-300 rounded-lg py-8 px-4">
                 <input
-                  type="text"
-                  onChange={(e) => setTestName(e.target.value)}
-                  placeholder="Enter Test Name"
-                  className="rounded-full"
+                  type="file"
+                  accept=".xlsx"
+                  className="hidden"
+                  id="file-input"
+                  onChange={handleFileChange}
                 />
-                <input
-                  type="text"
-                  onChange={(e) => setTestDesc(e.target.value)}
-                  placeholder="Enter Test Description"
-                  className="rounded-full"
-                />
-                <button className="text-white bg-orange-300 hover:bg-orange-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">
-                  Create Test
+                <label
+                  htmlFor="file-input"
+                  className="text-center text-lg font-medium text-[#F16551] cursor-pointer"
+                >
+                  Drag & Drop or Click to Upload
+                </label>
+              </div>
+              {selectedFile && (
+                <div className="mt-4 text-center">
+                  <p className="text-sm text-gray-600">Selected File:</p>
+                  <p className="font-semibold text-lg">{selectedFile.name}</p>
+                  <p className="text-sm text-gray-500">
+                    Size: {(selectedFile.size / 1024).toFixed(2)} KB
+                  </p>
+                </div>
+              )}
+              <p className="text-center text-sm text-gray-500 mt-2">
+                Only .xlsx files are allowed
+              </p>
+              <div className="text-center mt-4">
+                {uploadStatus && (
+                  <p className="text-sm text-gray-600">{uploadStatus}</p>
+                )}
+                <button
+                  onClick={handleFileUpload}
+                  className="mt-4 px-6 py-2 bg-[#F16551] text-white rounded-lg"
+                >
+                  Upload File
                 </button>
-              </form>
+              </div>
             </div>
-          )}
-        </div>
+          </div>
+
+          <div className="my-4 shadow-md p-8 rounded-xl lg:w-fit sm:w-full text-xl">
+            <span className="text-center text-xl font-semibold">
+              Test for the chapter
+            </span>
+            {test ? (
+              <div className="mt-5 grid gap-2">
+                <h1 className="text-xl font-semibold">{test?.name}</h1>
+                <h1 className="text-xl font-semibold">{test?.desc}</h1>
+                <h1>
+                  <span className="font-semibold text-xl">
+                    No of Questions :{" "}
+                  </span>
+                  {test?.noOfQuestions}
+                </h1>
+                <h1>
+                  <span className="font-semibold text-xl">Total Marks:</span>{" "}
+                  {test?.totalMarks}
+                </h1>
+                <h1
+                  className="mt-5 text-center font-semibold text-xl shadow-xl border border-orange-500 py-2 rounded-full cursor-pointer"
+                  onClick={() => navigate("/admin/preview/" + test?._id)}
+                >
+                  Preview
+                </h1>
+              </div>
+            ) : (
+              <div className="w-full">
+                <h1 className="my-2">No tests found</h1>
+                <form
+                  onSubmit={handleCreateTest}
+                  className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-1 gap-5 my-5 "
+                >
+                  <input
+                    type="text"
+                    onChange={(e) => setTestName(e.target.value)}
+                    placeholder="Enter Test Name"
+                    className="rounded-full"
+                  />
+                  <input
+                    type="text"
+                    onChange={(e) => setTestDesc(e.target.value)}
+                    placeholder="Enter Test Description"
+                    className="rounded-full"
+                  />
+                  <button className="text-white bg-orange-300 hover:bg-orange-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">
+                    Create Test
+                  </button>
+                </form>
+              </div>
+            )}
+          </div>
+        </>
       ) : (
         ``
       )}
@@ -604,52 +691,47 @@ const AddQuestions = () => {
               />
             </div>
 
-            {noOfOptions <=6 && noOfOptions>=5 && (
+            {noOfOptions <= 6 && noOfOptions >= 5 && (
               <div className="flex lg:mb-0 mb-16">
-              <div>
-                <label className="text-xl">E.</label>
-                <input
-                  type="radio"
-                  name="option"
-                  onChange={(e) => setAnswer("E")}
+                <div>
+                  <label className="text-xl">E.</label>
+                  <input
+                    type="radio"
+                    name="option"
+                    onChange={(e) => setAnswer("E")}
+                  />
+                </div>
+                <ReactQuill
+                  theme="snow"
+                  modules={modules}
+                  formats={formats}
+                  value={optionE}
+                  onChange={(e) => setOptionE(e)}
+                  className="ml-4 mb-10 lg:w-5/6"
                 />
               </div>
-              <ReactQuill
-                theme="snow"
-                modules={modules}
-                formats={formats}
-                value={optionE}
-                onChange={(e) => setOptionE(e)}
-                className="ml-4 mb-10 lg:w-5/6"
-              />
-            </div>
-            )
+            )}
 
-            }
-            
             {noOfOptions == 6 && (
               <div className="flex lg:mb-0 mb-16">
-              <div>
-                <label className="text-xl">F.</label>
-                <input
-                  type="radio"
-                  name="option"
-                  onChange={(e) => setAnswer("F")}
+                <div>
+                  <label className="text-xl">F.</label>
+                  <input
+                    type="radio"
+                    name="option"
+                    onChange={(e) => setAnswer("F")}
+                  />
+                </div>
+                <ReactQuill
+                  theme="snow"
+                  modules={modules}
+                  formats={formats}
+                  value={optionF}
+                  onChange={(e) => setOptionF(e)}
+                  className="ml-4 mb-10 lg:w-5/6"
                 />
               </div>
-              <ReactQuill
-                theme="snow"
-                modules={modules}
-                formats={formats}
-                value={optionF}
-                onChange={(e) => setOptionF(e)}
-                className="ml-4 mb-10 lg:w-5/6"
-              />
-            </div>
-            )
-
-            } 
-
+            )}
           </div>
 
           <div className="flex mx-10 my-5">
@@ -676,7 +758,6 @@ const AddQuestions = () => {
               />
             </div>
           </div>
-          
 
           <div className="mt-10">
             <button
