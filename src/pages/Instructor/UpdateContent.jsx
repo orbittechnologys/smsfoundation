@@ -479,9 +479,9 @@ const UpdateContent = () => {
                 <a
                   href="#"
                   onClick={() => setUpload("content")}
-                  class={`inline-block w-full p-4  bg-gray-100 md:text-xs lg:text-sm active focus:outline-none ${
+                  class={`inline-block w-full p-4 rounded-l-xl bg-gray-100  md:text-xs lg:text-sm active focus:outline-none ${
                     upload === "content"
-                      ? "border border-orange-500 text-orange-500"
+                      ? "border border-orange-500 text-orange-500 rounded-l-xl"
                       : "text-gray-900 border border-gray-200"
                   }`}
                   aria-current="page"
@@ -520,9 +520,9 @@ const UpdateContent = () => {
                 <a
                   href="#"
                   onClick={() => setUpload("Thumbnail")}
-                  class={`inline-block w-full p-4  bg-gray-100 md:text-xs lg:text-sm active focus:outline-none ${
+                  class={`inline-block w-full p-4 rounded-r-xl bg-gray-100 md:text-xs lg:text-sm active focus:outline-none ${
                     upload === "Thumbnail"
-                      ? "border border-orange-500 text-orange-500"
+                      ? "border border-orange-500 text-orange-500 rounded-r-xl"
                       : "text-gray-900 border border-gray-200"
                   }`}
                 >
@@ -533,20 +533,20 @@ const UpdateContent = () => {
 
             <div className=" flex justify-center col-span-2">
               {upload === "content" && (
-                <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
+                <div className="flex-row justify-center items-center w-80 p-4 ">
                   <div className="">
-                    <label
+                    {/* <label
                       htmlFor="cont"
                       className="block mb-2 text-sm font-semibold text-gray-900"
                     >
                       Upload Content
-                    </label>
+                    </label> */}
                     <input
                       type="file"
                       id="cont"
                       accept="application/pdf"
                       onChange={handleFileChange}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-2"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-2"
                       placeholder="Upload Content"
                       // required
                     />
@@ -588,21 +588,21 @@ const UpdateContent = () => {
                 </div>
               )}
               {upload === "Audio" && (
-                <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
+                <div className="flex-row justify-center items-center w-80 p-4 ">
                   <div className="">
                     <div>
-                      <label
+                      {/* <label
                         htmlFor="cont"
                         className="block mb-2 text-sm font-semibold text-gray-900"
                       >
                         Upload Audio File
-                      </label>
+                      </label> */}
                       <input
                         type="file"
                         id="cont"
                         accept="audio/*"
                         onChange={handleFileChangeAudio}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="Upload Content"
                         // required
                       />
@@ -647,22 +647,22 @@ const UpdateContent = () => {
               {upload === "Video" && (
                 <>
                   {/* video file */}
-                  <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
+                  <div className="flex-row justify-center items-center w-80 p-4 ">
                     <div className="">
                       <div>
-                        <label
+                        {/* <label
                           htmlFor="videoUpload"
                           className="block mb-2 text-sm font-semibold text-gray-900"
                         >
                           Upload Video
-                        </label>
+                        </label> */}
                         <input
                           type="file"
                           id="videoUpload"
                           multiple
                           accept="video/mp4"
                           onChange={handleVideoFileChange}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                           placeholder="Upload Video"
                           // required
                         />
@@ -714,21 +714,21 @@ const UpdateContent = () => {
               {upload === "Thumbnail" && (
                 <>
                   {/* thumbnail file */}
-                  <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
+                  <div className="flex-row justify-center items-center w-80 p-4 ">
                     <div className="">
                       <div>
-                        <label
+                        {/* <label
                           htmlFor="imageUpload"
                           className="block mb-2 text-sm font-semibold text-gray-900"
                         >
                           Upload Thumbnail
-                        </label>
+                        </label> */}
                         <input
                           type="file"
                           id="imageUpload"
                           accept="image/jpeg, image/png, image/jpg"
                           onChange={handleFileChangeThumbnail}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                           placeholder="Upload Image"
                           // required
                         />
@@ -775,16 +775,16 @@ const UpdateContent = () => {
             </div>
 
             {/* audio file */}
-          </div>
 
-          <div className="flex justify-end items-center">
-            <button
-              type="button"
-              className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-              onClick={() => handleUpload()}
-            >
-              Upload
-            </button>
+            <div className="flex justify-end items-end w-full  col-span-2 ">
+              <button
+                type="button"
+                className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+                onClick={() => handleUpload()}
+              >
+                Upload
+              </button>
+            </div>
           </div>
         </div>
       )}
