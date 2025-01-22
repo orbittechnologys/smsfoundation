@@ -123,6 +123,7 @@ const NewMyCourses = () => {
                 )}
                 <p className="font-semibold">{card?.name}</p>
                 <p className="text-gray-600">{card?.desc}</p>
+                <p className="text-gray-600 text-xs">{card?.subtitle}</p>
                 <div className="flex justify-center items-center gap-2">
                   <button
                     onClick={() => navigate(`/Content/${card?._id}`)}
