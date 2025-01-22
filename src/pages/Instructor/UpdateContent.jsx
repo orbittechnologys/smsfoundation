@@ -793,7 +793,7 @@ const UpdateContent = () => {
                   </>
                 )}
               </div>
-              <div className="flex justify-end items-end w-full  border-t border-dashed border-gray-500">
+              <div className="flex md:justify-end justify-center items-end w-full  border-t border-dashed border-gray-500">
                 <button
                   type="button"
                   className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
