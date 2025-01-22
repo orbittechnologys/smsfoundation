@@ -115,7 +115,12 @@ const NewMyCourses = () => {
                     {card.subject.name}
                   </span>
                 </div>
-                <img src={flask} alt="flask" className="h-10" />
+                {card?.thumbnail? (
+                  <img src={card?.thumbnail} alt="" className="h-10 object-contain"/>
+                  ) : (
+                    <img src={flask} alt="flask" className="h-10" />
+
+                )}
                 <p className="font-semibold">{card?.name}</p>
                 <p className="text-gray-600">{card?.desc}</p>
                 <div className="flex justify-center items-center gap-2">
