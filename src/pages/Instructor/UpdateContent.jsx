@@ -9,10 +9,13 @@ import { MdOutlineAudioFile } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { set } from "lodash";
+import { GrGallery } from "react-icons/gr";
 
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
   const [audioFileName, setAudioFileName] = useState("");
+  const [thumbnailFileName, setThumbnailFileName] = useState("");
   const [standard, setStandard] = useState(null);
   const [medium, setMedium] = useState(null);
   const [syllabus, setSyllabus] = useState(null);
@@ -23,12 +26,14 @@ const UpdateContent = () => {
   const [chapterDesc, setChapterDesc] = useState(null);
   const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState(null);
+  const [uploadedThumbnailUrl, setUploadedThumbnailUrl] = useState(null);
   const [videoUrls, setVideoUrls] = useState([]);
   const [dropMedium, setDropMedium] = useState([]);
   const [dropSyllabus, setDropSyllabus] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fileUploadPercentage, setFileUploadPercentage] = useState(0);
   const [audioUplpoadPercentage, setAudioUplpoadPercentage] = useState(0);
+  const [thumbnailUploadPercentage, setThumbnailUploadPercentage] = useState(0);
   const [videoUploadPercentage, setVideoUploadPercentage] = useState(0);
   const [showModel, setShowModel] = useState(false);
   const [chapterToDelete, setChapterToDelete] = useState(null);
@@ -91,6 +96,38 @@ const UpdateContent = () => {
     setAudioUplpoadPercentage(0);
     setIsLoading(false);
     setUploadedAudioUrl("");
+  };
+
+  const handleFileChangeThumbnail = async (event) => {
+    const file = event.target.files[0];
+    const imageTypeRegex = /^image\/(jpeg|png|jpg)$/;
+    if (file && imageTypeRegex.test(file.type)) {
+      setThumbnailFileName(file.name);
+      const blobName = file.name;
+      setIsLoading(true);
+      try {
+        const url = await uploadToAzureStorage(
+          file,
+          blobName,
+          setThumbnailUploadPercentage
+        );
+        console.log(url);
+        setUploadedThumbnailUrl(url);
+      } catch (error) {
+        console.error("Error uploading thumbnail:", error);
+      } finally {
+        setIsLoading(false); // Stop loading
+      }
+    } else {
+      alert("Please upload an image file.");
+    }
+  };
+
+  const handleRemoveThumbnail = async () => {
+    setThumbnailFileName("");
+    setThumbnailUploadPercentage(0);
+    setIsLoading(false);
+    setUploadedThumbnailUrl("");
   };
 
   const handleVideoFileChange = async (event) => {
@@ -204,9 +241,12 @@ const UpdateContent = () => {
           subjectId: selectedSubject,
         };
 
-        // Include `chapterUrl`, `audioUrl`, and `videoUrl` only if they are available
+        console.log("reqBodyggg", reqBody);
+
+        // Include `chapterUrl`, `audioUrl`, and `videoUrl`  only if they are available
         if (uploadedFileUrl) reqBody.chapterUrl = uploadedFileUrl;
         if (uploadedAudioUrl) reqBody.audioUrl = uploadedAudioUrl;
+        if (uploadedThumbnailUrl) reqBody.thumbnail = uploadedThumbnailUrl;
 
         // Ensure videoUrls is always an array
         reqBody.videoUrl = Array.isArray(videoUrls) ? videoUrls : [];
@@ -221,6 +261,7 @@ const UpdateContent = () => {
         // Reset form fields after successful submission
         setUploadedAudioUrl(null);
         setUploadedFileUrl(null);
+        setUploadedThumbnailUrl(null);
         setVideoUrls([]);
         setSelectedSubject(null);
         setChapterDesc(null);
@@ -565,6 +606,62 @@ const UpdateContent = () => {
                 </div>
               )}
             </div>
+
+            {/* thumbnail file */}
+            <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
+              <div className="">
+                <div>
+                  <label
+                    htmlFor="imageUpload"
+                    className="block mb-2 text-sm font-semibold text-gray-900"
+                  >
+                    Upload Thumbnail
+                  </label>
+                  <input
+                    type="file"
+                    id="imageUpload"
+                    accept="image/jpeg, image/png, image/jpg"
+                    onChange={handleFileChangeThumbnail}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Upload Image"
+                    // required
+                  />
+
+                  {/* Show upload progress when loading */}
+                  {isLoading && (
+                    <>
+                      <p className="text-sm font-medium text-gray-700 mt-2">
+                        Uploading: {thumbnailUploadPercentage}%
+                      </p>
+                      <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                        <div
+                          className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
+                          style={{ width: `${thumbnailUploadPercentage}%` }}
+                        >
+                          {thumbnailUploadPercentage}%
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* Display uploaded audio file with remove option */}
+              {thumbnailFileName && (
+                <div className="flex items-center justify-between mt-4 bg-gray-100 p-2 rounded-lg">
+                  <div className="flex items-center">
+                    <GrGallery className="text-red-500 text-2xl mr-2" />
+                    <span>{thumbnailFileName}</span>
+                  </div>
+                  <button
+                    onClick={handleRemoveThumbnail}
+                    className="text-red-500"
+                  >
+                    <MdClose className="text-2xl" />
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="flex justify-end items-center">
@@ -622,7 +719,7 @@ const UpdateContent = () => {
                     )}
                     {chapter?.videoUrl?.length > 0 && (
                       <a
-                        href={chapter?.videoUrl[0]} 
+                        href={chapter?.videoUrl[0]}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="border border-orange-300 px-4 py-2 rounded-full text-orange-500 hover:bg-orange-300 hover:text-white transition duration-300"

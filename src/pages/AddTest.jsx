@@ -550,12 +550,14 @@ const AddQuestions = () => {
                     onChange={(e) => setTestName(e.target.value)}
                     placeholder="Enter Test Name"
                     className="rounded-full"
+                    required
                   />
                   <input
                     type="text"
                     onChange={(e) => setTestDesc(e.target.value)}
                     placeholder="Enter Test Description"
                     className="rounded-full"
+                    required
                   />
                   <button className="text-white bg-orange-300 hover:bg-orange-500 focus:outline-none focus:ring-4 focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center">
                     Create Test
