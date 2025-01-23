@@ -294,7 +294,6 @@ const Mcq = () => {
                   ></div>
                 </div>
               </div>
-
               {questions[questionNumber - 1]?.optionE && (
                 <div
                   className={cn({
