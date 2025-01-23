@@ -93,8 +93,6 @@ const Mcq = () => {
       updatedAnswers[index] = { option, score: 0 };
       console.log("elsesc", updatedAnswers);
     }
-
-    // Update the state with the new answers array
     setAnswers(updatedAnswers);
   };
 
