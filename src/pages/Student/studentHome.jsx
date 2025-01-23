@@ -128,7 +128,7 @@ const StudentHome = () => {
   };
 
   const fetchStudent = async (user_id) => {
-    console.log(user_id);
+    console.log("fetchStudent", user_id);
     try {
       const res = await axios.get(
         `${BASE_URL}student/getStudentByUserId/${user_id}`
@@ -195,14 +195,13 @@ const StudentHome = () => {
       console.log(res2.data);
 
       const reqbody = {
-        standard,
+        standard: standard,
         syllabus: res2.data.school.syllabus,
         medium: res2.data.school.medium,
       };
-      console.log("fetchSubjectV2" + reqbody);
-      console.log("fetchSubjectV2"`${BASE_URL}subject/getSubjects`, reqbody);
+
       const res = await axios.post(`${BASE_URL}subject/getSubjects`, reqbody);
-      console.log(res.data);
+
       setSubjects(res.data.subjects);
     } catch (error) {
       console.log(error);
