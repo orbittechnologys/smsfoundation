@@ -87,8 +87,7 @@ const PreviewTest = () => {
                   <span className="mr-2">A.</span>
                   <span
                     className={cn({
-                      "text-green-400 font-bold mr-2":
-                        questions[currentQuestionIndex]?.answer === "A",
+                      "text-green-400 font-bold mr-2": questions[currentQuestionIndex]?.answer === "A",
                       "mr-2": questions[currentQuestionIndex]?.answer !== "A",
                     })}
                     dangerouslySetInnerHTML={{
@@ -100,8 +99,7 @@ const PreviewTest = () => {
                   <span className="mr-2">B.</span>
                   <span
                     className={cn({
-                      "text-green-400 font-bold mr-2":
-                        questions[currentQuestionIndex]?.answer === "B",
+                      "text-green-400 font-bold mr-2": questions[currentQuestionIndex]?.answer === "B",
                       "mr-2": questions[currentQuestionIndex]?.answer !== "B",
                     })}
                     dangerouslySetInnerHTML={{
@@ -113,8 +111,7 @@ const PreviewTest = () => {
                   <span className="mr-2">C.</span>
                   <span
                     className={cn({
-                      "text-green-400 font-bold mr-2":
-                        questions[currentQuestionIndex]?.answer === "C",
+                      "text-green-400 font-bold mr-2": questions[currentQuestionIndex]?.answer === "C",
                       "mr-2": questions[currentQuestionIndex]?.answer !== "C",
                     })}
                     dangerouslySetInnerHTML={{
@@ -126,8 +123,8 @@ const PreviewTest = () => {
                   <span className="mr-2">D.</span>
                   <span
                     className={cn({
-                      "text-green-400 font-bold":
-                        questions[currentQuestionIndex]?.answer === "D",
+                      "text-green-400 font-bold": questions[currentQuestionIndex]?.answer === "D",
+                      "mr-2": questions[currentQuestionIndex]?.answer !== "D",
                     })}
                     dangerouslySetInnerHTML={{
                       __html: questions[currentQuestionIndex]?.optionD,
@@ -139,8 +136,8 @@ const PreviewTest = () => {
                     <span className="mr-2">E.</span>
                     <span
                       className={cn({
-                        "text-green-400 font-bold":
-                          questions[currentQuestionIndex]?.answer === "E",
+                        "text-green-400 font-bold": questions[currentQuestionIndex]?.answer === "E",
+                        "mr-2": questions[currentQuestionIndex]?.answer !== "E",
                       })}
                       dangerouslySetInnerHTML={{
                         __html: questions[currentQuestionIndex]?.optionE,
@@ -151,11 +148,11 @@ const PreviewTest = () => {
 
                 {questions[currentQuestionIndex]?.optionF && (
                   <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
-                    <span className="mr-2">E.</span>
+                    <span className="mr-2">F.</span>
                     <span
                       className={cn({
-                        "text-green-400 font-bold":
-                          questions[currentQuestionIndex]?.answer === "F",
+                        "text-green-400 font-bold": questions[currentQuestionIndex]?.answer === "F",
+                        "mr-2": questions[currentQuestionIndex]?.answer !== "F",
                       })}
                       dangerouslySetInnerHTML={{
                         __html: questions[currentQuestionIndex]?.optionF,

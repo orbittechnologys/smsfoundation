@@ -19,6 +19,8 @@ const Mcq = () => {
   const [totalScore, setTotalScore] = useState(0);
 
   const [student, setStudent] = useState(null);
+
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
   const navigate = useNavigate();
 
   const fetchStudent = async () => {
@@ -52,12 +54,27 @@ const Mcq = () => {
     }
   };
 
-  const handleOptionClick = (index, option) => {
-    console.log(index, option);
+  const handleOptionClick = (index, option, question) => {
+    console.log(index, option, question);
     const correctAnswer = questions[index]?.answer;
     const marks = questions[index]?.marks;
 
-    // Create a copy of the answers array
+    const selectedAns = { question: question, selectedAnswerByUser: option };
+
+    setSelectedAnswers((prevSelectedAnswers) => {
+      const index = prevSelectedAnswers.findIndex(
+        (answer) => answer.question === selectedAns.question
+      );
+
+      if (index !== -1) {
+        const updatedAnswers = [...prevSelectedAnswers];
+        updatedAnswers[index] = selectedAns;
+        return updatedAnswers;
+      } else {
+        return [...prevSelectedAnswers, selectedAns];
+      }
+    });
+
     const updatedAnswers = [...answers];
 
     if (correctAnswer === option) {
@@ -91,6 +108,8 @@ const Mcq = () => {
   }, []);
 
   const submitTestApi = async (reqBody) => {
+
+    console.log("reqBody", reqBody)
     try {
       const res = await axios.post(
         `${BASE_URL}studentTest/submitTest`,
@@ -123,6 +142,7 @@ const Mcq = () => {
       testId: test?._id,
       studentId: student?._id,
       marks: total,
+      selectedAnswers: selectedAnswers,
     };
     submitTestApi(reqBody);
   };
@@ -173,7 +193,13 @@ const Mcq = () => {
                   "border-2 border-green-800 p-5 rounded-xl text-green-600":
                     answers[questionNumber - 1]?.option == "A",
                 })}
-                onClick={() => handleOptionClick(questionNumber - 1, "A")}
+                onClick={() =>
+                  handleOptionClick(
+                    questionNumber - 1,
+                    "A",
+                    questions[questionNumber - 1]?._id
+                  )
+                }
               >
                 <div className="flex justify-start items-center">
                   <span className="mr-2 font-semibold">A.</span>
@@ -191,7 +217,13 @@ const Mcq = () => {
                   "border-2 border-green-800 p-5 rounded-xl text-green-600":
                     answers[questionNumber - 1]?.option == "B",
                 })}
-                onClick={() => handleOptionClick(questionNumber - 1, "B")}
+                onClick={() =>
+                  handleOptionClick(
+                    questionNumber - 1,
+                    "B",
+                    questions[questionNumber - 1]?._id
+                  )
+                }
               >
                 <div className="flex justify-start items-center">
                   <span className="mr-2 font-semibold">B.</span>
@@ -209,7 +241,13 @@ const Mcq = () => {
                   "border-2 border-green-800 p-5 rounded-xl text-green-600":
                     answers[questionNumber - 1]?.option == "C",
                 })}
-                onClick={() => handleOptionClick(questionNumber - 1, "C")}
+                onClick={() =>
+                  handleOptionClick(
+                    questionNumber - 1,
+                    "C",
+                    questions[questionNumber - 1]?._id
+                  )
+                }
               >
                 <div className="flex justify-start items-center">
                   <span className="mr-2 font-semibold">C.</span>
@@ -227,7 +265,13 @@ const Mcq = () => {
                   "border-2 border-green-800 p-5 rounded-xl text-green-600":
                     answers[questionNumber - 1]?.option == "D",
                 })}
-                onClick={() => handleOptionClick(questionNumber - 1, "D")}
+                onClick={() =>
+                  handleOptionClick(
+                    questionNumber - 1,
+                    "D",
+                    questions[questionNumber - 1]?._id
+                  )
+                }
               >
                 <div className="flex justify-start items-center">
                   <span className="mr-2 font-semibold">D.</span>
@@ -247,7 +291,13 @@ const Mcq = () => {
                     "border-2 border-green-800 p-5 rounded-xl text-green-600":
                       answers[questionNumber - 1]?.option == "E",
                   })}
-                  onClick={() => handleOptionClick(questionNumber - 1, "E")}
+                  onClick={() =>
+                    handleOptionClick(
+                      questionNumber - 1,
+                      "E",
+                      questions[questionNumber - 1]?._id
+                    )
+                  }
                 >
                   <div className="flex justify-start items-center">
                     <span className="mr-2 font-semibold">E.</span>
@@ -268,7 +318,13 @@ const Mcq = () => {
                     "border-2 border-green-800 p-5 rounded-xl text-green-600":
                       answers[questionNumber - 1]?.option == "F",
                   })}
-                  onClick={() => handleOptionClick(questionNumber - 1, "F")}
+                  onClick={() =>
+                    handleOptionClick(
+                      questionNumber - 1,
+                      "F",
+                      questions[questionNumber - 1]?._id
+                    )
+                  }
                 >
                   <div className="flex justify-start items-center">
                     <span className="mr-2 font-semibold">F.</span>
