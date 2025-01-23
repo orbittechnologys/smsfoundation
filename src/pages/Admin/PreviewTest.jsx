@@ -58,13 +58,7 @@ const PreviewTest = () => {
         <span className="text-orange-500">{currentQuestionIndex + 1}</span>/
         <span>{questions.length}</span>
       </div>
-      {/* <h1 className="text-2xl my-5 font-semibold">PreviewTest</h1>
-      <div>
-        <h1 className="mb-2">Test Name: {test?.name}</h1>
-        <h1 className="mb-2">Test Description: {test?.desc}</h1>
-        <h1 className="mb-2">Number of questions: {test?.noOfQuestions}</h1>
-        <h1 className="mb-2">Total Marks: {test?.totalMarks}</h1>
-      </div> */}
+
       <div className="w-full">
         {questions.length > 0 && (
           <div className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-5 place-items-start">
@@ -86,7 +80,8 @@ const PreviewTest = () => {
                   <span className="mr-2">A.</span>
                   <span
                     className={cn({
-                      "text-green-400 font-bold mr-2": questions[currentQuestionIndex]?.answer === "A",
+                      "text-green-400 font-bold mr-2":
+                        questions[currentQuestionIndex]?.answer === "A",
                       "mr-2": questions[currentQuestionIndex]?.answer !== "A",
                     })}
                     dangerouslySetInnerHTML={{
@@ -98,7 +93,8 @@ const PreviewTest = () => {
                   <span className="mr-2">B.</span>
                   <span
                     className={cn({
-                      "text-green-400 font-bold mr-2": questions[currentQuestionIndex]?.answer === "B",
+                      "text-green-400 font-bold mr-2":
+                        questions[currentQuestionIndex]?.answer === "B",
                       "mr-2": questions[currentQuestionIndex]?.answer !== "B",
                     })}
                     dangerouslySetInnerHTML={{
@@ -110,7 +106,8 @@ const PreviewTest = () => {
                   <span className="mr-2">C.</span>
                   <span
                     className={cn({
-                      "text-green-400 font-bold mr-2": questions[currentQuestionIndex]?.answer === "C",
+                      "text-green-400 font-bold mr-2":
+                        questions[currentQuestionIndex]?.answer === "C",
                       "mr-2": questions[currentQuestionIndex]?.answer !== "C",
                     })}
                     dangerouslySetInnerHTML={{
@@ -122,7 +119,8 @@ const PreviewTest = () => {
                   <span className="mr-2">D.</span>
                   <span
                     className={cn({
-                      "text-green-400 font-bold": questions[currentQuestionIndex]?.answer === "D",
+                      "text-green-400 font-bold":
+                        questions[currentQuestionIndex]?.answer === "D",
                       "mr-2": questions[currentQuestionIndex]?.answer !== "D",
                     })}
                     dangerouslySetInnerHTML={{
@@ -135,7 +133,8 @@ const PreviewTest = () => {
                     <span className="mr-2">E.</span>
                     <span
                       className={cn({
-                        "text-green-400 font-bold": questions[currentQuestionIndex]?.answer === "E",
+                        "text-green-400 font-bold":
+                          questions[currentQuestionIndex]?.answer === "E",
                         "mr-2": questions[currentQuestionIndex]?.answer !== "E",
                       })}
                       dangerouslySetInnerHTML={{
@@ -150,7 +149,8 @@ const PreviewTest = () => {
                     <span className="mr-2">F.</span>
                     <span
                       className={cn({
-                        "text-green-400 font-bold": questions[currentQuestionIndex]?.answer === "F",
+                        "text-green-400 font-bold":
+                          questions[currentQuestionIndex]?.answer === "F",
                         "mr-2": questions[currentQuestionIndex]?.answer !== "F",
                       })}
                       dangerouslySetInnerHTML={{

@@ -134,9 +134,10 @@ const StudentHome = () => {
         `${BASE_URL}student/getStudentByUserId/${user_id}`
       );
       setStudentData(res.data);
-
+      localStorage.setItem("student_id", res.data.studentDoc?._id);
       console.log(res.data);
       console.log("studentid", res.data.studentDoc?._id);
+
       fetchSubjectV2(res.data.studentDoc.school, res.data.studentDoc.standard);
       fetchActivity(res.data.studentDoc?._id);
     } catch (error) {
