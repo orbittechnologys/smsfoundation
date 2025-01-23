@@ -9,10 +9,13 @@ import { MdOutlineAudioFile } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { set } from "lodash";
+import { GrGallery } from "react-icons/gr";
 
 const UpdateContent = () => {
   const [fileName, setFileName] = useState("");
   const [audioFileName, setAudioFileName] = useState("");
+  const [thumbnailFileName, setThumbnailFileName] = useState("");
   const [standard, setStandard] = useState(null);
   const [medium, setMedium] = useState(null);
   const [syllabus, setSyllabus] = useState(null);
@@ -21,17 +24,21 @@ const UpdateContent = () => {
   const [chapters, setChapters] = useState(null);
   const [chapterName, setChapterName] = useState(null);
   const [chapterDesc, setChapterDesc] = useState(null);
+  const [chapterSubtitle, setChapterSubtitle] = useState(null);
   const [uploadedFileUrl, setUploadedFileUrl] = useState(null);
   const [uploadedAudioUrl, setUploadedAudioUrl] = useState(null);
+  const [uploadedThumbnailUrl, setUploadedThumbnailUrl] = useState(null);
   const [videoUrls, setVideoUrls] = useState([]);
   const [dropMedium, setDropMedium] = useState([]);
   const [dropSyllabus, setDropSyllabus] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fileUploadPercentage, setFileUploadPercentage] = useState(0);
   const [audioUplpoadPercentage, setAudioUplpoadPercentage] = useState(0);
+  const [thumbnailUploadPercentage, setThumbnailUploadPercentage] = useState(0);
   const [videoUploadPercentage, setVideoUploadPercentage] = useState(0);
   const [showModel, setShowModel] = useState(false);
   const [chapterToDelete, setChapterToDelete] = useState(null);
+  const [upload, setUpload] = useState("content");
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -91,6 +98,38 @@ const UpdateContent = () => {
     setAudioUplpoadPercentage(0);
     setIsLoading(false);
     setUploadedAudioUrl("");
+  };
+
+  const handleFileChangeThumbnail = async (event) => {
+    const file = event.target.files[0];
+    const imageTypeRegex = /^image\/(jpeg|png|jpg)$/;
+    if (file && imageTypeRegex.test(file.type)) {
+      setThumbnailFileName(file.name);
+      const blobName = file.name;
+      setIsLoading(true);
+      try {
+        const url = await uploadToAzureStorage(
+          file,
+          blobName,
+          setThumbnailUploadPercentage
+        );
+        console.log(url);
+        setUploadedThumbnailUrl(url);
+      } catch (error) {
+        console.error("Error uploading thumbnail:", error);
+      } finally {
+        setIsLoading(false); // Stop loading
+      }
+    } else {
+      alert("Please upload an image file.");
+    }
+  };
+
+  const handleRemoveThumbnail = async () => {
+    setThumbnailFileName("");
+    setThumbnailUploadPercentage(0);
+    setIsLoading(false);
+    setUploadedThumbnailUrl("");
   };
 
   const handleVideoFileChange = async (event) => {
@@ -196,17 +235,21 @@ const UpdateContent = () => {
   const handleUpload = async () => {
     try {
       // Ensure that the required fields are present
-      if (chapterName && chapterDesc && selectedSubject) {
+      if (chapterName && chapterDesc && selectedSubject && chapterSubtitle) {
         // Construct the request body dynamically, only including optional fields if they exist
         const reqBody = {
           name: chapterName,
           desc: chapterDesc,
+          subtitle: chapterSubtitle,
           subjectId: selectedSubject,
         };
 
-        // Include `chapterUrl`, `audioUrl`, and `videoUrl` only if they are available
+        console.log("reqBodyggg", reqBody);
+
+        // Include `chapterUrl`, `audioUrl`, and `videoUrl`  only if they are available
         if (uploadedFileUrl) reqBody.chapterUrl = uploadedFileUrl;
         if (uploadedAudioUrl) reqBody.audioUrl = uploadedAudioUrl;
+        if (uploadedThumbnailUrl) reqBody.thumbnail = uploadedThumbnailUrl;
 
         // Ensure videoUrls is always an array
         reqBody.videoUrl = Array.isArray(videoUrls) ? videoUrls : [];
@@ -221,6 +264,7 @@ const UpdateContent = () => {
         // Reset form fields after successful submission
         setUploadedAudioUrl(null);
         setUploadedFileUrl(null);
+        setUploadedThumbnailUrl(null);
         setVideoUrls([]);
         setSelectedSubject(null);
         setChapterDesc(null);
@@ -361,220 +405,406 @@ const UpdateContent = () => {
       </div>
 
       {selectedSubject && (
-        <div className="my-5 border-t border-b">
+        <div className="my-5 border border-gray-300 p-5">
           <h1 className="text-xl font-semibold ">Add a new Chapter</h1>
-          <div className="mt-5 lg:grid grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-5 shadow-lg p-5 border rounded-xl">
-            <div>
-              <label
-                htmlFor="desc"
-                className="block mb-2 text-sm font-semibold text-gray-900 "
-              >
-                Chapter Name
-              </label>
-              <input
-                type="text"
-                id="desc"
-                onChange={(e) => setChapterName(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder="Enter Chapter name"
-                required
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="desc"
-                className="block mb-2 text-sm font-semibold text-gray-900 "
-              >
-                Chapter Description
-              </label>
-              <input
-                type="text"
-                id="desc"
-                onChange={(e) => setChapterDesc(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                placeholder="Enter Description"
-                required
-              />
-            </div>
-            <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
-              <div className="">
+          <div className="mt-5 flex flex-col justify-center items-center gap-5 w-full">
+            <div className=" flex justify-center items-center flex-wrap gap-5 w-full">
+              <div className="w-full">
                 <label
-                  htmlFor="cont"
-                  className="block mb-2 text-sm font-semibold text-gray-900"
+                  htmlFor="desc"
+                  className="block mb-2 text-sm font-semibold text-gray-900 "
                 >
-                  Upload Content
+                  Chapter Name
                 </label>
                 <input
-                  type="file"
-                  id="cont"
-                  accept="application/pdf"
-                  onChange={handleFileChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-2"
-                  placeholder="Upload Content"
-                  // required
+                  type="text"
+                  id="desc"
+                  onChange={(e) => setChapterName(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                  placeholder="Enter Chapter name"
+                  required
                 />
+              </div>
+              <div className="w-full">
+                <label
+                  htmlFor="desc"
+                  className="block mb-2 text-sm font-semibold text-gray-900 "
+                >
+                  Chapter Description
+                </label>
+                <input
+                  type="text"
+                  id="desc"
+                  onChange={(e) => setChapterDesc(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                  placeholder="Enter Description"
+                  required
+                />
+              </div>
+              <div className="w-full">
+                <label
+                  htmlFor="subtitle"
+                  className="block mb-2 text-sm font-semibold text-gray-900 "
+                >
+                  Chapter Subtitle
+                </label>
+                <input
+                  type="text"
+                  id="subtitle"
+                  onChange={(e) => setChapterSubtitle(e.target.value)}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                  placeholder="Enter Subtitle"
+                  required
+                />
+              </div>
+            </div>
+            <div class="sm:hidden mt-5">
+              <label for="tabs" class="sr-only">
+                Select your country
+              </label>
+              {/* <select
+                id="tabs"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5   "
+              >
+                <option onClick={() => setUpload("content")}>
+                  {" "}
+                  Upload Content
+                </option>
+                <option onClick={() => setUpload("Audio")}>
+                  {" "}
+                  Upload Audio File
+                </option>
+                <option onClick={() => setUpload("Video")}>
+                  {" "}
+                  Upload Video
+                </option>
+                <option onClick={() => setUpload("Thumbnail")}>
+                  Upload Thumbnail
+                </option>
+              </select> */}
+              <select
+                id="tabs"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-500 focus:border-orange-500 block w-full p-2.5"
+                onChange={(e) => setUpload(e.target.value)}
+              >
+                <option value="content">Upload Content</option>
+                <option value="Audio">Upload Audio File</option>
+                <option value="Video">Upload Video</option>
+                <option value="Thumbnail">Upload Thumbnail</option>
+              </select>
+            </div>
 
-                {isLoading && (
-                  <p className="text-sm font-medium text-gray-700 mt-2">
-                    Uploading: {fileUploadPercentage}%
-                  </p>
-                )}
-
-                {/* Progress Bar */}
-                {isLoading && (
-                  <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
-                    <div
-                      className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
-                      style={{ width: `${fileUploadPercentage}%` }}
+            <div className="w-full border border-dashed border-gray-500 rounded-xl p-5">
+              <ul class="hidden text-sm font-medium text-center mt-5 text-gray-500 rounded-lg shadow sm:flex  col-span-2">
+                <li class="w-full focus-within:z-10">
+                  <a
+                    href="#"
+                    onClick={() => setUpload("content")}
+                    class={`inline-block w-full p-4 rounded-l-xl bg-gray-100  md:text-xs lg:text-sm active focus:outline-none ${
+                      upload === "content"
+                        ? "border border-orange-500 text-orange-500 rounded-l-xl"
+                        : "text-gray-900 border border-gray-200"
+                    }`}
+                    aria-current="page"
+                  >
+                    {" "}
+                    Upload Content
+                  </a>
+                </li>
+                <li class="w-full focus-within:z-10 ">
+                  <a
+                    href="#"
+                    onClick={() => setUpload("Audio")}
+                    class={`inline-block w-full p-4  bg-gray-100  md:text-xs lg:text-sm active focus:outline-none ${
+                      upload === "Audio"
+                        ? "border border-orange-500 text-orange-500"
+                        : "text-gray-900 border border-gray-200"
+                    }`}
+                  >
+                    Upload Audio File
+                  </a>
+                </li>
+                <li class="w-full focus-within:z-10">
+                  <a
+                    href="#"
+                    onClick={() => setUpload("Video")}
+                    class={`inline-block w-full p-4  bg-gray-100 md:text-xs lg:text-sm active focus:outline-none ${
+                      upload === "Video"
+                        ? "border border-orange-500 text-orange-500"
+                        : "text-gray-900 border border-gray-200"
+                    }`}
+                  >
+                    Upload Video
+                  </a>
+                </li>
+                <li class="w-full focus-within:z-10">
+                  <a
+                    href="#"
+                    onClick={() => setUpload("Thumbnail")}
+                    class={`inline-block w-full p-4 rounded-r-xl bg-gray-100 md:text-xs lg:text-sm active focus:outline-none ${
+                      upload === "Thumbnail"
+                        ? "border border-orange-500 text-orange-500 rounded-r-xl"
+                        : "text-gray-900 border border-gray-200"
+                    }`}
+                  >
+                    Upload Thumbnail
+                  </a>
+                </li>
+              </ul>
+              <div className=" flex justify-center col-span-2">
+                {upload === "content" && (
+                  <div className="flex-row justify-center items-center w-80 p-4 ">
+                    <div className="">
+                      {/* <label
+                      htmlFor="cont"
+                      className="block mb-2 text-sm font-semibold text-gray-900"
                     >
-                      {fileUploadPercentage}%
+                      Upload Content
+                    </label> */}
+                      <input
+                        type="file"
+                        id="cont"
+                        accept="application/pdf"
+                        onChange={handleFileChange}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-2"
+                        placeholder="Upload Content"
+                        // required
+                      />
+
+                      {isLoading && (
+                        <p className="text-sm font-medium text-gray-700 mt-2">
+                          Uploading: {fileUploadPercentage}%
+                        </p>
+                      )}
+
+                      {/* Progress Bar */}
+                      {isLoading && (
+                        <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                          <div
+                            className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
+                            style={{ width: `${fileUploadPercentage}%` }}
+                          >
+                            {fileUploadPercentage}%
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Uploaded File Display with Remove Option */}
+                      {fileName && (
+                        <div className="flex items-center justify-between mt-4 bg-gray-100 p-2 rounded-lg">
+                          <div className="flex items-center">
+                            <FaFilePdf className="text-red-500 text-2xl mr-2" />
+                            <span className="text-sm">{fileName}</span>
+                          </div>
+                          <button
+                            onClick={handleRemoveFile}
+                            className="text-red-500"
+                          >
+                            <MdClose className="text-2xl" />
+                          </button>
+                        </div>
+                      )}
                     </div>
+                  </div>
+                )}
+                {upload === "Audio" && (
+                  <div className="flex-row justify-center items-center w-80 p-4 ">
+                    <div className="">
+                      <div>
+                        {/* <label
+                        htmlFor="cont"
+                        className="block mb-2 text-sm font-semibold text-gray-900"
+                      >
+                        Upload Audio File
+                      </label> */}
+                        <input
+                          type="file"
+                          id="cont"
+                          accept="audio/*"
+                          onChange={handleFileChangeAudio}
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                          placeholder="Upload Content"
+                          // required
+                        />
+
+                        {/* Show upload progress when loading */}
+                        {isLoading && (
+                          <>
+                            <p className="text-sm font-medium text-gray-700 mt-2">
+                              Uploading: {audioUplpoadPercentage}%
+                            </p>
+                            <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                              <div
+                                className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
+                                style={{ width: `${audioUplpoadPercentage}%` }}
+                              >
+                                {audioUplpoadPercentage}%
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Display uploaded audio file with remove option */}
+                    {audioFileName && (
+                      <div className="flex items-center justify-between mt-4 bg-gray-100 p-2 rounded-lg">
+                        <div className="flex items-center">
+                          <MdOutlineAudioFile className="text-red-500 text-2xl mr-2" />
+                          <span>{audioFileName}</span>
+                        </div>
+                        <button
+                          onClick={handleRemoveAudioFile}
+                          className="text-red-500"
+                        >
+                          <MdClose className="text-2xl" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
 
-                {/* Uploaded File Display with Remove Option */}
-                {fileName && (
-                  <div className="flex items-center justify-between mt-4 bg-gray-100 p-2 rounded-lg">
-                    <div className="flex items-center">
-                      <FaFilePdf className="text-red-500 text-2xl mr-2" />
-                      <span className="text-sm">{fileName}</span>
+                {upload === "Video" && (
+                  <>
+                    {/* video file */}
+                    <div className="flex-row justify-center items-center w-80 p-4 ">
+                      <div className="">
+                        <div>
+                          {/* <label
+                          htmlFor="videoUpload"
+                          className="block mb-2 text-sm font-semibold text-gray-900"
+                        >
+                          Upload Video
+                        </label> */}
+                          <input
+                            type="file"
+                            id="videoUpload"
+                            multiple
+                            accept="video/mp4"
+                            onChange={handleVideoFileChange}
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            placeholder="Upload Video"
+                            // required
+                          />
+
+                          {isLoading && (
+                            <>
+                              <p className="text-sm font-medium text-gray-700 mt-2">
+                                Uploading: {videoUploadPercentage}%
+                              </p>
+                              <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                                <div
+                                  className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
+                                  style={{ width: `${videoUploadPercentage}%` }}
+                                >
+                                  {videoUploadPercentage}%
+                                </div>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Display Uploaded Videos */}
+                      {videoUrls.length > 0 && (
+                        <div className="grid mt-4">
+                          {videoUrls.map((videoUrl, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center justify-between mt-2 bg-gray-100 p-2 rounded-lg"
+                            >
+                              <div className="flex items-center">
+                                <MdOutlineVideoLibrary className="text-blue-500 text-2xl mr-2" />
+                                <span>Video {index + 1}</span>
+                              </div>
+                              <button
+                                onClick={() => handleRemoveVideo(videoUrl)}
+                                className="text-red-500"
+                              >
+                                <MdClose className="text-2xl" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                    <button onClick={handleRemoveFile} className="text-red-500">
-                      <MdClose className="text-2xl" />
-                    </button>
-                  </div>
+                  </>
                 )}
+
+                {upload === "Thumbnail" && (
+                  <>
+                    {/* thumbnail file */}
+                    <div className="flex-row justify-center items-center w-80 p-4 ">
+                      <div className="">
+                        <div>
+                          {/* <label
+                          htmlFor="imageUpload"
+                          className="block mb-2 text-sm font-semibold text-gray-900"
+                        >
+                          Upload Thumbnail
+                        </label> */}
+                          <input
+                            type="file"
+                            id="imageUpload"
+                            accept="image/jpeg, image/png, image/jpg"
+                            onChange={handleFileChangeThumbnail}
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            placeholder="Upload Image"
+                            // required
+                          />
+
+                          {/* Show upload progress when loading */}
+                          {isLoading && (
+                            <>
+                              <p className="text-sm font-medium text-gray-700 mt-2">
+                                Uploading: {thumbnailUploadPercentage}%
+                              </p>
+                              <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
+                                <div
+                                  className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
+                                  style={{
+                                    width: `${thumbnailUploadPercentage}%`,
+                                  }}
+                                >
+                                  {thumbnailUploadPercentage}%
+                                </div>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Display uploaded audio file with remove option */}
+                      {thumbnailFileName && (
+                        <div className="flex items-center justify-between mt-4 bg-gray-100 p-2 rounded-lg">
+                          <div className="flex items-center">
+                            <GrGallery className="text-red-500 text-2xl mr-2" />
+                            <span>{thumbnailFileName}</span>
+                          </div>
+                          <button
+                            onClick={handleRemoveThumbnail}
+                            className="text-red-500"
+                          >
+                            <MdClose className="text-2xl" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
+              <div className="flex justify-end items-end w-full  border-t border-dashed border-gray-500">
+                <button
+                  type="button"
+                  className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
+                  onClick={() => handleUpload()}
+                >
+                  Upload
+                </button>
               </div>
             </div>
 
             {/* audio file */}
-            <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
-              <div className="">
-                <div>
-                  <label
-                    htmlFor="cont"
-                    className="block mb-2 text-sm font-semibold text-gray-900"
-                  >
-                    Upload Audio File
-                  </label>
-                  <input
-                    type="file"
-                    id="cont"
-                    accept="audio/*"
-                    onChange={handleFileChangeAudio}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="Upload Content"
-                    // required
-                  />
-
-                  {/* Show upload progress when loading */}
-                  {isLoading && (
-                    <>
-                      <p className="text-sm font-medium text-gray-700 mt-2">
-                        Uploading: {audioUplpoadPercentage}%
-                      </p>
-                      <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
-                        <div
-                          className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
-                          style={{ width: `${audioUplpoadPercentage}%` }}
-                        >
-                          {audioUplpoadPercentage}%
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Display uploaded audio file with remove option */}
-              {audioFileName && (
-                <div className="flex items-center justify-between mt-4 bg-gray-100 p-2 rounded-lg">
-                  <div className="flex items-center">
-                    <MdOutlineAudioFile className="text-red-500 text-2xl mr-2" />
-                    <span>{audioFileName}</span>
-                  </div>
-                  <button
-                    onClick={handleRemoveAudioFile}
-                    className="text-red-500"
-                  >
-                    <MdClose className="text-2xl" />
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* video file */}
-            <div className="flex-row justify-center items-center w-80 p-4 shadow-md rounded-lg">
-              <div className="">
-                <div>
-                  <label
-                    htmlFor="videoUpload"
-                    className="block mb-2 text-sm font-semibold text-gray-900"
-                  >
-                    Upload Video
-                  </label>
-                  <input
-                    type="file"
-                    id="videoUpload"
-                    multiple
-                    accept="video/mp4"
-                    onChange={handleVideoFileChange}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="Upload Video"
-                    // required
-                  />
-
-                  {isLoading && (
-                    <>
-                      <p className="text-sm font-medium text-gray-700 mt-2">
-                        Uploading: {videoUploadPercentage}%
-                      </p>
-                      <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-2">
-                        <div
-                          className="bg-blue-600 text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full transition-all duration-300 ease-in-out"
-                          style={{ width: `${videoUploadPercentage}%` }}
-                        >
-                          {videoUploadPercentage}%
-                        </div>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              {/* Display Uploaded Videos */}
-              {videoUrls.length > 0 && (
-                <div className="grid mt-4">
-                  {videoUrls.map((videoUrl, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between mt-2 bg-gray-100 p-2 rounded-lg"
-                    >
-                      <div className="flex items-center">
-                        <MdOutlineVideoLibrary className="text-blue-500 text-2xl mr-2" />
-                        <span>Video {index + 1}</span>
-                      </div>
-                      <button
-                        onClick={() => handleRemoveVideo(videoUrl)}
-                        className="text-red-500"
-                      >
-                        <MdClose className="text-2xl" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="flex justify-end items-center">
-            <button
-              type="button"
-              className="mt-5 text-orange-500 font-semibold hover:text-white border border-orange-500 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-blue-300  rounded-2xl text-sm px-5 py-2.5 text-center me-2 mb-2     "
-              onClick={() => handleUpload()}
-            >
-              Upload
-            </button>
           </div>
         </div>
       )}
@@ -622,7 +852,7 @@ const UpdateContent = () => {
                     )}
                     {chapter?.videoUrl?.length > 0 && (
                       <a
-                        href={chapter?.videoUrl[0]} 
+                        href={chapter?.videoUrl[0]}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="border border-orange-300 px-4 py-2 rounded-full text-orange-500 hover:bg-orange-300 hover:text-white transition duration-300"

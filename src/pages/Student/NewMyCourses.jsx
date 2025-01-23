@@ -63,6 +63,7 @@ const NewMyCourses = () => {
   };
 
   const getChapterBySubject = async (subjectId) => {
+    console.log("getChapterBySubject" + subjectId);
     try {
       const res = await axios.get(
         `${BASE_URL}chapter/getChapterBySubject/${subjectId}`
@@ -91,7 +92,9 @@ const NewMyCourses = () => {
               getChapterBySubject(subject?._id);
             }}
           >
-            <span className="font-poppins px-5 py-1.5 rounded-full">{subject?.name}</span>
+            <span className="font-poppins px-5 py-1.5 rounded-full">
+              {subject?.name}
+            </span>
           </div>
         ))}
       </div>
@@ -112,9 +115,15 @@ const NewMyCourses = () => {
                     {card.subject.name}
                   </span>
                 </div>
-                <img src={flask} alt="flask" className="h-10" />
+                {card?.thumbnail? (
+                  <img src={card?.thumbnail} alt="" className="h-10 object-contain"/>
+                  ) : (
+                    <img src={flask} alt="flask" className="h-10" />
+
+                )}
                 <p className="font-semibold">{card?.name}</p>
                 <p className="text-gray-600">{card?.desc}</p>
+                <p className="text-gray-600 text-xs">{card?.subtitle}</p>
                 <div className="flex justify-center items-center gap-2">
                   <button
                     onClick={() => navigate(`/Content/${card?._id}`)}

@@ -128,13 +128,15 @@ const StudentHome = () => {
   };
 
   const fetchStudent = async (user_id) => {
-    console.log(user_id);
+    console.log("fetchStudent", user_id);
     try {
       const res = await axios.get(
         `${BASE_URL}student/getStudentByUserId/${user_id}`
       );
       setStudentData(res.data);
+
       console.log(res.data);
+      console.log("studentid", res.data.studentDoc?._id);
       fetchSubjectV2(res.data.studentDoc.school, res.data.studentDoc.standard);
       fetchActivity(res.data.studentDoc?._id);
     } catch (error) {
@@ -193,14 +195,13 @@ const StudentHome = () => {
       console.log(res2.data);
 
       const reqbody = {
-        standard,
+        standard: standard,
         syllabus: res2.data.school.syllabus,
         medium: res2.data.school.medium,
       };
-      console.log(reqbody);
 
       const res = await axios.post(`${BASE_URL}subject/getSubjects`, reqbody);
-      console.log(res.data);
+
       setSubjects(res.data.subjects);
     } catch (error) {
       console.log(error);
@@ -223,14 +224,42 @@ const StudentHome = () => {
     }
   };
 
+  // const handleSearch = async (e) => {
+  //   e.preventDefault();
+  //   if (query?.length > 0) {
+  //     try {
+  //       const res = await axios.get(`${BASE_URL}chapter/query/${query}`);
+  //       console.log(res.data);
+  //       setQuery("");
+  //       setChapters(res.data.chapters);
+  //       window.scrollTo({
+  //         top: window.scrollY + 1000,
+  //         behavior: "smooth",
+  //       });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   } else if (selectedSubject != "NO") {
+  //     try {
+  //       const res = await axios.get(
+  //         `${BASE_URL}chapter/getChapterBySubject/${selectedSubject}`
+  //       );
+  //       console.log(res.data);
+  //       setChapters(res.data.chapters);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
+
   const handleSearch = async (e) => {
     e.preventDefault();
+
     if (query?.length > 0) {
       try {
         const res = await axios.get(`${BASE_URL}chapter/query/${query}`);
         console.log(res.data);
-        setQuery("");
-        setChapters(res.data.chapters);
+        setChapters(res.data.chapters); // Set chapters based on search results
         window.scrollTo({
           top: window.scrollY + 1000,
           behavior: "smooth",
@@ -238,18 +267,35 @@ const StudentHome = () => {
       } catch (error) {
         console.log(error);
       }
-    } else if (selectedSubject != "NO") {
-      try {
-        const res = await axios.get(
-          `${BASE_URL}chapter/getChapterBySubject/${selectedSubject}`
-        );
-        console.log(res.data);
-        setChapters(res.data.chapters);
-      } catch (error) {
-        console.log(error);
+    } else {
+      // If query is empty, reset chapters to original or empty data
+      if (selectedSubject !== "NO") {
+        try {
+          const res = await axios.get(
+            `${BASE_URL}chapter/getChapterBySubject/${selectedSubject}`
+          );
+          console.log(res.data);
+          setChapters(res.data.chapters); // Reset to original chapters for selected subject
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        // If no subject is selected, clear chapters
+        setChapters([]);
       }
     }
   };
+
+  useEffect(() => {
+    if (query.length === 0) {
+      // Reset chapters when search query is empty
+      if (selectedSubject !== "NO") {
+        getChapterBySubject(selectedSubject);
+      } else {
+        setChapters([]); // Clear chapters if no subject is selected
+      }
+    }
+  }, [query, selectedSubject]);
 
   useEffect(() => {
     getChapterBySubject(selectedSubject);

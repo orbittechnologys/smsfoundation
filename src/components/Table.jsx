@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { BASE_URL } from "../constants";
 
 const Table = ({ data, columns, label, fetchData }) => {
+  console.log(columns);
   const [searchTerm, setSearchTerm] = useState("");
   const [dropdownFilters, setDropdownFilters] = useState({});
   const [filteredData, setFilteredData] = useState(data);
@@ -397,7 +398,6 @@ const Table = ({ data, columns, label, fetchData }) => {
           <div className="flex justify-center items-center bg-black bg-opacity-50 fixed top-0 left-0 w-full h-full">
             <div className="bg-white p-6 rounded-lg shadow-lg">
               <form onSubmit={handleSubjectEdit}>
-    
                 <label htmlFor="syllabus">Board :</label>
                 <br />
                 <select

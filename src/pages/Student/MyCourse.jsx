@@ -59,6 +59,7 @@ const MyAcitivity = () => {
 
   const fetchChaptersForStudent = async (studentId) => {
     try {
+      console.log(`${BASE_URL}chapterTime/getForStudent/${studentId}`);
       const res = await axios.get(
         `${BASE_URL}chapterTime/getForStudent/${studentId}`
       );
@@ -73,6 +74,7 @@ const MyAcitivity = () => {
 
   const fetchStudentTests = async (studentId) => {
     try {
+      console.log(`${BASE_URL}studentTest/getByStudent/${studentId}`);
       const res = await axios.get(
         `${BASE_URL}studentTest/getByStudent/${studentId}`
       );
