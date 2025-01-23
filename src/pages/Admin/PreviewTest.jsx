@@ -6,7 +6,6 @@ import cn from "classnames";
 
 const PreviewTest = () => {
   const { testId } = useParams();
-
   const [questions, setQuestions] = useState([]);
   const [test, setTest] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
