@@ -11,11 +11,13 @@ const PreviewTest = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [role, setRole] = useState("NONE");
   const navigate = useNavigate();
+  const studentId = localStorage.getItem("student_id");
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
 
   const fetchQuestions = async (testId) => {
     try {
       const res = await axios.get(`${BASE_URL}question/getQuestions/${testId}`);
-      console.log(res.data);
+      console.log("questions", res.data);
       setQuestions(res.data);
     } catch (error) {
       console.log(error);
@@ -32,10 +34,28 @@ const PreviewTest = () => {
     }
   };
 
+  const fetchSelectedAnswers = async (testId, studentId) => {
+    const params = {
+      testId: testId,
+      studentId: studentId,
+    };
+
+    try {
+      const { data } = await axios.get(
+        `${BASE_URL}/studentTest/getTestResult`,
+        { params }
+      );
+      setSelectedAnswers(data?.studentTestDoc?.selectedAnswers);
+    } catch (error) {
+      console.log("error fetched selected answers", error);
+    }
+  };
+
   useEffect(() => {
     if (testId) {
       fetchQuestions(testId);
       fetchTest(testId);
+      fetchSelectedAnswers(testId, studentId);
       setRole(localStorage.getItem("role"));
     }
   }, [testId]);
@@ -62,12 +82,8 @@ const PreviewTest = () => {
       <div className="w-full">
         {questions.length > 0 && (
           <div className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-5 place-items-start">
-            {/* <hr className="my-4" /> */}
-            {/* <h1 className="mb-2">
-            Marks: {questions[currentQuestionIndex]?.marks}
-          </h1> */}
             <div className="w-full h-full">
-              <div className="mb-2 border-2 p-3 rounded-lg flex justify-start items-center ">
+              <div className="mb-2 border-2 p-3 rounded-lg flex justify-start items-center">
                 <span className="mr-2">{currentQuestionIndex + 1}.</span>
                 <div
                   dangerouslySetInnerHTML={{
@@ -76,88 +92,35 @@ const PreviewTest = () => {
                 ></div>
               </div>
               <div className="mb-2 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 place-items-start gap-5">
-                <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
-                  <span className="mr-2">A.</span>
-                  <span
-                    className={cn({
-                      "text-green-400 font-bold mr-2":
-                        questions[currentQuestionIndex]?.answer === "A",
-                      "mr-2": questions[currentQuestionIndex]?.answer !== "A",
-                    })}
-                    dangerouslySetInnerHTML={{
-                      __html: questions[currentQuestionIndex]?.optionA,
-                    }}
-                  ></span>
-                </div>
-                <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
-                  <span className="mr-2">B.</span>
-                  <span
-                    className={cn({
-                      "text-green-400 font-bold mr-2":
-                        questions[currentQuestionIndex]?.answer === "B",
-                      "mr-2": questions[currentQuestionIndex]?.answer !== "B",
-                    })}
-                    dangerouslySetInnerHTML={{
-                      __html: questions[currentQuestionIndex]?.optionB,
-                    }}
-                  ></span>
-                </div>
-                <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
-                  <span className="mr-2">C.</span>
-                  <span
-                    className={cn({
-                      "text-green-400 font-bold mr-2":
-                        questions[currentQuestionIndex]?.answer === "C",
-                      "mr-2": questions[currentQuestionIndex]?.answer !== "C",
-                    })}
-                    dangerouslySetInnerHTML={{
-                      __html: questions[currentQuestionIndex]?.optionC,
-                    }}
-                  ></span>
-                </div>
-                <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
-                  <span className="mr-2">D.</span>
-                  <span
-                    className={cn({
-                      "text-green-400 font-bold":
-                        questions[currentQuestionIndex]?.answer === "D",
-                      "mr-2": questions[currentQuestionIndex]?.answer !== "D",
-                    })}
-                    dangerouslySetInnerHTML={{
-                      __html: questions[currentQuestionIndex]?.optionD,
-                    }}
-                  ></span>
-                </div>
-                {questions[currentQuestionIndex]?.optionE && (
-                  <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
-                    <span className="mr-2">E.</span>
-                    <span
-                      className={cn({
-                        "text-green-400 font-bold":
-                          questions[currentQuestionIndex]?.answer === "E",
-                        "mr-2": questions[currentQuestionIndex]?.answer !== "E",
-                      })}
-                      dangerouslySetInnerHTML={{
-                        __html: questions[currentQuestionIndex]?.optionE,
-                      }}
-                    ></span>
-                  </div>
-                )}
-                {questions[currentQuestionIndex]?.optionF && (
-                  <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
-                    <span className="mr-2">F.</span>
-                    <span
-                      className={cn({
-                        "text-green-400 font-bold":
-                          questions[currentQuestionIndex]?.answer === "F",
-                        "mr-2": questions[currentQuestionIndex]?.answer !== "F",
-                      })}
-                      dangerouslySetInnerHTML={{
-                        __html: questions[currentQuestionIndex]?.optionF,
-                      }}
-                    ></span>
-                  </div>
-                )}
+                {["A", "B", "C", "D", "E", "F"].map((option) => {
+                  const optionKey = `option${option}`;
+                  const isCorrect =
+                    questions[currentQuestionIndex]?.answer === option;
+                  const isSelected =
+                    selectedAnswers?.[currentQuestionIndex]
+                      ?.selectedAnswerByUser === option;
+                  return (
+                    questions[currentQuestionIndex]?.[optionKey] && (
+                      <div
+                        key={option}
+                        className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full"
+                      >
+                        <span className="mr-2">{option}.</span>
+                        <span
+                          className={cn({
+                            "text-green-400 font-bold": isCorrect,
+                            "text-red-400 font-bold": isSelected && !isCorrect,
+                            "mr-2": !isSelected && !isCorrect,
+                          })}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              questions[currentQuestionIndex]?.[optionKey],
+                          }}
+                        ></span>
+                      </div>
+                    )
+                  );
+                })}
               </div>
             </div>
             <div className="w-full h-full lg:border lg:p-5 lg:rounded-xl">
@@ -184,7 +147,7 @@ const PreviewTest = () => {
                         questions[currentQuestionIndex]?.pageRef
                     )
                   }
-                  className="text-white h-1/3 mt-2 bg-orange-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm  sm:w-auto px-5 py-2.5 text-center w-fit"
+                  className="text-white h-1/3 mt-2 bg-orange-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-semibold rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center w-fit"
                 >
                   View PDF
                 </button>
