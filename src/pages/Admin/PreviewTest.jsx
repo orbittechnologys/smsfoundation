@@ -75,8 +75,8 @@ const PreviewTest = () => {
                   }}
                 ></div>
               </div>
-              <div className="mb-2 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 place-items-center gap-5">
-                <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
+              <div className="mb-2 grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 place-items-start gap-5">
+                <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
                   <span className="mr-2">A.</span>
                   <span
                     className={cn({
@@ -89,7 +89,7 @@ const PreviewTest = () => {
                     }}
                   ></span>
                 </div>
-                <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
+                <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
                   <span className="mr-2">B.</span>
                   <span
                     className={cn({
@@ -102,7 +102,7 @@ const PreviewTest = () => {
                     }}
                   ></span>
                 </div>
-                <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
+                <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
                   <span className="mr-2">C.</span>
                   <span
                     className={cn({
@@ -115,7 +115,7 @@ const PreviewTest = () => {
                     }}
                   ></span>
                 </div>
-                <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
+                <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
                   <span className="mr-2">D.</span>
                   <span
                     className={cn({
@@ -129,7 +129,7 @@ const PreviewTest = () => {
                   ></span>
                 </div>
                 {questions[currentQuestionIndex]?.optionE && (
-                  <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
+                  <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
                     <span className="mr-2">E.</span>
                     <span
                       className={cn({
@@ -143,9 +143,8 @@ const PreviewTest = () => {
                     ></span>
                   </div>
                 )}
-
                 {questions[currentQuestionIndex]?.optionF && (
-                  <div className="border-2 px-5 py-1 rounded-xl flex justify-center items-center">
+                  <div className="border-2 px-5 py-1 rounded-xl flex justify-start items-center w-full">
                     <span className="mr-2">F.</span>
                     <span
                       className={cn({
