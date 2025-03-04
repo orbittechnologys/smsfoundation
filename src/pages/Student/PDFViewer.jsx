@@ -177,6 +177,7 @@ const PDFViewer = () => {
       studentId: student?._id,
       time: seconds,
       page: currPage,
+      source : "WEB"
     };
     console.log(reqBody);
     chapterTimeUpdateApi(reqBody);
